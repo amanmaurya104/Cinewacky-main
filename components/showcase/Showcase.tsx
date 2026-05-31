@@ -1,0 +1,52 @@
+"use client";
+
+import ShowcaseHeader from './ShowcaseHeader';
+import ShowcaseCenterTitle from './ShowcaseCenterTitle';
+import ShowcaseScrollVideo from './ShowcaseScrollVideo';
+import { showcaseScrollItems, SHOWCASE_LOOP_COUNT } from '@/data/showcaseScroll';
+import { useScrollShowcase } from '@/hooks/useScrollShowcase';
+import '@/styles/showcase.css';
+
+export default function Showcase() {
+  const { scrollRef, activeIndex, scrollIndex } = useScrollShowcase();
+
+  return (
+    <div
+      ref={scrollRef}
+      className="showcase-root showcase-scroll-track relative h-screen w-full overflow-y-auto overscroll-contain bg-black text-white"
+      aria-label="Showcase scroll"
+    >
+      <ShowcaseHeader />
+
+      <div className="showcase-stage pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="showcase-videos-layer">
+          <div className="showcase-videos-scaler">
+            {showcaseScrollItems.map((item, i) => (
+              <ShowcaseScrollVideo
+                key={item.id}
+                item={item}
+                active={i === activeIndex}
+                featured={i === activeIndex}
+              />
+            ))}
+          </div>
+        </div>
+        <ShowcaseCenterTitle
+          items={showcaseScrollItems}
+          activeIndex={activeIndex}
+          scrollIndex={scrollIndex}
+        />
+      </div>
+
+      {Array.from({ length: SHOWCASE_LOOP_COUNT }, (_, loop) =>
+        showcaseScrollItems.map((item) => (
+          <section
+            key={`${loop}-${item.id}`}
+            className="showcase-scroll-section h-screen w-full"
+            aria-hidden
+          />
+        ))
+      )}
+    </div>
+  );
+}

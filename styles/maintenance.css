@@ -1,0 +1,282 @@
+@import "./variables.css";
+
+.maintenance-root {
+  --maintenance-accent: #f5e642;
+  --maintenance-muted: rgba(255, 255, 255, 0.85);
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+}
+
+.maintenance-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.maintenance-bg-pixel {
+  width: 100%;
+  height: 100%;
+}
+
+.maintenance-bg-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.38) 38%,
+    rgba(0, 0, 0, 0.38) 62%,
+    rgba(0, 0, 0, 0.78) 100%
+  );
+}
+
+.maintenance-letterbox {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 10vh;
+  background: #000;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.maintenance-letterbox--top {
+  top: 0;
+}
+
+.maintenance-letterbox--bottom {
+  bottom: 0;
+}
+
+.maintenance-grain {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.12;
+  background-image: url("/textures/grain.png");
+  background-repeat: repeat;
+  animation: maintenance-grain-drift 8s steps(10) infinite;
+}
+
+.maintenance-noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.04;
+  background-image: url("/textures/noise.png");
+  background-size: 200px 200px;
+}
+
+.maintenance-vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: radial-gradient(
+    ellipse 85% 75% at 50% 50%,
+    transparent 0%,
+    rgba(0, 0, 0, 0.65) 100%
+  );
+}
+
+.maintenance-film-edge {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent 10px,
+    rgba(255, 255, 255, 0.12) 10px,
+    rgba(255, 255, 255, 0.12) 14px
+  );
+}
+
+.maintenance-film-edge--left {
+  left: 0;
+}
+
+.maintenance-film-edge--right {
+  right: 0;
+}
+
+.maintenance-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14vh 1.5rem 12vh;
+  text-align: center;
+}
+
+.maintenance-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+}
+
+.maintenance-logo {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-decoration: none;
+}
+
+.maintenance-logo:hover {
+  color: var(--maintenance-accent);
+}
+
+.maintenance-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--maintenance-muted);
+}
+
+.maintenance-rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e63946;
+  box-shadow: 0 0 12px rgba(230, 57, 70, 0.8);
+}
+
+.maintenance-timecode {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 2rem;
+}
+
+.maintenance-lead {
+  margin: 0 0 0.35rem;
+  font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--maintenance-muted);
+}
+
+.maintenance-hero-line {
+  margin: 0;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.maintenance-bold {
+  font-size: clamp(2.5rem, 10vw, 5.5rem);
+  font-weight: 700;
+  color: var(--maintenance-accent);
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6);
+}
+
+.maintenance-body {
+  max-width: 28rem;
+  margin: 1.75rem auto 0;
+  font-size: clamp(0.9rem, 2.2vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--maintenance-muted);
+}
+
+.maintenance-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1rem;
+  margin-top: 2rem;
+}
+
+.maintenance-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.maintenance-tag::before {
+  content: "— ";
+  color: var(--maintenance-accent);
+  opacity: 0.7;
+}
+
+.maintenance-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1.5rem max(1.25rem, env(safe-area-inset-bottom));
+}
+
+.maintenance-footer-contact {
+  margin: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.55);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+}
+
+.maintenance-footer a {
+  color: var(--maintenance-accent);
+  text-decoration: none;
+}
+
+.maintenance-footer a:hover {
+  text-decoration: underline;
+}
+
+@keyframes maintenance-grain-drift {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-5%, -5%);
+  }
+}
+
+@media (max-width: 768px) {
+  .maintenance-letterbox {
+    height: 8vh;
+  }
+
+  .maintenance-film-edge {
+    width: 14px;
+  }
+}
