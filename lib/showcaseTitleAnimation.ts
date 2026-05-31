@@ -39,10 +39,10 @@ function getActiveBoldRem() {
   const w = window.innerWidth;
 
   if (w < 480) {
-    return clamp(2.75, (w * 0.13) / 16, 4.25);
+    return clamp(3.75, (w * 0.16) / 16, 11);
   }
   if (w < 768) {
-    return clamp(3.5, (w * 0.11) / 16, 5.5);
+    return clamp(4.5, (w * 0.14) / 16, 11);
   }
   if (w < 1024) {
     return clamp(5, (w * 0.09) / 16, 7);
@@ -57,7 +57,8 @@ function getInactiveBoldRem() {
 
 function getLeadRem(active: boolean) {
   if (typeof window === 'undefined') return active ? 1.5 : 0.9;
-  if (window.innerWidth < 768) return active ? 1.1 : 0.7;
+  if (window.innerWidth < 480) return active ? 1.2 : 0.75;
+  if (window.innerWidth < 768) return active ? 1.35 : 0.8;
   return active ? 1.5 : 0.9;
 }
 

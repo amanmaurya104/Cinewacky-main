@@ -17,8 +17,8 @@ function toActiveIndex(logicalIndex: number) {
   return Math.min(count - 1, Math.max(0, Math.round(logicalIndex)));
 }
 
-function getInitialScrollTop(sectionHeight: number) {
-  return (SHOWCASE_SECTION_COUNT + INITIAL_ACTIVE_INDEX) * sectionHeight;
+function getInitialVirtualIndex() {
+  return SHOWCASE_SECTION_COUNT + INITIAL_ACTIVE_INDEX;
 }
 
 export function useScrollShowcase() {
@@ -30,10 +30,19 @@ export function useScrollShowcase() {
   const prevActiveRef = useRef(INITIAL_ACTIVE_INDEX);
   const prevScrollTopRef = useRef(0);
   const initializedRef = useRef(false);
+  /** Logical scroll position in "sections" — survives mobile viewport resizes */
+  const virtualIndexRef = useRef(getInitialVirtualIndex());
+
+  const applyVirtualScroll = useCallback((el: HTMLDivElement) => {
+    const sectionHeight = el.clientHeight;
+    if (sectionHeight <= 0) return false;
+    el.scrollTop = virtualIndexRef.current * sectionHeight;
+    return true;
+  }, []);
 
   const updateFromScroll = useCallback(() => {
     const el = scrollRef.current;
-    if (!el) return;
+    if (!el || !initializedRef.current) return;
 
     const sectionHeight = el.clientHeight;
     if (sectionHeight <= 0) return;
@@ -51,12 +60,14 @@ export function useScrollShowcase() {
       scrollTop = el.scrollTop;
     }
 
+    virtualIndexRef.current = scrollTop / sectionHeight;
+
     if (scrollTop !== prevScrollTopRef.current) {
       setDirection(scrollTop > prevScrollTopRef.current ? 'down' : 'up');
       prevScrollTopRef.current = scrollTop;
     }
 
-    const virtualIndex = scrollTop / sectionHeight;
+    const virtualIndex = virtualIndexRef.current;
     const logicalIndex = toLogicalIndex(virtualIndex);
     const index = toActiveIndex(logicalIndex);
 
@@ -83,6 +94,26 @@ export function useScrollShowcase() {
     setActiveIndex(index);
   }, []);
 
+  const initializeScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return false;
+
+    if (!applyVirtualScroll(el)) return false;
+
+    prevScrollTopRef.current = el.scrollTop;
+    initializedRef.current = true;
+    updateFromScroll();
+    return true;
+  }, [applyVirtualScroll, updateFromScroll]);
+
+  const resyncScrollPosition = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el || !initializedRef.current) return;
+    if (!applyVirtualScroll(el)) return;
+    prevScrollTopRef.current = el.scrollTop;
+    updateFromScroll();
+  }, [applyVirtualScroll, updateFromScroll]);
+
   useEffect(() => {
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
@@ -90,49 +121,57 @@ export function useScrollShowcase() {
   }, []);
 
   useLayoutEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const sectionHeight = el.clientHeight;
-    if (sectionHeight <= 0) return;
-
-    el.scrollTop = getInitialScrollTop(sectionHeight);
-    prevScrollTopRef.current = el.scrollTop;
-    initializedRef.current = true;
-    updateFromScroll();
-  }, [updateFromScroll]);
+    virtualIndexRef.current = getInitialVirtualIndex();
+    initializeScroll();
+  }, [initializeScroll]);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
-    if (!initializedRef.current) {
-      const sectionHeight = el.clientHeight;
-      if (sectionHeight > 0) {
-        el.scrollTop = getInitialScrollTop(sectionHeight);
-        initializedRef.current = true;
-      }
-    }
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        if (!initializedRef.current) {
+          virtualIndexRef.current = getInitialVirtualIndex();
+        }
+        initializeScroll();
+      });
+    });
 
-    updateFromScroll();
+    const retryTimer = window.setTimeout(() => {
+      if (!initializedRef.current) {
+        virtualIndexRef.current = getInitialVirtualIndex();
+        initializeScroll();
+      }
+    }, 150);
+
     el.addEventListener('scroll', updateFromScroll, { passive: true });
-    window.addEventListener('resize', updateFromScroll);
+    window.addEventListener('resize', resyncScrollPosition);
+    window.visualViewport?.addEventListener('resize', resyncScrollPosition);
 
     return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      window.clearTimeout(retryTimer);
       el.removeEventListener('scroll', updateFromScroll);
-      window.removeEventListener('resize', updateFromScroll);
+      window.removeEventListener('resize', resyncScrollPosition);
+      window.visualViewport?.removeEventListener('resize', resyncScrollPosition);
     };
-  }, [updateFromScroll]);
+  }, [initializeScroll, resyncScrollPosition, updateFromScroll]);
 
   const scrollToIndex = useCallback((index: number) => {
     const el = scrollRef.current;
     if (!el) return;
 
     const sectionHeight = el.clientHeight;
+    if (sectionHeight <= 0) return;
+
     const currentVirtual = el.scrollTop / sectionHeight;
     const currentLoop = Math.floor(currentVirtual / SHOWCASE_SECTION_COUNT);
     const targetVirtual = currentLoop * SHOWCASE_SECTION_COUNT + index;
 
+    virtualIndexRef.current = targetVirtual;
     el.scrollTo({ top: targetVirtual * sectionHeight, behavior: 'smooth' });
   }, []);
 
