@@ -5,7 +5,14 @@ import {
   INITIAL_ACTIVE_INDEX,
   SHOWCASE_SECTION_COUNT,
 } from '@/data/showcaseScroll';
-import type { ScrollDirection } from '@/lib/showcaseTitleAnimation';
+import {
+  fractionalScrollIndex,
+  type ScrollDirection,
+} from '@/lib/showcaseTitleAnimation';
+import {
+  nearestSectionIndex,
+  scrollTopForSection,
+} from '@/lib/showcaseScrollSnap';
 
 function toLogicalIndex(virtualIndex: number) {
   const count = SHOWCASE_SECTION_COUNT;
@@ -32,6 +39,26 @@ export function useScrollShowcase() {
   const initializedRef = useRef(false);
   /** Logical scroll position in "sections" — survives mobile viewport resizes */
   const virtualIndexRef = useRef(getInitialVirtualIndex());
+  const isSnappingRef = useRef(false);
+
+  const snapToNearestSection = useCallback((behavior: ScrollBehavior = 'smooth') => {
+    const el = scrollRef.current;
+    if (!el || !initializedRef.current || isSnappingRef.current) return;
+
+    const sectionHeight = el.clientHeight;
+    if (sectionHeight <= 0) return;
+
+    const nearest = nearestSectionIndex(el.scrollTop, sectionHeight);
+    const targetTop = scrollTopForSection(nearest, sectionHeight);
+
+    if (Math.abs(el.scrollTop - targetTop) < 2) return;
+
+    isSnappingRef.current = true;
+    el.scrollTo({ top: targetTop, behavior });
+    window.setTimeout(() => {
+      isSnappingRef.current = false;
+    }, behavior === 'smooth' ? 450 : 0);
+  }, []);
 
   const applyVirtualScroll = useCallback((el: HTMLDivElement) => {
     const sectionHeight = el.clientHeight;
@@ -68,7 +95,11 @@ export function useScrollShowcase() {
     }
 
     const virtualIndex = virtualIndexRef.current;
-    const logicalIndex = toLogicalIndex(virtualIndex);
+    const logicalIndex = fractionalScrollIndex(
+      scrollTop,
+      sectionHeight,
+      SHOWCASE_SECTION_COUNT
+    );
     const index = toActiveIndex(logicalIndex);
 
     const loopProgress =
@@ -146,7 +177,10 @@ export function useScrollShowcase() {
       }
     }, 150);
 
+    const onScrollEnd = () => snapToNearestSection('smooth');
+
     el.addEventListener('scroll', updateFromScroll, { passive: true });
+    el.addEventListener('scrollend', onScrollEnd);
     window.addEventListener('resize', resyncScrollPosition);
     window.visualViewport?.addEventListener('resize', resyncScrollPosition);
 
@@ -155,10 +189,11 @@ export function useScrollShowcase() {
       cancelAnimationFrame(raf2);
       window.clearTimeout(retryTimer);
       el.removeEventListener('scroll', updateFromScroll);
+      el.removeEventListener('scrollend', onScrollEnd);
       window.removeEventListener('resize', resyncScrollPosition);
       window.visualViewport?.removeEventListener('resize', resyncScrollPosition);
     };
-  }, [initializeScroll, resyncScrollPosition, updateFromScroll]);
+  }, [initializeScroll, resyncScrollPosition, updateFromScroll, snapToNearestSection]);
 
   const scrollToIndex = useCallback((index: number) => {
     const el = scrollRef.current;

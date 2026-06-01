@@ -8,6 +8,7 @@ import { showcaseScrollItems, SHOWCASE_LOOP_COUNT } from '@/data/showcaseScroll'
 import { useForwardOverlayScroll } from '@/hooks/useForwardWheelScroll';
 import { useScrollShowcase } from '@/hooks/useScrollShowcase';
 import '@/styles/showcase.css';
+import '@/styles/showcase-responsive.css';
 
 export default function Showcase() {
   const { scrollRef, activeIndex, scrollIndex } = useScrollShowcase();
@@ -31,10 +32,10 @@ export default function Showcase() {
           <div className="showcase-videos-scaler">
             {showcaseScrollItems.map((item, i) => (
               <ShowcaseScrollVideo
-                key={item.id}
+                key={`${item.slug ?? item.id}-${i}`}
                 item={item}
                 active={i === activeIndex}
-                featured={i === activeIndex}
+                slotIndex={i}
               />
             ))}
           </div>

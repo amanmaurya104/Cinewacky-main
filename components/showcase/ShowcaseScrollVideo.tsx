@@ -4,13 +4,20 @@ import { motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import type { ShowcaseScrollItem } from '@/data/showcaseScroll';
 
+const ACTIVE_SCALE = 1.18;
+const INACTIVE_SCALE = 0.75;
+const ACTIVE_OPACITY = 1;
+const INACTIVE_OPACITY = 0.58;
+const ACTIVE_BRIGHTNESS = 1;
+const INACTIVE_BRIGHTNESS = 0.55;
+
 type Props = {
   item: ShowcaseScrollItem;
   active: boolean;
-  featured: boolean;
+  slotIndex: number;
 };
 
-export default function ShowcaseScrollVideo({ item, active, featured }: Props) {
+export default function ShowcaseScrollVideo({ item, active, slotIndex }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -25,36 +32,50 @@ export default function ShowcaseScrollVideo({ item, active, featured }: Props) {
     }
   }, [active]);
 
-  const scale = featured ? 1.12 : active ? 1.05 : 0.88;
-  const opacity = active ? 1 : featured ? 0.35 : 0.2;
+  const isCentered = item.left === '50%';
 
   return (
-    <motion.div
+    <div
       aria-hidden
-      className="showcase-video-tile pointer-events-none absolute overflow-hidden rounded-sm bg-black"
+      data-slot-index={slotIndex}
+      className={`showcase-video-tile pointer-events-none absolute ${
+        active ? 'showcase-video-tile--active' : 'showcase-video-tile--inactive'
+      }`}
       style={{
         left: item.left,
         top: item.top,
         width: item.width,
         height: item.height,
-        transform: item.id === 9 ? 'translateX(-50%)' : undefined,
-        zIndex: featured ? 5 : active ? 4 : 1,
+        transform: isCentered ? 'translateX(-50%)' : undefined,
+        transformOrigin: 'center center',
+        zIndex: active ? 12 : 2,
       }}
-      animate={{ scale, opacity }}
-      transition={{ type: 'spring', stiffness: 140, damping: 22 }}
     >
-      <video
-        ref={videoRef}
-        className="h-full w-full object-cover pointer-events-none"
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster={item.slug ? `/projects/${item.slug}/thumb.jpg` : undefined}
+      <motion.div
+        className="showcase-video-tile-inner h-full w-full overflow-hidden rounded-sm bg-black"
+        style={{ transformOrigin: 'center center' }}
+        animate={{
+          scale: active ? ACTIVE_SCALE : INACTIVE_SCALE,
+          opacity: active ? ACTIVE_OPACITY : INACTIVE_OPACITY,
+          filter: `brightness(${active ? ACTIVE_BRIGHTNESS : INACTIVE_BRIGHTNESS})`,
+        }}
+        transition={{ type: 'spring', stiffness: 160, damping: 24 }}
       >
-        <source src={item.video} type="video/mp4" />
-        {item.fallbackVideo ? <source src={item.fallbackVideo} type="video/mp4" /> : null}
-      </video>
-    </motion.div>
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover pointer-events-none"
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={item.slug ? `/projects/${item.slug}/thumb.jpg` : undefined}
+        >
+          <source src={item.video} type="video/mp4" />
+          {item.fallbackVideo ? (
+            <source src={item.fallbackVideo} type="video/mp4" />
+          ) : null}
+        </video>
+      </motion.div>
+    </div>
   );
 }

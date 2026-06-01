@@ -1,0 +1,278 @@
+/**
+ * Tablet & mobile showcase layouts only.
+ * Desktop (min-width: 1025px) uses inline positions from the design layout array.
+ */
+
+/* ── Tablet (769px – 1024px) ── */
+@media (max-width: 1024px) {
+  .showcase-videos-scaler {
+    --showcase-design-width: 720;
+    width: calc(var(--showcase-design-width) * 1px);
+    transform: scale(min(1, calc(100vw / var(--showcase-design-width))));
+  }
+
+  .showcase-video-tile[data-slot-index='0'] {
+    left: 54% !important;
+    top: 2% !important;
+    width: 200px !important;
+    height: auto !important;
+    aspect-ratio: 415 / 265;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='1'] {
+    left: 0% !important;
+    top: 58% !important;
+    width: 148px !important;
+    height: auto !important;
+    aspect-ratio: 295 / 455;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='2'] {
+    left: 62% !important;
+    top: 32% !important;
+    width: 168px !important;
+    height: auto !important;
+    aspect-ratio: 355 / 348;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='3'] {
+    left: 0% !important;
+    top: 10% !important;
+    width: 132px !important;
+    height: auto !important;
+    aspect-ratio: 283 / 414;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='4'] {
+    left: 58% !important;
+    top: 68% !important;
+    width: 198px !important;
+    height: auto !important;
+    aspect-ratio: 419 / 260;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='5'] {
+    left: 6% !important;
+    top: 34% !important;
+    width: 168px !important;
+    height: auto !important;
+    aspect-ratio: 355 / 346;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='6'] {
+    left: 8% !important;
+    top: 2% !important;
+    width: 186px !important;
+    height: auto !important;
+    aspect-ratio: 393 / 285;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='7'] {
+    left: 18% !important;
+    top: 52% !important;
+    width: 128px !important;
+    height: auto !important;
+    aspect-ratio: 269 / 466;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='8'] {
+    left: 50% !important;
+    top: 22% !important;
+    width: min(72vw, 340px) !important;
+    height: auto !important;
+    aspect-ratio: 530 / 241;
+    transform: translateX(-50%) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='9'] {
+    left: 72% !important;
+    top: 6% !important;
+    width: 126px !important;
+    height: auto !important;
+    aspect-ratio: 250 / 436;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='10'] {
+    left: 52% !important;
+    top: 54% !important;
+    width: 118px !important;
+    height: auto !important;
+    aspect-ratio: 234 / 478;
+    transform: none !important;
+  }
+}
+
+/* ── Mobile (≤768px) ── */
+@media (max-width: 768px) {
+  .showcase-videos-scaler {
+    --showcase-design-width: 390;
+    transform: scale(min(1, calc(100vw / var(--showcase-design-width))));
+  }
+
+  .showcase-video-tile[data-slot-index='0'] {
+    left: 48% !important;
+    top: 1% !important;
+    width: min(42vw, 158px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='1'] {
+    left: -2% !important;
+    top: 64% !important;
+    width: min(30vw, 108px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='2'] {
+    left: 58% !important;
+    top: 30% !important;
+    width: min(38vw, 140px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='3'] {
+    left: -4% !important;
+    top: 8% !important;
+    width: min(32vw, 118px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='4'] {
+    left: 54% !important;
+    top: 70% !important;
+    width: min(44vw, 168px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='5'] {
+    left: 2% !important;
+    top: 36% !important;
+    width: min(36vw, 132px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='6'] {
+    left: 2% !important;
+    top: 1% !important;
+    width: min(40vw, 148px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='7'] {
+    left: 12% !important;
+    top: 54% !important;
+    width: min(28vw, 100px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='8'] {
+    left: 50% !important;
+    top: 20% !important;
+    width: min(78vw, 260px) !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='9'] {
+    left: 68% !important;
+    top: 4% !important;
+    width: min(28vw, 102px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='10'] {
+    left: 48% !important;
+    top: 56% !important;
+    width: min(26vw, 96px) !important;
+  }
+
+  .showcase-spine-item-visual,
+  .showcase-spine-item-inner.active-title-wrapper {
+    max-width: min(88vw, 22rem);
+  }
+
+  .showcase-spine-mask {
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.88) 0%,
+      transparent 16%,
+      transparent 84%,
+      rgba(0, 0, 0, 0.88) 100%
+    );
+  }
+}
+
+/* ── Small mobile (≤480px) ── */
+@media (max-width: 480px) {
+  .showcase-videos-scaler {
+    --showcase-design-width: 360;
+  }
+
+  .showcase-video-tile[data-slot-index='0'] {
+    width: min(44vw, 142px) !important;
+    top: 0% !important;
+  }
+
+  .showcase-video-tile[data-slot-index='1'] {
+    width: min(32vw, 96px) !important;
+    top: 66% !important;
+  }
+
+  .showcase-video-tile[data-slot-index='2'] {
+    width: min(40vw, 128px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='3'] {
+    width: min(34vw, 108px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='4'] {
+    width: min(46vw, 152px) !important;
+    top: 72% !important;
+  }
+
+  .showcase-video-tile[data-slot-index='5'] {
+    width: min(38vw, 120px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='6'] {
+    width: min(42vw, 132px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='7'] {
+    width: min(30vw, 92px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='8'] {
+    width: min(82vw, 220px) !important;
+    top: 18% !important;
+  }
+
+  .showcase-video-tile[data-slot-index='9'] {
+    width: min(30vw, 90px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='10'] {
+    width: min(28vw, 88px) !important;
+  }
+
+  .showcase-spine-item-visual,
+  .showcase-spine-item-inner.active-title-wrapper {
+    max-width: 92vw;
+    padding: 0 0.35rem;
+  }
+}
+
+/* ── Desktop lock (design-approved layout via inline styles) ── */
+@media (min-width: 1025px) {
+  .showcase-root {
+    --showcase-design-width: 1800;
+    --spine-item-step: 272px;
+  }
+
+  .showcase-videos-scaler {
+    width: calc(var(--showcase-design-width) * 1px);
+    transform: scale(min(1, calc(100vw / var(--showcase-design-width))));
+  }
+
+  /* No slot overrides — tiles use layout array inline dimensions only */
+}

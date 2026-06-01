@@ -1,8 +1,8 @@
 @import "./variables.css";
 
 .showcase-root {
-  --showcase-design-width: 1440;
-  --spine-item-step: 168px;
+  --showcase-design-width: 1024;
+  --spine-item-step: 272px;
   background: #000;
   color: #fff;
 }
@@ -10,6 +10,8 @@
 .showcase-stage {
   background: #000;
   z-index: 1;
+  max-width: 100vw;
+  overflow: hidden;
 }
 
 .showcase-videos-layer {
@@ -37,10 +39,17 @@
 }
 
 .showcase-video-tile {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
-  will-change: transform, opacity;
   pointer-events: none;
   touch-action: pan-y;
+}
+
+.showcase-video-tile-inner {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  will-change: transform, opacity, filter;
+}
+
+.showcase-video-tile--active .showcase-video-tile-inner {
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.65);
 }
 
 .showcase-scroll-track {
@@ -60,12 +69,8 @@
 }
 
 /* ── Coppola vertical spine (single conveyor belt) ── */
-
 .showcase-spine-viewport {
   z-index: 20;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
 }
 
 .showcase-spine-track {
@@ -73,18 +78,28 @@
   z-index: 2;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
   overflow: hidden;
+  pointer-events: none;
+}
+
+/* Conveyor hub locked to viewport center (50vw × 50vh) */
+.showcase-spine-hub {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+  pointer-events: none;
 }
 
 .showcase-spine {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  will-change: transform;
-  padding: calc(50dvh - (var(--spine-item-step) / 2)) 0;
+  position: relative;
+  width: 100%;
+  height: 0;
+  transform-style: preserve-3d;
+  pointer-events: none;
 }
 
 .showcase-spine-mask {
@@ -94,41 +109,66 @@
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.85) 0%,
-    transparent 22%,
-    transparent 78%,
-    rgba(0, 0, 0, 0.85) 100%
+    rgba(0, 0, 0, 0.72) 0%,
+    transparent 14%,
+    transparent 86%,
+    rgba(0, 0, 0, 0.72) 100%
   );
 }
 
+/* Belt slot — fixed step spacing; GSAP sets y = delta × --spine-item-step */
 .showcase-spine-item {
-  position: relative;
-  flex-shrink: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
   height: var(--spine-item-step);
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   transform-origin: center center;
-  will-change: transform, opacity;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.showcase-spine-item-visual {
+  display: block;
+  width: max-content;
+  max-width: min(92vw, 56rem);
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
 }
 
 .showcase-spine-item-inner.active-title-wrapper,
 .showcase-spine-item-link {
   position: relative;
   text-align: center;
-  width: max-content;
-  max-width: min(92vw, 56rem);
   padding: 0 1rem;
-  transform-origin: center center;
+  backface-visibility: hidden;
+}
+
+.showcase-spine-item[data-active='true'] .showcase-spine-bold,
+.showcase-spine-item[data-active='true'] .showcase-spine-hero {
+  color: #f5e642;
+  font-weight: 400;
 }
 
 .showcase-spine-item-link {
-  pointer-events: auto;
+  pointer-events: none;
   display: block;
   color: inherit;
   text-decoration: none;
+  cursor: default;
+  touch-action: none;
+}
+
+/* Only the centered active title is clickable; everything else passes scroll through */
+.showcase-spine-item[data-active='true'] .showcase-spine-item-link {
+  pointer-events: auto;
   cursor: pointer;
-  touch-action: pan-y;
+  touch-action: manipulation;
 }
 
 .showcase-spine-item-link:focus-visible {
@@ -137,16 +177,21 @@
   border-radius: 2px;
 }
 
+/* Top line: LIFE BEYOND — bold, white, uppercase */
 .showcase-spine-lead {
   margin: 0;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  line-height: 1.1;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #fff;
   white-space: nowrap;
 }
 
+/* Bottom line: Lens — huge, yellow when active, normal weight */
 .showcase-spine-hero-line {
-  margin: 0.15rem 0 0;
-  line-height: 0.95;
+  margin: 0.12rem 0 0;
+  line-height: 0.92;
   letter-spacing: -0.03em;
   white-space: nowrap;
 }
@@ -154,38 +199,20 @@
 .showcase-spine-bold,
 .showcase-spine-hero {
   display: inline;
-  line-height: 0.95;
+  font-weight: 400;
+  line-height: 0.92;
 }
 
+/* Title + spine tuning for tablet/mobile (see showcase-responsive.css for videos) */
 @media (max-width: 1024px) {
   .showcase-root {
-    --spine-item-step: 140px;
-  }
-
-  .showcase-spine-item-inner.active-title-wrapper {
-    max-width: min(94vw, 48rem);
-    padding: 0 0.75rem;
+    --spine-item-step: 248px;
   }
 }
 
 @media (max-width: 768px) {
   .showcase-root {
-    --spine-item-step: 120px;
-  }
-
-  .showcase-spine-mask {
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.92) 0%,
-      transparent 18%,
-      transparent 82%,
-      rgba(0, 0, 0, 0.92) 100%
-    );
-  }
-
-  .showcase-spine-item-inner.active-title-wrapper {
-    max-width: 96vw;
-    padding: 0 0.5rem;
+    --spine-item-step: 228px;
   }
 
   .showcase-spine-lead,
@@ -194,18 +221,19 @@
     overflow-wrap: anywhere;
   }
 
-  .showcase-video-tile {
+  .showcase-video-tile-inner {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
   }
 }
 
 @media (max-width: 480px) {
   .showcase-root {
-    --spine-item-step: 104px;
+    --spine-item-step: 200px;
   }
 
   .showcase-spine-lead {
     line-height: 1.2;
+    font-size: 0.7rem;
   }
 
   .showcase-spine-hero-line {
@@ -214,7 +242,7 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1025px) {
   .showcase-spine-item-inner.active-title-wrapper {
     max-width: min(94vw, 64rem);
   }
