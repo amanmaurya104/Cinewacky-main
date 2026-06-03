@@ -1,83 +1,86 @@
 /**
- * Tablet & mobile showcase layouts only.
- * Desktop (min-width: 1025px) uses inline positions from the design layout array.
+ * Responsive showcase video layouts only.
+ * Desktop (min-width: 1440px): inline positions from the design layout array.
  */
 
-/* ── Tablet (769px – 1024px) ── */
-@media (max-width: 1024px) {
+/* ── Small laptop (1025px – 1439px) — fixes edge clips on videos 2, 4, 10 ── */
+@media (min-width: 1025px) and (max-width: 1490px) {
   .showcase-videos-scaler {
-    --showcase-design-width: 720;
+    --showcase-design-width: 1300;
     width: calc(var(--showcase-design-width) * 1px);
     transform: scale(min(1, calc(100vw / var(--showcase-design-width))));
   }
 
+  /* Video 1 — Life Beyond Lens */
   .showcase-video-tile[data-slot-index='0'] {
-    left: 54% !important;
-    top: 2% !important;
-    width: 200px !important;
+    left: 56% !important;
+    top: 3% !important;
+    width: 280px !important;
     height: auto !important;
     aspect-ratio: 415 / 265;
     transform: none !important;
   }
 
+  /* Video 2 — Brand Box (was clipping left) */
   .showcase-video-tile[data-slot-index='1'] {
-    left: 0% !important;
-    top: 58% !important;
-    width: 148px !important;
+    left: 5% !important;
+    top: 56% !important;
+    width: 175px !important;
     height: auto !important;
     aspect-ratio: 295 / 455;
     transform: none !important;
   }
 
   .showcase-video-tile[data-slot-index='2'] {
-    left: 62% !important;
+    left: 64% !important;
     top: 32% !important;
-    width: 168px !important;
+    width: 200px !important;
     height: auto !important;
     aspect-ratio: 355 / 348;
     transform: none !important;
   }
 
+  /* Video 4 — Reel Vibe Uncut (was clipping left) */
   .showcase-video-tile[data-slot-index='3'] {
-    left: 0% !important;
-    top: 10% !important;
-    width: 132px !important;
+    left: 5% !important;
+    top: 11% !important;
+    width: 155px !important;
     height: auto !important;
     aspect-ratio: 283 / 414;
     transform: none !important;
   }
 
   .showcase-video-tile[data-slot-index='4'] {
-    left: 58% !important;
+    left: 62% !important;
     top: 68% !important;
-    width: 198px !important;
+    width: 265px !important;
     height: auto !important;
     aspect-ratio: 419 / 260;
     transform: none !important;
   }
 
   .showcase-video-tile[data-slot-index='5'] {
-    left: 6% !important;
+    left: 10% !important;
     top: 34% !important;
-    width: 168px !important;
+    width: 200px !important;
     height: auto !important;
     aspect-ratio: 355 / 346;
     transform: none !important;
   }
 
   .showcase-video-tile[data-slot-index='6'] {
-    left: 8% !important;
-    top: 2% !important;
-    width: 186px !important;
+    left: 12% !important;
+    top: 3% !important;
+    width: 220px !important;
     height: auto !important;
     aspect-ratio: 393 / 285;
     transform: none !important;
   }
 
   .showcase-video-tile[data-slot-index='7'] {
-    left: 18% !important;
+    left: 20% !important;
     top: 52% !important;
-    width: 128px !important;
+    width: 155px !important;
     height: auto !important;
     aspect-ratio: 269 / 466;
     transform: none !important;
@@ -85,118 +88,266 @@
 
   .showcase-video-tile[data-slot-index='8'] {
     left: 50% !important;
-    top: 22% !important;
-    width: min(72vw, 340px) !important;
+    top: 24% !important;
+    width: min(52vw, 400px) !important;
     height: auto !important;
     aspect-ratio: 530 / 241;
     transform: translateX(-50%) !important;
   }
 
+  /* Video 10 — The essence we build (was clipping right) */
   .showcase-video-tile[data-slot-index='9'] {
-    left: 72% !important;
-    top: 6% !important;
-    width: 126px !important;
+    left: 74% !important;
+    top: 7% !important;
+    width: 145px !important;
     height: auto !important;
     aspect-ratio: 250 / 436;
     transform: none !important;
   }
 
   .showcase-video-tile[data-slot-index='10'] {
+    left: 50% !important;
+    top: 52% !important;
+    width: 135px !important;
+    height: auto !important;
+    aspect-ratio: 234 / 478;
+    transform: none !important;
+  }
+
+}
+
+/* ── Tablet (769px – 1024px) ── */
+@media (max-width: 1024px) {
+  .showcase-videos-scaler {
+    --showcase-design-width: 760;
+    width: calc(var(--showcase-design-width) * 1px);
+    transform: scale(min(1, calc(100vw / var(--showcase-design-width))));
+  }
+
+  .showcase-video-tile[data-slot-index='0'] {
     left: 52% !important;
-    top: 54% !important;
+    top: 2% !important;
+    width: 190px !important;
+    height: auto !important;
+    aspect-ratio: 415 / 265;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='1'] {
+    left: 4% !important;
+    top: 56% !important;
+    width: 132px !important;
+    height: auto !important;
+    aspect-ratio: 295 / 455;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='2'] {
+    left: 60% !important;
+    top: 30% !important;
+    width: 155px !important;
+    height: auto !important;
+    aspect-ratio: 355 / 348;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='3'] {
+    left: 4% !important;
+    top: 9% !important;
     width: 118px !important;
+    height: auto !important;
+    aspect-ratio: 283 / 414;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='4'] {
+    left: 56% !important;
+    top: 66% !important;
+    width: 175px !important;
+    height: auto !important;
+    aspect-ratio: 419 / 260;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='5'] {
+    left: 8% !important;
+    top: 33% !important;
+    width: 150px !important;
+    height: auto !important;
+    aspect-ratio: 355 / 346;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='6'] {
+    left: 10% !important;
+    top: 2% !important;
+    width: 165px !important;
+    height: auto !important;
+    aspect-ratio: 393 / 285;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='7'] {
+    left: 16% !important;
+    top: 50% !important;
+    width: 115px !important;
+    height: auto !important;
+    aspect-ratio: 269 / 466;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='8'] {
+    left: 50% !important;
+    top: 21% !important;
+    width: min(70vw, 300px) !important;
+    height: auto !important;
+    aspect-ratio: 530 / 241;
+    transform: translateX(-50%) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='9'] {
+    left: 70% !important;
+    top: 5% !important;
+    width: 112px !important;
+    height: auto !important;
+    aspect-ratio: 250 / 436;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='10'] {
+    left: 48% !important;
+    top: 53% !important;
+    width: 105px !important;
     height: auto !important;
     aspect-ratio: 234 / 478;
     transform: none !important;
   }
 }
 
-/* ── Mobile (≤768px) ── */
+/* ── Mobile (≤768px) — balanced ring around center title ── */
 @media (max-width: 768px) {
   .showcase-videos-scaler {
-    --showcase-design-width: 390;
+    --showcase-design-width: 400;
     transform: scale(min(1, calc(100vw / var(--showcase-design-width))));
   }
 
+  /* Top band */
   .showcase-video-tile[data-slot-index='0'] {
-    left: 48% !important;
-    top: 1% !important;
-    width: min(42vw, 158px) !important;
-  }
-
-  .showcase-video-tile[data-slot-index='1'] {
-    left: -2% !important;
-    top: 64% !important;
-    width: min(30vw, 108px) !important;
-  }
-
-  .showcase-video-tile[data-slot-index='2'] {
-    left: 58% !important;
-    top: 30% !important;
-    width: min(38vw, 140px) !important;
-  }
-
-  .showcase-video-tile[data-slot-index='3'] {
-    left: -4% !important;
-    top: 8% !important;
-    width: min(32vw, 118px) !important;
-  }
-
-  .showcase-video-tile[data-slot-index='4'] {
     left: 54% !important;
-    top: 70% !important;
-    width: min(44vw, 168px) !important;
-  }
-
-  .showcase-video-tile[data-slot-index='5'] {
-    left: 2% !important;
-    top: 36% !important;
-    width: min(36vw, 132px) !important;
+    top: 0% !important;
+    width: min(44vw, 150px) !important;
+    height: auto !important;
+    aspect-ratio: 415 / 265;
+    transform: none !important;
   }
 
   .showcase-video-tile[data-slot-index='6'] {
-    left: 2% !important;
-    top: 1% !important;
-    width: min(40vw, 148px) !important;
+    left: 3% !important;
+    top: 2% !important;
+    width: min(38vw, 132px) !important;
+    height: auto !important;
+    aspect-ratio: 393 / 285;
+    transform: none !important;
   }
 
-  .showcase-video-tile[data-slot-index='7'] {
-    left: 12% !important;
-    top: 54% !important;
-    width: min(28vw, 100px) !important;
-  }
-
-  .showcase-video-tile[data-slot-index='8'] {
-    left: 50% !important;
-    top: 20% !important;
-    width: min(78vw, 260px) !important;
-    transform: translateX(-50%) !important;
+  .showcase-video-tile[data-slot-index='3'] {
+    left: 3% !important;
+    top: 14% !important;
+    width: min(30vw, 108px) !important;
+    height: auto !important;
+    aspect-ratio: 283 / 414;
+    transform: none !important;
   }
 
   .showcase-video-tile[data-slot-index='9'] {
-    left: 68% !important;
-    top: 4% !important;
-    width: min(28vw, 102px) !important;
+    left: auto !important;
+    right: 3% !important;
+    top: 3% !important;
+    width: min(28vw, 96px) !important;
+    height: auto !important;
+    aspect-ratio: 250 / 436;
+    transform: none !important;
+  }
+
+  /* Upper sides — clear of title */
+  .showcase-video-tile[data-slot-index='8'] {
+    left: 50% !important;
+    top: 17% !important;
+    width: min(72vw, 240px) !important;
+    height: auto !important;
+    aspect-ratio: 530 / 241;
+    transform: translateX(-50%) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='2'] {
+    left: auto !important;
+    right: 2% !important;
+    top: 28% !important;
+    width: min(34vw, 124px) !important;
+    height: auto !important;
+    aspect-ratio: 355 / 348;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='5'] {
+    left: 4% !important;
+    top: 32% !important;
+    width: min(32vw, 118px) !important;
+    height: auto !important;
+    aspect-ratio: 355 / 346;
+    transform: none !important;
+  }
+
+  /* Lower band */
+  .showcase-video-tile[data-slot-index='1'] {
+    left: 3% !important;
+    top: 62% !important;
+    width: min(28vw, 100px) !important;
+    height: auto !important;
+    aspect-ratio: 295 / 455;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='7'] {
+    left: 14% !important;
+    top: 52% !important;
+    width: min(26vw, 92px) !important;
+    height: auto !important;
+    aspect-ratio: 269 / 466;
+    transform: none !important;
   }
 
   .showcase-video-tile[data-slot-index='10'] {
-    left: 48% !important;
-    top: 56% !important;
-    width: min(26vw, 96px) !important;
+    left: 50% !important;
+    top: 54% !important;
+    width: min(24vw, 88px) !important;
+    height: auto !important;
+    aspect-ratio: 234 / 478;
+    transform: translateX(-20%) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='4'] {
+    left: auto !important;
+    right: 3% !important;
+    top: 66% !important;
+    width: min(40vw, 148px) !important;
+    height: auto !important;
+    aspect-ratio: 419 / 260;
+    transform: none !important;
   }
 
   .showcase-spine-item-visual,
   .showcase-spine-item-inner.active-title-wrapper {
-    max-width: min(88vw, 22rem);
+    max-width: min(86vw, 20rem);
   }
 
   .showcase-spine-mask {
     background: linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0.88) 0%,
-      transparent 16%,
-      transparent 84%,
-      rgba(0, 0, 0, 0.88) 100%
+      rgba(0, 0, 0, 0.9) 0%,
+      transparent 18%,
+      transparent 82%,
+      rgba(0, 0, 0, 0.9) 100%
     );
   }
 }
@@ -204,68 +355,47 @@
 /* ── Small mobile (≤480px) ── */
 @media (max-width: 480px) {
   .showcase-videos-scaler {
-    --showcase-design-width: 360;
+    --showcase-design-width: 375;
   }
 
   .showcase-video-tile[data-slot-index='0'] {
-    width: min(44vw, 142px) !important;
-    top: 0% !important;
+    width: min(46vw, 138px) !important;
   }
 
   .showcase-video-tile[data-slot-index='1'] {
-    width: min(32vw, 96px) !important;
-    top: 66% !important;
-  }
-
-  .showcase-video-tile[data-slot-index='2'] {
-    width: min(40vw, 128px) !important;
-  }
-
-  .showcase-video-tile[data-slot-index='3'] {
-    width: min(34vw, 108px) !important;
-  }
-
-  .showcase-video-tile[data-slot-index='4'] {
-    width: min(46vw, 152px) !important;
-    top: 72% !important;
-  }
-
-  .showcase-video-tile[data-slot-index='5'] {
-    width: min(38vw, 120px) !important;
-  }
-
-  .showcase-video-tile[data-slot-index='6'] {
-    width: min(42vw, 132px) !important;
-  }
-
-  .showcase-video-tile[data-slot-index='7'] {
+    top: 64% !important;
     width: min(30vw, 92px) !important;
   }
 
+  .showcase-video-tile[data-slot-index='3'] {
+    width: min(32vw, 100px) !important;
+  }
+
   .showcase-video-tile[data-slot-index='8'] {
-    width: min(82vw, 220px) !important;
-    top: 18% !important;
+    top: 16% !important;
+    width: min(76vw, 210px) !important;
   }
 
   .showcase-video-tile[data-slot-index='9'] {
-    width: min(30vw, 90px) !important;
+    width: min(30vw, 88px) !important;
   }
 
-  .showcase-video-tile[data-slot-index='10'] {
-    width: min(28vw, 88px) !important;
+  .showcase-video-tile[data-slot-index='4'] {
+    top: 68% !important;
+    width: min(42vw, 140px) !important;
   }
 
   .showcase-spine-item-visual,
   .showcase-spine-item-inner.active-title-wrapper {
-    max-width: 92vw;
+    max-width: 90vw;
     padding: 0 0.35rem;
   }
 }
 
-/* ── Desktop lock (design-approved layout via inline styles) ── */
-@media (min-width: 1025px) {
+/* ── Full desktop (design-approved inline layout) ── */
+@media (min-width: 1500px) {
   .showcase-root {
-    --showcase-design-width: 1800;
+    --showcase-design-width: 1700;
     --spine-item-step: 272px;
   }
 
@@ -273,6 +403,6 @@
     width: calc(var(--showcase-design-width) * 1px);
     transform: scale(min(1, calc(100vw / var(--showcase-design-width))));
   }
-
-  /* No slot overrides — tiles use layout array inline dimensions only */
 }
+
+/* 1025–1439px spine step unchanged via showcase.css; video rules above */

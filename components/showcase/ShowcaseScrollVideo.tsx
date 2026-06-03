@@ -4,8 +4,17 @@ import { motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import type { ShowcaseScrollItem } from '@/data/showcaseScroll';
 
-const ACTIVE_SCALE = 1.18;
+const DESKTOP_ACTIVE_SCALE = 1.18;
+const COMPACT_ACTIVE_SCALE = 1.1;
 const INACTIVE_SCALE = 0.75;
+
+function getActiveScale() {
+  if (typeof window === 'undefined') return DESKTOP_ACTIVE_SCALE;
+  const w = window.innerWidth;
+  if (w >= 1440) return DESKTOP_ACTIVE_SCALE;
+  if (w >= 1025) return COMPACT_ACTIVE_SCALE;
+  return w < 768 ? 1.08 : 1.12;
+}
 const ACTIVE_OPACITY = 1;
 const INACTIVE_OPACITY = 0.58;
 const ACTIVE_BRIGHTNESS = 1;
@@ -55,7 +64,7 @@ export default function ShowcaseScrollVideo({ item, active, slotIndex }: Props) 
         className="showcase-video-tile-inner h-full w-full overflow-hidden rounded-sm bg-black"
         style={{ transformOrigin: 'center center' }}
         animate={{
-          scale: active ? ACTIVE_SCALE : INACTIVE_SCALE,
+          scale: active ? getActiveScale() : INACTIVE_SCALE,
           opacity: active ? ACTIVE_OPACITY : INACTIVE_OPACITY,
           filter: `brightness(${active ? ACTIVE_BRIGHTNESS : INACTIVE_BRIGHTNESS})`,
         }}

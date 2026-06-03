@@ -21,24 +21,23 @@ export type ShowcaseScrollItem = {
 };
 
 /** Default homepage state — always start here on refresh */
-export const DEFAULT_PROJECT_SLUG = 'life-beyond-lens';
+export const DEFAULT_PROJECT_SLUG = 'reel-vibe-uncut';
 export const INITIAL_ACTIVE_INDEX = 0;
 
 /** Scroll order — matches showcase videos/tiles (1 → 11) */
 export const SHOWCASE_SLUG_ORDER = [
-  'life-beyond-lens',
-  'brand-box',
-  'web-stream-tales',
   'reel-vibe-uncut',
-  'corporate-canvas',
-  'event-echoes',
   'the-sonic-frame',
+  'web-stream-tales',
+  'event-echoes',
+  'life-beyond-lens',
+  'corporate-canvas',
   'the-next-chapter',
+  'brand-box',
   'core-realm-vision',
+  'the-path-walked',
+  'connect-with-us',
   'the-essence-we-build',
-  // 'connect-with-us',
-  // 'connect-with-us',
-  // 'the-path-walked',
 ] as const;
 
 const titlePartsBySlug: Record<string, ShowcaseTitleParts> = {
@@ -52,8 +51,8 @@ const titlePartsBySlug: Record<string, ShowcaseTitleParts> = {
   'the-next-chapter': { lead: 'The Next', bold: 'Chapter', hero: '' },
   'core-realm-vision': { lead: 'Core Realm', bold: 'Vision', hero: '' },
   'the-essence-we-build': { lead: 'The essence', bold: 'we', hero: 'build' },
-  // 'connect-with-us': { lead: 'Connect With', bold: 'Us', hero: '' },
-  // 'the-path-walked': { lead: 'The Path', bold: 'Walked', hero: '' },
+  'connect-with-us': { lead: 'Connect With', bold: 'Us', hero: '' },
+  'the-path-walked': { lead: 'The Path', bold: 'Walked', hero: '' },
 };
 
 /** Floating video positions (wireframe) — one slot per scroll step */
@@ -149,9 +148,9 @@ const layout = [
 
   { id: 10, width: 250, height: 436, left: '84%', top: '8%' },  // The essence we build
 
-  // { id: 11, width: 234, height: 478, left: '58%', top: '50%' }, // Connect With Us
+  { id: 11, width: 234, height: 478, left: '58%', top: '50%' }, // Connect With Us
 
-  // { id: 12, width: 320, height: 420, left: '40%', top: '65%' }, // The Path Walked
+  { id: 12, width: 320, height: 420, left: '40%', top: '65%' }, // The Path Walked
 ];
 const projectBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 

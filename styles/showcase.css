@@ -1,7 +1,7 @@
 @import "./variables.css";
 
 .showcase-root {
-  --showcase-design-width: 1024;
+  --showcase-design-width: 1800;
   --spine-item-step: 272px;
   background: #000;
   color: #fff;
@@ -242,7 +242,7 @@
   }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 1440px) {
   .showcase-spine-item-inner.active-title-wrapper {
     max-width: min(94vw, 64rem);
   }
