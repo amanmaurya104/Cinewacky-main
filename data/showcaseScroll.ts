@@ -21,39 +21,53 @@ export type ShowcaseScrollItem = {
 };
 
 /** Default homepage state — always start here on refresh */
-export const DEFAULT_PROJECT_SLUG = 'life-beyond-lens';
+export const DEFAULT_PROJECT_SLUG = 'reel-vibe-uncut';
 export const INITIAL_ACTIVE_INDEX = 0;
 
 /** Scroll order — matches showcase videos/tiles (1 → 11) */
 export const SHOWCASE_SLUG_ORDER = [
-  'life-beyond-lens',
-  'brand-box',
-  'web-stream-tales',
   'reel-vibe-uncut',
-  'corporate-canvas',
-  'event-echoes',
   'the-sonic-frame',
+  'web-stream-tales',
+  'event-echoes',
+  'life-beyond-lens',
+  'corporate-canvas',
   'the-next-chapter',
+  'brand-box',
   'core-realm-vision',
+  'the-path-walked',
+  'connect-with-us',
   'the-essence-we-build',
-  // 'connect-with-us',
-  // 'connect-with-us',
-  // 'the-path-walked',
 ] as const;
 
+// const titlePartsBySlug: Record<string, ShowcaseTitleParts> = {
+//   'life-beyond-lens': { lead: 'Life Beyond', bold: 'Lens', hero: '' },
+//   'brand-box': { lead: 'Brand', bold: 'Box', hero: '' },
+//   'web-stream-tales': { lead: 'Web Stream', bold: 'Tales', hero: '' },
+//   'reel-vibe-uncut': { lead: 'Reel Vibe', bold: 'Uncut', hero: '' },
+//   'corporate-canvas': { lead: 'Corporate', bold: 'Canvas', hero: '' },
+//   'event-echoes': { lead: 'Event', bold: 'Echoes', hero: '' },
+//   'the-sonic-frame': { lead: 'The Sonic', bold: 'Frame', hero: '' },
+//   'the-next-chapter': { lead: 'The Next', bold: 'Chapter', hero: '' },
+//   'core-realm-vision': { lead: 'Core Realm', bold: 'Vision', hero: '' },
+//   'the-essence-we-build': { lead: 'The essence', bold: 'we', hero: 'build' },
+//   'connect-with-us': { lead: 'Connect With', bold: 'Us', hero: '' },
+//   'the-path-walked': { lead: 'The Path', bold: 'Walked', hero: '' },
+// };
+
 const titlePartsBySlug: Record<string, ShowcaseTitleParts> = {
-  'life-beyond-lens': { lead: 'Life Beyond', bold: 'Lens', hero: '' },
-  'brand-box': { lead: 'Brand', bold: 'Box', hero: '' },
-  'web-stream-tales': { lead: 'Web Stream', bold: 'Tales', hero: '' },
-  'reel-vibe-uncut': { lead: 'Reel Vibe', bold: 'Uncut', hero: '' },
-  'corporate-canvas': { lead: 'Corporate', bold: 'Canvas', hero: '' },
-  'event-echoes': { lead: 'Event', bold: 'Echoes', hero: '' },
-  'the-sonic-frame': { lead: 'The Sonic', bold: 'Frame', hero: '' },
-  'the-next-chapter': { lead: 'The Next', bold: 'Chapter', hero: '' },
-  'core-realm-vision': { lead: 'Core Realm', bold: 'Vision', hero: '' },
-  'the-essence-we-build': { lead: 'The essence', bold: 'we', hero: 'build' },
-  // 'connect-with-us': { lead: 'Connect With', bold: 'Us', hero: '' },
-  // 'the-path-walked': { lead: 'The Path', bold: 'Walked', hero: '' },
+  'life-beyond-lens': { lead: 'LIFE BEYOND', bold: 'LENS', hero: '' },
+  'brand-box': { lead: 'BRAND', bold: 'BOX', hero: '' },
+  'web-stream-tales': { lead: 'WEB STREAM', bold: 'TALES', hero: '' },
+  'reel-vibe-uncut': { lead: 'REEL VIBE', bold: 'UNCUT', hero: '' },
+  'corporate-canvas': { lead: 'CORPORATE', bold: 'CANVAS', hero: '' },
+  'event-echoes': { lead: 'EVENT', bold: 'ECHOES', hero: '' },
+  'the-sonic-frame': { lead: 'THE SONIC', bold: 'FRAME', hero: '' },
+  'the-next-chapter': { lead: 'THE NEXT', bold: 'CHAPTER', hero: '' },
+  'core-realm-vision': { lead: 'CORE REALM', bold: 'VISION', hero: '' },
+  'the-essence-we-build': { lead: 'THE ESSENCE', bold: 'WE', hero: 'BUILD' },
+  'connect-with-us': { lead: 'CONNECT WITH', bold: 'US', hero: '' },
+  'the-path-walked': { lead: 'THE PATH', bold: 'WALKED', hero: '' },
 };
 
 /** Floating video positions (wireframe) — one slot per scroll step */
@@ -149,9 +163,9 @@ const layout = [
 
   { id: 10, width: 250, height: 436, left: '84%', top: '8%' },  // The essence we build
 
-  // { id: 11, width: 234, height: 478, left: '58%', top: '50%' }, // Connect With Us
+  { id: 11, width: 234, height: 478, left: '58%', top: '50%' }, // Connect With Us
 
-  // { id: 12, width: 320, height: 420, left: '40%', top: '65%' }, // The Path Walked
+  { id: 12, width: 320, height: 420, left: '40%', top: '65%' }, // The Path Walked
 ];
 const projectBySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
 
