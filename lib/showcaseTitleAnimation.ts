@@ -73,15 +73,15 @@ function getActiveBoldRem() {
 
   /* Desktop — unchanged design-approved sizes */
   if (w >= 1025) {
-    return clamp(6.5, (w * 0.11) / 16, 7.5);
+    return clamp(6.25, (w * 0.105) / 16, 7.2);
   }
   if (w < 480) {
-    return clamp(2.5, (w * 0.13) / 16, 3.75);
+    return clamp(2.35, (w * 0.12) / 16, 3.55);
   }
   if (w < 768) {
-    return clamp(3, (w * 0.11) / 16, 4.5);
+    return clamp(2.9, (w * 0.105) / 16, 4.25);
   }
-  return clamp(3.75, (w * 0.09) / 16, 5.25);
+  return clamp(3.6, (w * 0.085) / 16, 5.0);
 }
 
 function getInactiveBoldRem() {
@@ -229,7 +229,7 @@ export function updateTitleSpine(
     if (bold) {
       gsap.set(bold, {
         fontSize: `${boldSize}rem`,
-        fontWeight: 400,
+        fontWeight: 300,
         color: boldColor,
         opacity: 1,
         force3D: true,
@@ -239,7 +239,7 @@ export function updateTitleSpine(
     if (hero) {
       gsap.set(hero, {
         fontSize: `${boldSize}rem`,
-        fontWeight: 400,
+        fontWeight: 300,
         color: boldColor,
         opacity: 1,
         force3D: true,

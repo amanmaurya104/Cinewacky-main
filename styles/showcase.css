@@ -152,7 +152,7 @@
 .showcase-spine-item[data-active='true'] .showcase-spine-bold,
 .showcase-spine-item[data-active='true'] .showcase-spine-hero {
   color: #f5e642;
-  font-weight: 400;
+  font-weight: 300;
   text-transform: uppercase;
 }
 
