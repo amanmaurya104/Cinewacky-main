@@ -114,6 +114,15 @@
     transform: none !important;
   }
 
+  .showcase-video-tile[data-slot-index='11'] {
+    left: 39% !important;
+    top: 66% !important;
+    width: 128px !important;
+    height: auto !important;
+    aspect-ratio: 320 / 420;
+    transform: none !important;
+  }
+
 }
 
 /* ── Tablet (769px – 1024px) ── */
@@ -220,6 +229,15 @@
     width: 105px !important;
     height: auto !important;
     aspect-ratio: 234 / 478;
+    transform: none !important;
+  }
+
+  .showcase-video-tile[data-slot-index='11'] {
+    left: 38% !important;
+    top: 67% !important;
+    width: 96px !important;
+    height: auto !important;
+    aspect-ratio: 320 / 420;
     transform: none !important;
   }
 }
@@ -336,6 +354,15 @@
     transform: none !important;
   }
 
+  .showcase-video-tile[data-slot-index='11'] {
+    left: 37% !important;
+    top: 69% !important;
+    width: min(30vw, 92px) !important;
+    height: auto !important;
+    aspect-ratio: 320 / 420;
+    transform: none !important;
+  }
+
   .showcase-spine-item-visual,
   .showcase-spine-item-inner.active-title-wrapper {
     max-width: min(86vw, 20rem);
@@ -383,6 +410,15 @@
   .showcase-video-tile[data-slot-index='4'] {
     top: 68% !important;
     width: min(42vw, 140px) !important;
+  }
+
+  .showcase-video-tile[data-slot-index='11'] {
+    left: 37% !important;
+    top: 69% !important;
+    width: min(28vw, 88px) !important;
+    height: auto !important;
+    aspect-ratio: 320 / 420;
+    transform: none !important;
   }
 
   .showcase-spine-item-visual,
