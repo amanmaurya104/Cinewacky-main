@@ -1,24 +1,42 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import projects from '@/data/projects';
-import ProjectHero from '@/components/project/ProjectHero';
-import ProjectOverview from '@/components/project/ProjectOverview';
-import ProjectGallery from '@/components/project/ProjectGallery';
-import RelatedProjects from '@/components/project/RelatedProjects';
+import ShowcaseHeader from '@/components/showcase/ShowcaseHeader';
+import ProjectVideoStack from '@/components/project/ProjectVideoStack';
+import { getAllProjectSlugs, getProjectBySlug } from '@/data/projects';
+import '@/styles/showcase.css';
+import '@/styles/project.css';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default function ProjectPage({ params }: Props) {
-  const project = projects.find((p) => p.slug === params.slug);
+export function generateStaticParams() {
+  return getAllProjectSlugs().map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
+
+  if (!project) {
+    return { title: 'Project Not Found | Cinewacky' };
+  }
+
+  return {
+    title: `${project.title} | Cinewacky`,
+    description: project.description,
+  };
+}
+
+export default async function ProjectPage({ params }: Props) {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
   if (!project) return notFound();
 
   return (
-    <main className="min-h-screen w-full">
-      <ProjectHero project={project} />
-      <ProjectOverview project={project} />
-      <ProjectGallery project={project} />
-      <RelatedProjects currentId={project.id} />
+    <main className="project-page">
+      <ShowcaseHeader />
+      <ProjectVideoStack project={project} />
     </main>
   );
 }

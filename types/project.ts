@@ -13,4 +13,6 @@ export interface Project {
   year: string;
   duration?: string;
   client?: string;
+  /** Filenames under public/showcase/{slug}/ */
+  videos?: string[];
 }

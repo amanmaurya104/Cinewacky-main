@@ -1,0 +1,128 @@
+@import "./variables.css";
+
+.project-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #000;
+  color: #fff;
+  scroll-behavior: smooth;
+  font-family: var(--font-proxima-nova), "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
+}
+
+.project-video-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.project-video-banner {
+  position: relative;
+  width: 100%;
+  height: max(320px, min(56.25vw, 75vh));
+  overflow: hidden;
+  background: #000;
+  cursor: pointer;
+}
+
+.project-video-banner-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  background: #000;
+  pointer-events: none;
+}
+
+.project-video-banner-media::-webkit-media-controls {
+  display: none !important;
+}
+
+.project-video-banner-media::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+.project-video-banner-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.project-video-banner-category {
+  position: absolute;
+  top: clamp(1.25rem, 3vw, 2.5rem);
+  left: clamp(1.25rem, 4vw, 3rem);
+  margin: 0;
+  font-size: clamp(0.625rem, 1.2vw, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.project-video-banner-copy {
+  position: absolute;
+  left: clamp(1.25rem, 4vw, 3rem);
+  bottom: clamp(1.25rem, 3.5vw, 2.75rem);
+  max-width: min(92%, 760px);
+}
+
+.project-video-banner-title {
+  margin: 0;
+  font-size: clamp(2rem, 7vw, 4.75rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.project-video-banner-title--gold {
+  color: #FFFFE4;
+}
+
+.project-video-banner-title--ember {
+  /* color: #ff6b35; */
+  color: #FFFFE4;
+}
+
+.project-video-banner-title--lime {
+  color: #FFFFE4;
+}
+
+.project-video-banner-title--cyan {
+  color: #FFFFE4;
+}
+
+.project-video-banner-title--rose {
+  color: #FFFFE4;
+}
+
+.project-video-banner-title--violet {
+  color: #FFFFE4;
+}
+
+.project-video-banner-meta {
+  margin: 0.75rem 0 0;
+  font-size: clamp(0.75rem, 1.4vw, 0.9375rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+@media (max-width: 1024px) {
+  .project-video-banner {
+    height: max(260px, min(56.25vw, 62vh));
+  }
+}
+
+@media (max-width: 640px) {
+  .project-video-banner {
+    height: max(220px, min(56.25vw, 56vh));
+  }
+
+  .project-video-banner-title {
+    font-size: clamp(1.75rem, 12vw, 2.75rem);
+  }
+}

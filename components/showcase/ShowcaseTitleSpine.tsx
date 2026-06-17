@@ -88,6 +88,7 @@ export default function ShowcaseTitleSpine({ items, scrollIndex }: Props) {
       });
     };
   }, []);
+  const enabledProjects = ['reel-vibe-uncut']; //remove this when all projects are ready
 
   return (
     <div className="showcase-spine-viewport pointer-events-none absolute inset-0 overflow-hidden">
@@ -106,13 +107,28 @@ export default function ShowcaseTitleSpine({ items, scrollIndex }: Props) {
                 className="showcase-spine-item"
                 data-index={i}
               >
-                <Link
-                  href="/maintenance"
+                {/* <Link
+                  href={item.slug ? `/project/${item.slug}` : '/'}
                   className="showcase-spine-item-link showcase-spine-item-visual showcase-spine-item-inner active-title-wrapper"
-                  aria-label={`${item.title} — in production`}
+                  aria-label={`View ${item.title}`}
                 >
                   <ShowcaseSplitTitle parts={item.titleParts} />
-                </Link>
+                </Link> */}
+                <Link
+  href={
+    enabledProjects.includes(item.slug ?? '')
+      ? `/project/${item.slug}`
+      : '/maintenance'
+  }
+  className="showcase-spine-item-link showcase-spine-item-visual showcase-spine-item-inner active-title-wrapper"
+  aria-label={
+    enabledProjects.includes(item.slug ?? '')
+      ? `View ${item.title}`
+      : `${item.title} — in production`
+  }
+>
+  <ShowcaseSplitTitle parts={item.titleParts} />
+</Link>
               </article>
             ))}
           </div>

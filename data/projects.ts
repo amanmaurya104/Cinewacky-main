@@ -50,15 +50,23 @@ const projects: Project[] = [
     id: 4,
     title: 'Reel Vibe Uncut',
     slug: 'reel-vibe-uncut',
-    category: 'Shorts',
-    tagline: 'Raw. Rhythmic. Real.',
-    description: 'A collection of unfiltered short films.',
+    category: '',
+    tagline: '',
+    description: 'A cinematic exploration of the lives shaped by their cameras.',
     thumbnail: '/projects/reel-vibe-uncut/thumb.jpg',
     poster: '/projects/reel-vibe-uncut/poster.jpg',
     previewVideo: '/projects/reel-vibe-uncut/preview.mp4',
     heroImage: '/projects/reel-vibe-uncut/hero.jpg',
     gallery: ['/projects/reel-vibe-uncut/1.jpg', '/projects/reel-vibe-uncut/2.jpg'],
-    year: '2022',
+    year: '',
+    videos: [
+      'trailer for fiction.mp4',
+      'KALI .mp4',
+      'MOONLIGHT DREAM.mp4',
+      'DARK RISING.mp4',
+      'MISTIMUKH.mp4',
+      'THE CAT.mp4',
+    ],
   },
   {
     id: 5,
@@ -173,5 +181,13 @@ const projects: Project[] = [
     year: '2022',
   },
 ];
+
+export function getProjectBySlug(slug: string): Project | undefined {
+  return projects.find((project) => project.slug === slug);
+}
+
+export function getAllProjectSlugs(): string[] {
+  return projects.map((project) => project.slug);
+}
 
 export default projects;
