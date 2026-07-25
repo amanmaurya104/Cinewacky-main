@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 
 const ACCENT_CLASSES = [
@@ -19,6 +20,7 @@ type Props = {
   poster?: string;
   index: number;
   hideTitle?: boolean;
+  storyHref?: string;
 };
 
 export default function ProjectVideoBanner({
@@ -29,10 +31,18 @@ export default function ProjectVideoBanner({
   poster,
   index,
   hideTitle = false,
+  storyHref,
 }: Props) {
+  const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const isHoveredRef = useRef(false);
   const accentClass = ACCENT_CLASSES[index % ACCENT_CLASSES.length];
+
+  const safePlay = useCallback((video: HTMLVideoElement) => {
+    void video.play().catch(() => {
+      // Autoplay and navigation timing can interrupt a pending play request.
+    });
+  }, []);
 
   const play = useCallback(() => {
     const video = videoRef.current;
@@ -40,8 +50,8 @@ export default function ProjectVideoBanner({
 
     isHoveredRef.current = true;
     video.muted = true;
-    void video.play();
-  }, []);
+    safePlay(video);
+  }, [safePlay]);
 
   const playWithSound = useCallback(() => {
     const video = videoRef.current;
@@ -49,8 +59,17 @@ export default function ProjectVideoBanner({
 
     isHoveredRef.current = true;
     video.muted = false;
-    void video.play();
-  }, []);
+    safePlay(video);
+  }, [safePlay]);
+
+  const handleClick = useCallback(() => {
+    if (storyHref) {
+      router.push(storyHref);
+      return;
+    }
+
+    playWithSound();
+  }, [playWithSound, router, storyHref]);
 
   const pause = useCallback(() => {
     const video = videoRef.current;
@@ -76,16 +95,13 @@ export default function ProjectVideoBanner({
       showFirstFrame();
     } else {
       video.addEventListener('loadeddata', showFirstFrame, { once: true });
-      video.load();
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry?.isIntersecting) return;
 
-        if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
-          video.load();
-        } else {
+        if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
           showFirstFrame();
         }
       },
@@ -105,8 +121,16 @@ export default function ProjectVideoBanner({
       className="project-video-banner"
       onMouseEnter={play}
       onMouseLeave={pause}
-      onClick={playWithSound}
-      aria-label={title}
+      onClick={handleClick}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          handleClick();
+        }
+      }}
+      role={storyHref ? 'link' : undefined}
+      tabIndex={storyHref ? 0 : undefined}
+      aria-label={storyHref ? `Open ${title}` : title}
     >
       <video
         ref={videoRef}

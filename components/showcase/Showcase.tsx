@@ -36,6 +36,7 @@ export default function Showcase() {
                 item={item}
                 active={i === activeIndex}
                 slotIndex={i}
+                activeIndex={activeIndex}
               />
             ))}
           </div>

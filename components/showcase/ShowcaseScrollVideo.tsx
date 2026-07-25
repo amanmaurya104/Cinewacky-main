@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import type { ShowcaseScrollItem } from '@/data/showcaseScroll';
+import { getShowcaseThumbSrc, isShowcaseVideoSlot } from '@/data/showcaseScroll';
 
 const DESKTOP_ACTIVE_SCALE = 1.18;
 const COMPACT_ACTIVE_SCALE = 1.1;
@@ -24,14 +25,17 @@ type Props = {
   item: ShowcaseScrollItem;
   active: boolean;
   slotIndex: number;
+  activeIndex: number;
 };
 
-export default function ShowcaseScrollVideo({ item, active, slotIndex }: Props) {
+export default function ShowcaseScrollVideo({ item, active, slotIndex, activeIndex }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const useVideo = isShowcaseVideoSlot(slotIndex, activeIndex);
+  const thumbSrc = getShowcaseThumbSrc(item.id);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !useVideo) return;
 
     if (active) {
       video.play().catch(() => undefined);
@@ -39,7 +43,7 @@ export default function ShowcaseScrollVideo({ item, active, slotIndex }: Props) 
       video.pause();
       video.currentTime = 0;
     }
-  }, [active]);
+  }, [active, useVideo]);
 
   const isCentered = item.left === '50%';
 
@@ -70,20 +74,29 @@ export default function ShowcaseScrollVideo({ item, active, slotIndex }: Props) 
         }}
         transition={{ type: 'spring', stiffness: 160, damping: 24 }}
       >
-        <video
-          ref={videoRef}
-          className="h-full w-full object-cover pointer-events-none"
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster={item.slug ? `/projects/${item.slug}/thumb.jpg` : undefined}
-        >
-          <source src={item.video} type="video/mp4" />
-          {item.fallbackVideo ? (
-            <source src={item.fallbackVideo} type="video/mp4" />
-          ) : null}
-        </video>
+        {useVideo ? (
+          <video
+            ref={videoRef}
+            className="h-full w-full object-cover pointer-events-none"
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster={thumbSrc}
+          >
+            <source src={item.video} type="video/mp4" />
+            {item.fallbackVideo ? (
+              <source src={item.fallbackVideo} type="video/mp4" />
+            ) : null}
+          </video>
+        ) : (
+          <img
+            src={thumbSrc}
+            alt=""
+            className="h-full w-full object-cover pointer-events-none"
+            draggable={false}
+          />
+        )}
       </motion.div>
     </div>
   );

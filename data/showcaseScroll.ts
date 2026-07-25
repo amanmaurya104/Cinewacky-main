@@ -194,3 +194,15 @@ export const showcaseScrollItems: ShowcaseScrollItem[] = SHOWCASE_SLUG_ORDER.map
 
 export const SHOWCASE_SECTION_COUNT = showcaseScrollItems.length;
 export const SHOWCASE_LOOP_COUNT = 3;
+
+export function getShowcaseThumbSrc(id: number): string {
+  return `/showcase-thumbs/${id}.png`;
+}
+
+/** Previous, active, and next slots (circular) mount video; all others use thumbnails */
+export function isShowcaseVideoSlot(slotIndex: number, activeIndex: number): boolean {
+  const count = SHOWCASE_SECTION_COUNT;
+  const prev = (activeIndex - 1 + count) % count;
+  const next = (activeIndex + 1) % count;
+  return slotIndex === prev || slotIndex === activeIndex || slotIndex === next;
+}
