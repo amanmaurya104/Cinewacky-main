@@ -2,6 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useRef } from 'react';
+import TypedText from '@/components/story/TypedText';
 import type { StoryNarrativeBlock } from '@/types/story';
 
 type Props = {
@@ -68,7 +69,11 @@ function NarrativeBlock({
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
       >
         <p className="story-narrative-index">{String(index + 1).padStart(2, '0')}</p>
-        <p className="story-narrative-text">{block.text}</p>
+        <TypedText
+          text={block.text}
+          className="story-narrative-text"
+          active={inView}
+        />
       </motion.div>
       <motion.figure
         className="story-narrative-image-wrap"

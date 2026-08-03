@@ -1,7 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { CircularGallery, type GalleryItem } from '@/components/ui/circular-gallery';
 
 type Props = {
   images: string[];
@@ -10,6 +11,7 @@ type Props = {
 
 export default function StoryGallery({ images, title }: Props) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const scrollRootRef = useRef<HTMLDivElement | null>(null);
 
   const close = useCallback(() => setActiveIndex(null), []);
 
@@ -24,28 +26,47 @@ export default function StoryGallery({ images, title }: Props) {
     return () => window.removeEventListener('keydown', onKey);
   }, [activeIndex, close]);
 
+  const uniqueImages = useMemo(() => [...new Set(images)], [images]);
+
+  const galleryItems = useMemo<GalleryItem[]>(
+    () =>
+      uniqueImages.map((src, index) => ({
+        photo: {
+          url: src,
+          text: `${title} still frame ${index + 1}`,
+        },
+      })),
+    [uniqueImages, title],
+  );
+
   if (!images.length) return null;
 
-  const uniqueImages = [...new Set(images)];
-
   return (
-    <section className="story-section story-section--wide" aria-labelledby="gallery-heading">
-      <p className="story-section-eyebrow">Still frames</p>
-      <h2 id="gallery-heading" className="story-section-title">
-        Gallery
-      </h2>
-      <div className="story-gallery-masonry">
-        {uniqueImages.map((src, index) => (
-          <button
-            key={`${src}-${index}`}
-            type="button"
-            className="story-gallery-item"
-            onClick={() => setActiveIndex(index)}
-            aria-label={`View ${title} gallery image ${index + 1}`}
-          >
-            <img src={src} alt="" loading="lazy" />
-          </button>
-        ))}
+    <section
+      className="story-section story-section--wide story-gallery-section"
+      aria-labelledby="gallery-heading"
+    >
+      <div
+        className="story-gallery-scroll"
+        ref={scrollRootRef}
+        style={{ height: `${uniqueImages.length * 25 + 50}vh` }}
+      >
+        <div className="story-gallery-stage">
+          <div className="story-gallery-intro">
+            <p className="story-section-eyebrow">Still frames</p>
+            <h2 id="gallery-heading" className="story-section-title">
+              Gallery
+            </h2>
+            <p className="story-gallery-hint">Scroll to browse</p>
+          </div>
+
+          <CircularGallery
+            items={galleryItems}
+            scrollRootRef={scrollRootRef}
+            onItemSelect={setActiveIndex}
+            className="story-gallery-ring"
+          />
+        </div>
       </div>
 
       <AnimatePresence>

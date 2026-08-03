@@ -7,8 +7,10 @@ import StoryCrew from '@/components/story/StoryCrew';
 import StoryGallery from '@/components/story/StoryGallery';
 import StoryHero from '@/components/story/StoryHero';
 import StoryNav from '@/components/story/StoryNav';
+import StoryProducerNote from '@/components/story/StoryProducerNote';
 import StoryTrailer from '@/components/story/StoryTrailer';
 import StoryVisualNarrative from '@/components/story/StoryVisualNarrative';
+import TypedText from '@/components/story/TypedText';
 import { getProjectBySlug } from '@/data/projects';
 import {
   getAdjacentStories,
@@ -69,7 +71,7 @@ export default async function StoryPage({ params }: Props) {
         <h2 id="synopsis-heading" className="story-section-title">
           Synopsis
         </h2>
-        <p className="story-synopsis">{story.synopsis}</p>
+        <TypedText text={story.synopsis} className="story-synopsis" />
       </section>
 
       <StoryVisualNarrative blocks={story.visualNarrative} />
@@ -81,13 +83,7 @@ export default async function StoryPage({ params }: Props) {
       <StoryAchievements achievements={story.achievements} />
 
       {story.producerNote ? (
-        <section className="story-section" aria-labelledby="producer-note-heading">
-          <p className="story-section-eyebrow">From the producer</p>
-          <h2 id="producer-note-heading" className="story-section-title">
-            Producer&apos;s Note
-          </h2>
-          <p className="story-producer-note">{story.producerNote}</p>
-        </section>
+        <StoryProducerNote note={story.producerNote} />
       ) : null}
 
       <StoryBackLink projectSlug={slug} projectTitle={project.title} />

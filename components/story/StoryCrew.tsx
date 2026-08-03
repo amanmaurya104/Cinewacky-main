@@ -21,19 +21,48 @@ export default function StoryCrew({ crew }: Props) {
       <h2 id="visionaries-heading" className="story-section-title">
         The Visionaries
       </h2>
-      <div className="story-crew-grid">
-        {crew.map((member, index) => (
-          <motion.div
-            key={`${member.role}-${member.name}`}
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: index * 0.05 }}
-          >
-            <p className="story-crew-role">{member.role}</p>
-            <p className="story-crew-name">{member.name}</p>
-          </motion.div>
-        ))}
-      </div>
+
+      <ol className="story-crew-credits">
+        {crew.map((member, index) => {
+          const delay = index * 0.06;
+
+          return (
+            <motion.li
+              key={`${member.role}-${member.name}`}
+              className="story-crew-credit"
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 18 }}
+              animate={
+                inView
+                  ? { opacity: 1, y: 0 }
+                  : reduceMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, y: 18 }
+              }
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
+            >
+              <span className="story-crew-index" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span className="story-crew-lines">
+                <span className="story-crew-role">{member.role}</span>
+                <span className="story-crew-name">{member.name}</span>
+              </span>
+              {/* Hairline wipes in just behind the text, like a credit landing. */}
+              <motion.span
+                className="story-crew-rule"
+                aria-hidden="true"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: inView ? 1 : 0 }}
+                transition={{
+                  duration: reduceMotion ? 0 : 0.9,
+                  ease: [0.22, 1, 0.36, 1],
+                  delay: delay + 0.12,
+                }}
+              />
+            </motion.li>
+          );
+        })}
+      </ol>
     </section>
   );
 }

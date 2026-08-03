@@ -329,6 +329,32 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
+/* Untyped remainder keeps its space so the block never reflows mid-type. */
+.story-typed-rest {
+  color: transparent;
+}
+
+.story-typed-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 1px;
+  vertical-align: -0.15em;
+  background: var(--accent, #ff4d4d);
+  animation: story-caret-blink 1s steps(1, end) infinite;
+}
+
+@keyframes story-caret-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
 .story-narrative-image-wrap {
   position: relative;
   aspect-ratio: 4 / 5;
@@ -375,43 +401,166 @@
   }
 }
 
-.story-crew-grid {
+/* Crew reads as an end-credit roll: numbered entries, role as the small label
+   and the person's name carrying the weight. */
+.story-crew-credits {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 2.5rem 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.story-crew-grid > div {
-  padding: 1rem 1rem 1.15rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1rem;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+.story-crew-credit {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding: 1.5rem 0.25rem 1.5rem 0;
+}
+
+.story-crew-rule {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  transform-origin: left center;
+  background: rgba(255, 255, 255, 0.1);
+  transition: background 0.4s ease;
+}
+
+.story-crew-credit:hover .story-crew-rule {
+  background: var(--accent, #ff4d4d);
+}
+
+.story-crew-index {
+  flex: 0 0 auto;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.22);
+  transition: color 0.4s ease;
+}
+
+.story-crew-credit:hover .story-crew-index {
+  color: var(--accent, #ff4d4d);
+}
+
+.story-crew-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.story-crew-credit:hover .story-crew-lines {
+  transform: translateX(6px);
 }
 
 .story-crew-role {
-  margin: 0 0 0.35rem;
-  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-  font-weight: 700;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #ffffe4;
+  color: rgba(255, 255, 255, 0.42);
 }
 
 .story-crew-name {
-  margin: 0;
-  font-size: 0.8125rem;
-  letter-spacing: 0.14em;
+  font-size: clamp(1.125rem, 2.2vw, 1.625rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.15;
+  color: #ffffe4;
+  transition: color 0.4s ease;
 }
 
-.story-cast-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+.story-crew-credit:hover .story-crew-name {
+  color: #fff;
+}
+
+@media (max-width: 767px) {
+  .story-crew-credits {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .story-crew-credit {
+    padding: 1.15rem 0.25rem 1.15rem 0;
+  }
+}
+
+/* Cast marquee: two identical passes slide right-to-left; when the first pass
+   has fully exited, the transform resets and the second is exactly where the
+   first started, so the loop reads as continuous. */
+.story-cast-section {
+  overflow: hidden;
+}
+
+.story-cast-marquee {
+  position: relative;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+}
+
+.story-cast-track {
+  display: flex;
+  width: max-content;
+  animation: story-cast-scroll var(--marquee-duration, 40s) linear infinite;
+}
+
+.story-cast-track:hover {
+  animation-play-state: paused;
+}
+
+.story-cast-pass {
+  display: flex;
   gap: 2rem;
+  padding-right: 2rem;
+}
+
+@keyframes story-cast-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* No animation for reduced-motion users — swipe/scroll the row instead. */
+.story-cast-marquee[data-static='true'] {
+  -webkit-mask-image: none;
+  mask-image: none;
+  overflow-x: auto;
+}
+
+.story-cast-marquee[data-static='true'] .story-cast-track {
+  animation: none;
+}
+
+.story-cast-marquee[data-static='true'] .story-cast-pass:last-child {
+  display: none;
 }
 
 .story-cast-card {
+  flex: 0 0 auto;
+  width: clamp(150px, 20vw, 200px);
   text-align: center;
   padding: 1rem 1rem 1.25rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -467,43 +616,54 @@
   color: rgba(255, 255, 255, 0.45);
 }
 
-.story-gallery-masonry {
-  columns: 1;
-  column-gap: 1rem;
+/* Coverflow gallery: the tall wrapper supplies the scroll travel that steps
+   through the stills, while the stage inside stays pinned to the viewport.
+   The wrapper's exact height is set inline from the number of stills. */
+.story-gallery-section {
+  padding-top: 0;
+  padding-bottom: 0;
+  max-width: none;
 }
 
-@media (min-width: 640px) {
-  .story-gallery-masonry {
-    columns: 2;
-  }
+.story-gallery-scroll {
+  height: 400vh;
 }
 
-@media (min-width: 1024px) {
-  .story-gallery-masonry {
-    columns: 3;
-  }
-}
-
-.story-gallery-item {
-  break-inside: avoid;
-  margin-bottom: 1rem;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  width: 100%;
+.story-gallery-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.story-gallery-item img {
+.story-gallery-intro {
+  position: absolute;
+  top: clamp(2.5rem, 8vh, 5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  text-align: center;
+  pointer-events: none;
+}
+
+.story-gallery-intro .story-section-title {
+  margin-bottom: 0.75rem;
+}
+
+.story-gallery-hint {
+  margin: 0;
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.story-gallery-ring {
   width: 100%;
-  display: block;
-  transition: transform 0.6s ease, filter 0.4s ease;
-}
-
-.story-gallery-item:hover img {
-  transform: scale(1.03);
-  filter: brightness(1.08);
+  height: 100%;
 }
 
 .story-lightbox {
@@ -567,6 +727,48 @@
   background: rgba(0, 0, 0, 0.2);
 }
 
+.story-trailer-sound {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.story-trailer-sound:hover {
+  background: rgba(0, 0, 0, 0.75);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #fff;
+}
+
+.story-trailer-sound svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (max-width: 640px) {
+  .story-trailer-sound span {
+    display: none;
+  }
+
+  .story-trailer-sound {
+    padding: 0.6rem;
+  }
+}
+
 .story-trailer-play-icon {
   width: 4.5rem;
   height: 4.5rem;
@@ -580,33 +782,140 @@
   padding-left: 0.25rem;
 }
 
-.story-achievements-list {
+/* Achievements timeline: cards alternate either side of a centre line whose
+   fill is driven by the section's scroll progress. */
+.story-timeline {
+  position: relative;
+  padding: 1rem 0 2rem;
+}
+
+.story-timeline-path {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.story-timeline-path-base {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.story-timeline-path-progress {
+  fill: none;
+  stroke: var(--accent, #ff4d4d);
+  stroke-width: 2;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px rgba(255, 77, 77, 0.5));
+}
+
+.story-timeline-nodes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.story-timeline-items {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.12);
-  padding-left: 2rem;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.story-achievements-list > article {
+.story-timeline-item {
   position: relative;
-  padding: 0.1rem 0 0.1rem 1rem;
+  width: 50%;
 }
 
-.story-achievements-list > article::before {
-  content: '';
+.story-timeline-item--left {
+  padding-right: calc(var(--curve-amp, 64px) + 1.25rem);
+  text-align: right;
+}
+
+.story-timeline-item--right {
+  margin-left: 50%;
+  padding-left: calc(var(--curve-amp, 64px) + 1.25rem);
+  text-align: left;
+}
+
+.story-timeline-node {
   position: absolute;
-  left: -2.35rem;
-  top: 0.35rem;
-  width: 0.65rem;
-  height: 0.65rem;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin: -0.4375rem 0 0 -0.4375rem;
   border-radius: 50%;
-  background: rgba(255, 255, 228, 0.78);
-  box-shadow: 0 0 0 0.35rem rgba(255, 255, 228, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  background: #0a0a0a;
+  transition: border-color 0.5s ease, background 0.5s ease, box-shadow 0.5s ease;
 }
 
-.story-achievements-list > article:hover .story-achievement-title {
+.story-timeline-node[data-active='true'] {
+  border-color: var(--accent, #ff4d4d);
+  background: #ffffe4;
+  box-shadow: 0 0 0 0.35rem rgba(255, 77, 77, 0.12);
+}
+
+.story-timeline-card {
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012));
+  transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.story-timeline-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-4px);
+}
+
+.story-timeline-card:hover .story-achievement-title {
   color: #fff;
+}
+
+/* Mobile keeps the alternating layout — cards narrow to 62% and sit clear of
+   the curve, which swings wider so the zig-zag stays legible. */
+@media (max-width: 767px) {
+  .story-timeline-items {
+    gap: 2.75rem;
+  }
+
+  .story-timeline-item {
+    width: 62%;
+  }
+
+  /* Sides swap: the curve's left swing (even items) needs its card on the
+     right, and vice versa, so each node lands just outside its card. */
+  .story-timeline-item--left {
+    margin-left: 38%;
+    padding-right: 0;
+    padding-left: 0.5rem;
+    text-align: left;
+  }
+
+  .story-timeline-item--right {
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0.5rem;
+    text-align: right;
+  }
+
+  .story-timeline-card {
+    padding: 1rem 1.1rem;
+  }
+
+  .story-timeline-card .story-achievement-title {
+    font-size: 1rem;
+  }
+
+  .story-timeline-card .story-achievement-desc {
+    font-size: 0.8125rem;
+  }
 }
 
 .story-achievement-year {
@@ -630,13 +939,92 @@
   color: rgba(255, 255, 255, 0.55);
 }
 
-.story-producer-note {
-  margin: 0;
-  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-  line-height: 1.7;
+/* Producer's note sits in a lit panel and sets long copy in magazine columns
+   so it fills the spread instead of trailing down one narrow rail. */
+.story-note-panel {
+  position: relative;
+  padding: clamp(2rem, 5vw, 4rem);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255, 77, 77, 0.07), transparent 55%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.story-note-head {
+  margin-bottom: 2rem;
+}
+
+.story-note-head .story-section-title {
+  margin-bottom: 0;
+}
+
+.story-note-mark {
+  position: absolute;
+  top: clamp(-1.5rem, -2vw, -1rem);
+  right: clamp(1rem, 4vw, 3rem);
+  font-size: clamp(8rem, 16vw, 14rem);
+  line-height: 1;
+  color: rgba(255, 77, 77, 0.07);
+  pointer-events: none;
+  user-select: none;
+}
+
+.story-note-quote {
+  position: relative;
+  margin: 0 0 2.5rem;
+  padding-left: clamp(1.25rem, 3vw, 2rem);
+  border-left: 2px solid var(--accent, #ff4d4d);
+  max-width: 56rem;
+  font-size: clamp(1.25rem, 2.6vw, 1.875rem);
   font-style: italic;
-  color: rgba(255, 255, 255, 0.7);
-  max-width: 48rem;
+  line-height: 1.4;
+  color: #ffffe4;
+  text-wrap: balance;
+}
+
+.story-note-body p {
+  margin: 0 0 1.35rem;
+  font-size: clamp(1rem, 1.15vw, 1.0625rem);
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.62);
+  text-wrap: pretty;
+}
+
+.story-note-body p:last-child {
+  margin-bottom: 0;
+}
+
+.story-note-body p:first-child::first-letter {
+  float: left;
+  margin: 0.35rem 0.6rem 0 0;
+  font-size: 3.25rem;
+  font-weight: 700;
+  line-height: 0.85;
+  color: #ffffe4;
+}
+
+@media (min-width: 1024px) {
+  .story-note-body[data-columns='true'] {
+    columns: 2;
+    column-gap: clamp(2.5rem, 5vw, 4.5rem);
+    column-rule: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+.story-note-body:not([data-columns='true']) {
+  max-width: 62ch;
+}
+
+.story-note-flourish {
+  display: block;
+  width: 4rem;
+  height: 2px;
+  margin-top: 2.5rem;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent, #ff4d4d), transparent);
 }
 
 .story-back-section {
@@ -674,8 +1062,7 @@
 @media (prefers-reduced-motion: no-preference) {
   .story-section-title,
   .story-section-eyebrow,
-  .story-synopsis,
-  .story-producer-note {
+  .story-synopsis {
     text-wrap: pretty;
   }
 }
