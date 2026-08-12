@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import AlternatingSideGifs from '@/components/story/AlternatingSideGifs';
 import StoryAchievements from '@/components/story/StoryAchievements';
 import StoryBackLink from '@/components/story/StoryBackLink';
 import StoryCast from '@/components/story/StoryCast';
@@ -52,6 +53,8 @@ export default async function StoryPage({ params }: Props) {
 
   return (
     <main className="story-page">
+      <AlternatingSideGifs />
+
       {/* <StoryNav
         projectSlug={slug}
         projectTitle={project.title}

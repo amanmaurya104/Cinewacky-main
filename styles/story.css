@@ -67,12 +67,10 @@
 .story-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.92) 0%,
-    rgba(0, 0, 0, 0.35) 45%,
-    rgba(0, 0, 0, 0.15) 100%
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.35) 45%,
+      rgba(0, 0, 0, 0.15) 100%);
   pointer-events: none;
 }
 
@@ -121,11 +119,71 @@
 /* ─── Story detail page ─── */
 
 .story-page {
+  position: relative;
   min-height: 100vh;
   min-height: 100dvh;
   background: #000;
   color: #fff;
   font-family: var(--font-proxima-nova), "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
+}
+
+.story-page>* {
+  position: relative;
+  z-index: 1;
+}
+
+.story-side-gifs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.story-side-gif {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(280px, 24vw, 500px);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.story-side-gif.is-visible {
+  opacity: 1;
+}
+
+.story-left-gif {
+  left: 0;
+  justify-content: flex-start;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.06));
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.story-right-gif {
+  right: 0;
+  justify-content: flex-end;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.06));
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.story-side-gif img {
+  display: block;
+  width: auto;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.95;
+  filter: saturate(0.85) contrast(1.08) brightness(0.8);
+}
+
+.story-left-gif img {
+  object-position: left center;
+}
+
+.story-right-gif img {
+  object-position: right center;
 }
 
 .story-nav {
@@ -197,12 +255,10 @@
 .story-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.95) 0%,
-    rgba(0, 0, 0, 0.35) 50%,
-    rgba(0, 0, 0, 0.55) 100%
-  );
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(0, 0, 0, 0.35) 50%,
+      rgba(0, 0, 0, 0.55) 100%);
 }
 
 .story-hero-ornament {
@@ -345,10 +401,12 @@
 }
 
 @keyframes story-caret-blink {
+
   0%,
   50% {
     opacity: 1;
   }
+
   50.01%,
   100% {
     opacity: 0;
@@ -502,20 +560,16 @@
 .story-cast-marquee {
   position: relative;
   width: 100%;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 8%,
-    #000 92%,
-    transparent
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 8%,
-    #000 92%,
-    transparent
-  );
+  -webkit-mask-image: linear-gradient(to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent);
+  mask-image: linear-gradient(to right,
+      transparent,
+      #000 8%,
+      #000 92%,
+      transparent);
 }
 
 .story-cast-track {
@@ -538,6 +592,7 @@
   from {
     transform: translate3d(0, 0, 0);
   }
+
   to {
     transform: translate3d(-50%, 0, 0);
   }
@@ -1051,15 +1106,36 @@
   height: 1px;
   max-width: 1400px;
   margin: 0 auto;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 255, 255, 0.12),
-    transparent
-  );
+  background: linear-gradient(to right,
+      transparent,
+      rgba(255, 255, 255, 0.12),
+      transparent);
+}
+
+@media (max-width: 767px) {
+  .story-side-gif {
+    width: clamp(140px, 22vw, 220px);
+    opacity: 0.7;
+  }
+
+  .story-left-gif {
+    left: 0;
+  }
+
+  .story-right-gif {
+    right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .story-side-gif {
+    width: clamp(100px, 20vw, 160px);
+    opacity: 0.55;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
+
   .story-section-title,
   .story-section-eyebrow,
   .story-synopsis {
