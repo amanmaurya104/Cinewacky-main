@@ -2,12 +2,6 @@ import { showcaseVideoSrc } from '@/lib/projectVideos';
 import type { Story } from '@/types/story';
 
 const PROJECT = 'reel-vibe-uncut';
-const poster = '/projects/reel-vibe-uncut/poster.jpg';
-const heroImage = '/projects/reel-vibe-uncut/hero.jpg';
-const gallery = [
-  '/projects/reel-vibe-uncut/1.jpg',
-  '/projects/reel-vibe-uncut/2.jpg',
-];
 
 const kaliImageFiles = [
   'kali_-_neo-noir,_magic-realist_short_film (1440p)(1).mp4.00_00_16_16.Still001.jpg',
@@ -37,6 +31,47 @@ function kaliImage(filename: string): string {
 }
 
 const kaliImages = kaliImageFiles.map(kaliImage);
+
+const moonlightImageFiles = [
+  'Sequence 03.00_23_03_06.Still018.jpg',
+  'Sequence 03.00_23_08_05.Still019.jpg',
+  'Sequence 03.00_23_19_07.Still020.jpg',
+  'Sequence 03.00_23_26_13.Still021.jpg',
+  'Sequence 03.00_23_44_14.Still022.jpg',
+  'Sequence 03.00_24_59_09.Still023.jpg',
+  'Sequence 03.00_25_16_17.Still017.jpg',
+  'Sequence 03.00_25_19_13.Still024.jpg',
+  'Sequence 03.00_31_56_07.Still025.jpg',
+  'Sequence 03.00_32_42_03.Still026.jpg',
+  'Sequence 03.00_35_58_14.Still027.jpg',
+  'Sequence 03.00_36_00_01.Still028.jpg',
+  'Sequence 03.00_36_15_07.Still029.jpg',
+  'Sequence 03.00_36_34_03.Still030.jpg',
+  'Sequence 03.00_36_40_15.Still031.jpg',
+  'Sequence 03.00_40_32_18.Still032.jpg',
+] as const;
+
+function moonlightImage(filename: string): string {
+  return `/projects/reel-vibe-uncut/moonlight/${encodeURIComponent(filename)}`;
+}
+
+const moonlightImages = moonlightImageFiles.map(moonlightImage);
+
+// Stills sampled from each film by scripts/extract-stills.mjs. These stories
+// previously pointed at `poster`/`heroImage`/`gallery`, which are placeholder
+// text files rather than images — the optimizer rejects them and the browser
+// renders a broken image. Replace with curated frames when they are ready.
+function filmStills(slug: string, count = 8): string[] {
+  return Array.from(
+    { length: count },
+    (_, i) => `/projects/reel-vibe-uncut/${slug}/still-${String(i + 1).padStart(2, '0')}.jpg`,
+  );
+}
+
+const darkRisingStills = filmStills('dark-rising');
+const mistimukhStills = filmStills('mistimukh');
+const trailerForFictionStills = filmStills('trailer-for-fiction');
+const theCatStills = filmStills('the-cat');
 
 function video(filename: string): string {
   return showcaseVideoSrc(PROJECT, filename);
@@ -103,33 +138,60 @@ const stories: Story[] = [
   {
     slug: 'moonlight-dream',
     projectSlug: PROJECT,
-    title: 'Moonlight Dream',
-    tagline: 'Where silence becomes light.',
+    title: 'Moonlight Dreams',
+    tagline: 'Fiction is the art of giving form to imagination and soul to emotion.',
     heroVideo: heroLoop('MOONLIGHT DREAM.mp4'),
     poster: heroPoster('MOONLIGHT DREAM.mp4'),
     thumbnail: heroPoster('MOONLIGHT DREAM.mp4'),
     synopsis:
-      'A nocturnal reverie unfolds between memory and moonlight — fragments of longing stitched together in silver and shadow.',
+      'It creates worlds beyond reality, yet speaks intimately to the human heart. Within every frame lives a universe of dreams, desires, and untold truths. Stories become echoes of emotions that transcend time and boundaries. We craft narratives that are not simply seen, but deeply experienced. For often, the unreal reveals the most profound realities of life.',
     visualNarrative: [
       {
-        text: 'The night opens like a curtain. Every frame breathes in slow rhythm, holding space between dream and waking.',
-        image: heroImage,
+        text: "Moonlight Dreams unfolds as a powerful character study, weaving together the tangled threads of sisterhood, defiance, and the crushing weight of societal misogyny in the heart of India's Sundarban Delta.",
+        image: moonlightImages[0],
       },
       {
-        text: 'Moonlight drifts across empty rooms and distant shorelines, painting faces that almost remember each other.',
-        image: gallery[0],
+        text: 'A year has passed since Krishna was led away from her village, her hands trembling beneath the weight of crimson wedding silk, married off to a man twice her age—a stranger she had never met. As the drums echoed and the scent of jasmine lingered in the air, her silent tears went unnoticed by all but her younger sister, Tara. Guests feasted, their mother beamed with pride, and the in-laws circled like spectators at a spectacle. But Tara saw. She saw everything.',
+        image: moonlightImages[2],
       },
       {
-        text: 'In the final breath of the dream, light dissolves into dawn — and the story lingers like a song half-remembered.',
-        image: gallery[1],
+        text: "Now, on the morning of Tara's own wedding, as she prepares to walk the same path of silent surrender, Krishna returns. Pregnant and uninvited, she arrives against the wishes of her in-laws, her fiery spirit dimmed but not extinguished. Tensions ignite as Krishna confronts her mother, the unspoken grief and anger of the past year boiling to the surface. And yet, there is tenderness too—an aching reunion with her sisters, Tumpa still a child, all three bound by a shared history of dreams once vibrant and now left to wither.",
+        image: moonlightImages[4],
+      },
+      {
+        text: "Their father had been a violent, drunken man, a force of terror who left behind scars long after his death. When he took his own life three years prior, the family spiraled into crushing debt. Their mother, burdened by grief and survival, made the desperate choice to barter her daughters' futures in exchange for security—marriages arranged not from hope but fear. Krishna at seventeen. Tara at fourteen. And young Tumpa, only ten, watching helplessly as her sisters' innocence was traded for survival.",
+        image: moonlightImages[6],
+      },
+      {
+        text: 'As the day unfolds, memories resurface in fragments: stolen moments of laughter under the banyan tree, whispered stories of far-off places they once dreamed of reaching, the quiet ache of love twisted into control. Through these flashbacks, the village itself becomes a living character—a microcosm of a world where patriarchy crushes and female resilience refuses to be silenced.',
+        image: moonlightImages[8],
+      },
+      {
+        text: "Now, with her own fate looming, Tara watches her sister's defiance with a mix of awe and fear. Krishna stands on a precipice, caught between submission and the spark of rebellion. Together, the sisters must face a choice: to remain bound by the chains of tradition or to reclaim their voices, daring to imagine a different future.",
+        image: moonlightImages[11],
+      },
+      {
+        text: 'Moonlight Dreams is not just a story of personal struggle—it is a mirror held up to the quiet battles fought by women across the world, a testament to the enduring power of sisterhood and hope.',
+        image: moonlightImages[14],
       },
     ],
-    crew: sharedCrew,
+    crew: [
+      { role: 'Writer / Director', name: 'JIJO' },
+      { role: 'Producer', name: 'Subhajit Prasad' },
+      { role: 'Sound Design', name: 'Sukanya Bhawal' },
+      { role: 'Line Producer', name: 'Sanglap Barman' },
+      { role: 'Music Composition', name: 'Soumik Datta' },
+      { role: 'Color Grading', name: 'Vlad Barin' },
+      { role: 'Editor', name: 'Subhajit Prasad' },
+      { role: 'Director of Photography', name: 'JIJO' },
+    ],
     cast: [
-      { actor: 'Lead', character: 'The Dreamer', portrait: poster },
-      { actor: 'Supporting', character: 'The Memory', portrait: gallery[0] },
+      { actor: 'Priyanka Roy', character: 'Tara', portrait: moonlightImages[1] },
+      { actor: 'Ratna Chakraborty', character: 'Krishna', portrait: moonlightImages[3] },
+      { actor: 'Soma Chakraborty', character: 'Mother', portrait: moonlightImages[5] },
+      { actor: 'Shreya Moulick', character: 'Tumpa', portrait: moonlightImages[7] },
     ],
-    gallery: [...gallery, poster, heroImage],
+    gallery: [...moonlightImages],
     achievements: [
       { year: '2024', title: 'Official Selection', description: 'Cinematic Shorts Showcase' },
     ],
@@ -187,16 +249,16 @@ const stories: Story[] = [
     visualNarrative: [
       {
         text: 'Shadows lengthen. The world contracts to a single point of focus — something is about to break the surface.',
-        image: heroImage,
+        image: darkRisingStills[1],
       },
       {
         text: 'Light fractures through smoke and rain. The rise is not triumphant — it is inevitable.',
-        image: gallery[1],
+        image: darkRisingStills[4],
       },
     ],
     crew: sharedCrew,
-    cast: [{ actor: 'Lead', character: 'The Ascendant', portrait: gallery[0] }],
-    gallery,
+    cast: [{ actor: 'Lead', character: 'The Ascendant', portrait: darkRisingStills[2] }],
+    gallery: darkRisingStills,
     achievements: [],
     trailer: video('DARK RISING.mp4'),
   },
@@ -213,16 +275,16 @@ const stories: Story[] = [
     visualNarrative: [
       {
         text: 'The camera lingers on faces that refuse to be read at a glance. Every look carries a second meaning.',
-        image: gallery[0],
+        image: mistimukhStills[1],
       },
       {
         text: 'Texture and silence build a portrait that feels closer to sculpture than cinema.',
-        image: gallery[1],
+        image: mistimukhStills[4],
       },
     ],
     crew: sharedCrew,
-    cast: [{ actor: 'Ensemble', character: 'Mistimukh', portrait: poster }],
-    gallery,
+    cast: [{ actor: 'Ensemble', character: 'Mistimukh', portrait: mistimukhStills[2] }],
+    gallery: mistimukhStills,
     achievements: [{ year: '2023', title: 'Portrait Study', description: 'Independent Short Form' }],
     producerNote: 'Mistimukh asks the audience to sit with ambiguity — beauty without easy answers.',
     trailer: video('MISTIMUKH.mp4'),
@@ -240,16 +302,16 @@ const stories: Story[] = [
     visualNarrative: [
       {
         text: 'Titles flicker. Worlds collide. The trailer becomes its own narrative — a promise of stories yet unwritten.',
-        image: heroImage,
+        image: trailerForFictionStills[1],
       },
       {
         text: 'Every cut teases a universe. The audience leaves hungry for a film that exists only in possibility.',
-        image: gallery[0],
+        image: trailerForFictionStills[4],
       },
     ],
     crew: sharedCrew,
     cast: [],
-    gallery,
+    gallery: trailerForFictionStills,
     achievements: [],
     trailer: video('trailer for fiction.mp4'),
   },
@@ -266,16 +328,16 @@ const stories: Story[] = [
     visualNarrative: [
       {
         text: 'Whiskers cut through golden light. The ordinary becomes mythic in a single unbroken gaze.',
-        image: gallery[1],
+        image: theCatStills[1],
       },
       {
         text: 'Play turns to poetry. The cat moves through the story like a spirit visiting for one perfect moment.',
-        image: heroImage,
+        image: theCatStills[4],
       },
     ],
     crew: sharedCrew,
-    cast: [{ actor: 'The Cat', character: 'Self', portrait: poster }],
-    gallery,
+    cast: [{ actor: 'The Cat', character: 'Self', portrait: theCatStills[2] }],
+    gallery: theCatStills,
     achievements: [],
     trailer: video('THE CAT.mp4'),
   },
