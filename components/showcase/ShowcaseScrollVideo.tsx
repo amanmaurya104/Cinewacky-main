@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import type { ShowcaseScrollItem } from '@/data/showcaseScroll';
 import { getShowcaseThumbSrc, isShowcaseVideoSlot } from '@/data/showcaseScroll';
@@ -65,7 +66,7 @@ export default function ShowcaseScrollVideo({ item, active, slotIndex, activeInd
       }}
     >
       <motion.div
-        className="showcase-video-tile-inner h-full w-full overflow-hidden rounded-sm bg-black"
+        className="showcase-video-tile-inner relative h-full w-full overflow-hidden rounded-sm bg-black"
         style={{ transformOrigin: 'center center' }}
         animate={{
           scale: active ? getActiveScale() : INACTIVE_SCALE,
@@ -90,10 +91,13 @@ export default function ShowcaseScrollVideo({ item, active, slotIndex, activeInd
             ) : null}
           </video>
         ) : (
-          <img
+          <Image
             src={thumbSrc}
             alt=""
-            className="h-full w-full object-cover pointer-events-none"
+            fill
+            sizes="(max-width: 767px) 60vw, 40vw"
+            quality={60}
+            className="object-cover pointer-events-none"
             draggable={false}
           />
         )}

@@ -195,8 +195,11 @@ export const showcaseScrollItems: ShowcaseScrollItem[] = SHOWCASE_SLUG_ORDER.map
 export const SHOWCASE_SECTION_COUNT = showcaseScrollItems.length;
 export const SHOWCASE_LOOP_COUNT = 3;
 
+// WebP, built from the PNG masters by scripts/optimize-showcase-thumbs.mjs
+// (6.1MB -> 0.16MB). These are also used as the `<video poster>`, which cannot
+// go through the next/image optimizer, so the file on disk must be the small one.
 export function getShowcaseThumbSrc(id: number): string {
-  return `/showcase-thumbs/${id}.png`;
+  return `/showcase-thumbs/${id}.webp`;
 }
 
 /** Previous, active, and next slots (circular) mount video; all others use thumbnails */

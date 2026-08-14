@@ -42,6 +42,22 @@ function video(filename: string): string {
   return showcaseVideoSrc(PROJECT, filename);
 }
 
+// The hero plays a short silent loop cut from the film, not the film itself —
+// 48-69MB per page became ~0.5MB. `trailer` still points at the full source.
+// Built by scripts/build-hero-loops.mjs; re-run it if a source film changes.
+function heroLoop(filename: string): string {
+  return showcaseVideoSrc(PROJECT, filename.replace(/\.mp4$/, '-loop.mp4'));
+}
+
+function heroPoster(filename: string): string {
+  return showcaseVideoSrc(PROJECT, filename.replace(/\.mp4$/, '-poster.jpg'));
+}
+
+const KALI_TRAILER = '/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer.mp4';
+const KALI_LOOP = '/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer-loop.mp4';
+const KALI_POSTER =
+  '/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer-poster.jpg';
+
 const kaliCrew = [
   { role: 'Writer / Director', name: 'JIJO' },
   { role: 'Producer', name: 'Subhajit Prasad' },
@@ -89,9 +105,9 @@ const stories: Story[] = [
     projectSlug: PROJECT,
     title: 'Moonlight Dream',
     tagline: 'Where silence becomes light.',
-    heroVideo: video('MOONLIGHT DREAM.mp4'),
-    poster,
-    thumbnail: poster,
+    heroVideo: heroLoop('MOONLIGHT DREAM.mp4'),
+    poster: heroPoster('MOONLIGHT DREAM.mp4'),
+    thumbnail: heroPoster('MOONLIGHT DREAM.mp4'),
     synopsis:
       'A nocturnal reverie unfolds between memory and moonlight — fragments of longing stitched together in silver and shadow.',
     visualNarrative: [
@@ -127,9 +143,9 @@ const stories: Story[] = [
     projectVideoFilename: 'KALI .mp4',
     title: 'Kali',
     tagline: '',
-    heroVideo: '/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer.mp4',
-    poster,
-    thumbnail: poster,
+    heroVideo: KALI_LOOP,
+    poster: KALI_POSTER,
+    thumbnail: KALI_POSTER,
     synopsis:
       'Corruption festers and innocence shatters, one woman rises — a storm of justice and vengeance entwined. When heroism turns ruthless and humanity hangs by a thread, Kali awakens.',
     visualNarrative: [
@@ -156,16 +172,16 @@ const stories: Story[] = [
     achievements: kaliAchievements,
     producerNote:
       '"In a world of shadows, the truth will always find its way" Born from a shoestring budget and driven by a collective of fiercely dedicated, up-and-coming filmmakers, Kali emerges as a testament to the power of passion and ingenuity. The crew, many from the very slum where the story unfolds, worked alongside up-and-coming talent from across West Bengal, infusing the film with authenticity and heart. A true labour of love, this film pioneers a fresh approach to superhero storytelling — one that is authentic, rooted in real human experience, and non-exploitative. It goes beyond mere spectacle, translating its raw energy not just on screen but in the very methodology of its creation. Kali reimagines the superhero myth, transforming it into something more profound — more human. It’s a meditation on justice, vengeance, and the blurred lines between dreams and reality, built for cinematic scale yet grounded in an emotional depth only possible through high-end arthouse filmmaking. This film is a bold step toward telling stories that resonate on a deeper level — stories that stir empathy, ignite awareness, and provoke meaningful change. It reflects my vision as a director: to weave social relevance into gripping genre narratives that challenge the status quo. We invite you to step into a world where heroism is born from the ordinary, where the power of will can turn the most fragile into the extraordinary. Kali is a celebration of light, even in the darkest corners, where the fight for justice isn’t just a battle — it’s an awakening.',
-    trailer: '/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer.mp4',
+    trailer: KALI_TRAILER,
   },
   {
     slug: 'dark-rising',
     projectSlug: PROJECT,
     title: 'Dark Rising',
     tagline: 'From shadow, something stirs.',
-    heroVideo: video('DARK RISING.mp4'),
-    poster,
-    thumbnail: poster,
+    heroVideo: heroLoop('DARK RISING.mp4'),
+    poster: heroPoster('DARK RISING.mp4'),
+    thumbnail: heroPoster('DARK RISING.mp4'),
     synopsis:
       'A slow-burn ascent through tension and revelation — where the darkest hour holds the sharpest truth.',
     visualNarrative: [
@@ -189,9 +205,9 @@ const stories: Story[] = [
     projectSlug: PROJECT,
     title: 'Mistimukh',
     tagline: 'Faces behind the veil.',
-    heroVideo: video('MISTIMUKH.mp4'),
-    poster,
-    thumbnail: poster,
+    heroVideo: heroLoop('MISTIMUKH.mp4'),
+    poster: heroPoster('MISTIMUKH.mp4'),
+    thumbnail: heroPoster('MISTIMUKH.mp4'),
     synopsis:
       'An intimate study of expression and concealment — identity rendered in glances, gestures, and the space between words.',
     visualNarrative: [
@@ -216,9 +232,9 @@ const stories: Story[] = [
     projectSlug: PROJECT,
     title: 'Trailer For Fiction',
     tagline: 'Stories that never were — until now.',
-    heroVideo: video('trailer for fiction.mp4'),
-    poster,
-    thumbnail: poster,
+    heroVideo: heroLoop('trailer for fiction.mp4'),
+    poster: heroPoster('trailer for fiction.mp4'),
+    thumbnail: heroPoster('trailer for fiction.mp4'),
     synopsis:
       'A meta-cinematic trailer that blurs the line between imagination and reality — fiction as a living, breathing force.',
     visualNarrative: [
@@ -242,9 +258,9 @@ const stories: Story[] = [
     projectSlug: PROJECT,
     title: 'The Cat',
     tagline: 'Nine lives. One frame.',
-    heroVideo: video('THE CAT.mp4'),
-    poster,
-    thumbnail: poster,
+    heroVideo: heroLoop('THE CAT.mp4'),
+    poster: heroPoster('THE CAT.mp4'),
+    thumbnail: heroPoster('THE CAT.mp4'),
     synopsis:
       'A surreal vignette where feline grace meets human longing — playful, strange, and unexpectedly tender.',
     visualNarrative: [

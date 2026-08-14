@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useInView, useReducedMotion } from 'framer-motion';
+import Image from 'next/image';
 import { useRef } from 'react';
 import TypedText from '@/components/story/TypedText';
 import type { StoryNarrativeBlock } from '@/types/story';
@@ -82,7 +83,15 @@ function NarrativeBlock({
         variants={imageVariants}
         transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1], delay: 0.18 }}
       >
-        <img src={block.image} alt="" className="story-narrative-image" loading="lazy" />
+        <Image
+          src={block.image}
+          alt=""
+          fill
+          sizes="(max-width: 899px) 92vw, 46vw"
+          quality={60}
+          loading="lazy"
+          className="story-narrative-image"
+        />
       </motion.figure>
     </motion.article>
   );

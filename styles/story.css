@@ -641,6 +641,7 @@
 }
 
 .story-cast-portrait-wrap {
+  position: relative;
   aspect-ratio: 3 / 4;
   overflow: hidden;
   margin-bottom: 1rem;
@@ -1116,7 +1117,7 @@
 
 @media (max-width: 767px) {
   .story-side-gif {
-    width: clamp(70px, 12vw, 120px);
+    width: clamp(35px, 6vw, 60px);
   }
 
   .story-side-gif.is-visible {
@@ -1126,7 +1127,7 @@
 
 @media (max-width: 480px) {
   .story-side-gif {
-    width: clamp(52px, 11vw, 84px);
+    width: clamp(26px, 5.5vw, 42px);
   }
 
   .story-side-gif.is-visible {

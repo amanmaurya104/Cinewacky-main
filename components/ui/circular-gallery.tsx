@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import React, { HTMLAttributes, useEffect, useRef, useState } from 'react';
 
 // A simple utility for conditional class names
@@ -177,12 +178,18 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
                       }
                     />
                   ) : null}
-                  <img
+                  {/* The stills are 1440p masters; `sizes` mirrors the card
+                      measurement above so the optimizer serves card-sized WebP
+                      rather than the multi-megabyte original. */}
+                  <Image
                     src={item.photo.url}
                     alt={item.photo.text ?? ''}
+                    fill
+                    sizes="(max-width: 767px) 78vw, min(720px, 46vw)"
+                    quality={60}
                     loading="lazy"
                     draggable={false}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="object-cover"
                     style={{
                       objectPosition: item.photo.pos || 'center',
                       filter: isActive ? 'none' : 'brightness(0.55)',

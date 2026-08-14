@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useInView, useReducedMotion } from 'framer-motion';
+import Image from 'next/image';
 import { useMemo, useRef, type CSSProperties } from 'react';
 import type { StoryCastMember } from '@/types/story';
 
@@ -34,9 +35,12 @@ export default function StoryCast({ cast }: Props) {
     >
       <div className="story-cast-portrait-wrap">
         {member.portrait ? (
-          <img
+          <Image
             src={member.portrait}
             alt={copy === 0 ? member.actor : ''}
+            fill
+            sizes="200px"
+            quality={60}
             className="story-cast-portrait"
             loading="lazy"
             draggable={false}

@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "media:side-gifs": "node scripts/optimize-side-gifs.mjs",
+    "media:thumbs": "node scripts/optimize-showcase-thumbs.mjs",
+    "media:faststart": "node scripts/faststart-mp4.mjs",
+    "media:hero-loops": "node scripts/build-hero-loops.mjs"
   },
   "dependencies": {
     "framer-motion": "^12.40.0",
