@@ -1,13 +1,6 @@
 'use client';
 
-import React, {
-  HTMLAttributes,
-  RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { HTMLAttributes, useEffect, useRef, useState } from 'react';
 
 // A simple utility for conditional class names
 const cn = (...classes: (string | undefined | null | false)[]) =>
@@ -32,13 +25,8 @@ interface CircularGalleryProps extends HTMLAttributes<HTMLDivElement> {
   items: GalleryItem[];
   /** Cards further than this many slots from center are not rendered. */
   visibleRange?: number;
-  /** Slots advanced per frame while the user is not scrolling. */
+  /** Slots advanced per second by the carousel's own animation. */
   autoAdvanceSpeed?: number;
-  /**
-   * Element whose own scroll progress drives the carousel — normally the tall
-   * wrapper around a `sticky` viewport. Falls back to whole-document scroll.
-   */
-  scrollRootRef?: RefObject<HTMLElement | null>;
   /** Fired when a card is clicked; receives the item's index. */
   onItemSelect?: (index: number) => void;
 }
@@ -55,20 +43,16 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
       items,
       className,
       visibleRange = 4,
-      autoAdvanceSpeed = 0.0025,
-      scrollRootRef,
+      autoAdvanceSpeed = 0.25,
       onItemSelect,
       ...props
     },
     ref,
   ) => {
     const [position, setPosition] = useState(0);
-    const [isScrolling, setIsScrolling] = useState(false);
     const [card, setCard] = useState({ width: 720, height: 405 });
     const [reducedMotion, setReducedMotion] = useState(false);
-    const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const animationFrameRef = useRef<number | null>(null);
-    const scrollFrameRef = useRef<number | null>(null);
 
     // Cards are 16:9 to match the stills, sized to leave room for the neighbours.
     useEffect(() => {
@@ -94,58 +78,19 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
       return () => query.removeEventListener('change', sync);
     }, []);
 
-    const readProgress = useCallback(() => {
-      const root = scrollRootRef?.current;
-
-      if (root) {
-        const travel = root.offsetHeight - window.innerHeight;
-        if (travel <= 0) return 0;
-        return clamp(-root.getBoundingClientRect().top / travel, 0, 1);
-      }
-
-      const scrollableHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      return scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
-    }, [scrollRootRef]);
-
     const count = items.length;
 
-    // Scroll steps through the stills, one at a time.
-    useEffect(() => {
-      if (!count) return;
-
-      const handleScroll = () => {
-        setIsScrolling(true);
-        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-
-        if (scrollFrameRef.current === null) {
-          scrollFrameRef.current = requestAnimationFrame(() => {
-            scrollFrameRef.current = null;
-            setPosition(readProgress() * (count - 1));
-          });
-        }
-
-        scrollTimeoutRef.current = setTimeout(() => setIsScrolling(false), 150);
-      };
-
-      handleScroll();
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      window.addEventListener('resize', handleScroll);
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-        window.removeEventListener('resize', handleScroll);
-        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-        if (scrollFrameRef.current !== null)
-          cancelAnimationFrame(scrollFrameRef.current);
-      };
-    }, [readProgress, count]);
-
-    // Idle drift between scrolls
+    // The carousel plays on its own — page scroll does not drive it.
     useEffect(() => {
       if (reducedMotion || !count) return;
 
-      const advance = () => {
-        if (!isScrolling) setPosition((prev) => prev + autoAdvanceSpeed);
+      let last = performance.now();
+
+      const advance = (now: number) => {
+        // Tab switches can hand back a huge delta; cap it so the ring never jumps.
+        const delta = Math.min((now - last) / 1000, 0.1);
+        last = now;
+        setPosition((prev) => (prev + delta * autoAdvanceSpeed) % count);
         animationFrameRef.current = requestAnimationFrame(advance);
       };
 
@@ -154,7 +99,7 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
         if (animationFrameRef.current)
           cancelAnimationFrame(animationFrameRef.current);
       };
-    }, [isScrolling, autoAdvanceSpeed, reducedMotion, count]);
+    }, [autoAdvanceSpeed, reducedMotion, count]);
 
     if (!count) return null;
 

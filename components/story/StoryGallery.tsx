@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CircularGallery, type GalleryItem } from '@/components/ui/circular-gallery';
 
 type Props = {
@@ -11,7 +11,6 @@ type Props = {
 
 export default function StoryGallery({ images, title }: Props) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const scrollRootRef = useRef<HTMLDivElement | null>(null);
 
   const close = useCallback(() => setActiveIndex(null), []);
 
@@ -46,27 +45,19 @@ export default function StoryGallery({ images, title }: Props) {
       className="story-section story-section--wide story-gallery-section"
       aria-labelledby="gallery-heading"
     >
-      <div
-        className="story-gallery-scroll"
-        ref={scrollRootRef}
-        style={{ height: `${uniqueImages.length * 25 + 50}vh` }}
-      >
-        <div className="story-gallery-stage">
-          <div className="story-gallery-intro">
-            <p className="story-section-eyebrow">Still frames</p>
-            <h2 id="gallery-heading" className="story-section-title">
-              Gallery
-            </h2>
-            <p className="story-gallery-hint">Scroll to browse</p>
-          </div>
-
-          <CircularGallery
-            items={galleryItems}
-            scrollRootRef={scrollRootRef}
-            onItemSelect={setActiveIndex}
-            className="story-gallery-ring"
-          />
+      <div className="story-gallery-stage">
+        <div className="story-gallery-intro">
+          <p className="story-section-eyebrow">Still frames</p>
+          <h2 id="gallery-heading" className="story-section-title">
+            Gallery
+          </h2>
         </div>
+
+        <CircularGallery
+          items={galleryItems}
+          onItemSelect={setActiveIndex}
+          className="story-gallery-ring"
+        />
       </div>
 
       <AnimatePresence>
