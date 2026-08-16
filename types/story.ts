@@ -20,10 +20,14 @@ export interface StoryAchievement {
   description?: string;
 }
 
+/** Optional per-story colour treatment; see the theme blocks in story.css. */
+export type StoryTheme = 'moonlight';
+
 export interface Story {
   slug: string;
   projectSlug: string;
   projectVideoFilename?: string;
+  theme?: StoryTheme;
   title: string;
   tagline: string;
   heroVideo: string;

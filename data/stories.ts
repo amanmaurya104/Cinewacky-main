@@ -138,6 +138,7 @@ const stories: Story[] = [
   {
     slug: 'moonlight-dream',
     projectSlug: PROJECT,
+    theme: 'moonlight',
     title: 'Moonlight Dreams',
     tagline: 'Fiction is the art of giving form to imagination and soul to emotion.',
     heroVideo: heroLoop('MOONLIGHT DREAM.mp4'),

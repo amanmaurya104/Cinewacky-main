@@ -52,7 +52,9 @@ export default async function StoryPage({ params }: Props) {
   const { prev, next } = getAdjacentStories(slug, storySlug);
 
   return (
-    <main className="story-page">
+    <main
+      className={`story-page${story.theme ? ` story-page--${story.theme}` : ''}`}
+    >
       <AlternatingSideGifs />
 
       {/* <StoryNav

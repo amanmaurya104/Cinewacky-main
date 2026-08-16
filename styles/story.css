@@ -1143,3 +1143,119 @@
     text-wrap: pretty;
   }
 }
+
+/* ─── Moonlight theme ───────────────────────────────────────────────────────
+   Applied by `theme: 'moonlight'` in the story data, which puts
+   `.story-page--moonlight` on <main>. Every rule below is an additive,
+   higher-specificity override of the default ivory-on-black treatment, so no
+   base rule has to change and the other five stories are untouched.
+
+   The palette trades warm ivory (#ffffe4) and red (#ff4d4d) for moonlit
+   silver-blue on deep midnight navy. */
+.story-page--moonlight {
+  --accent: #7aa7dd;
+  --moon-ink: #dce8f7;
+  --moon-panel: #0e1626;
+  --moon-line: rgba(150, 185, 235, 0.16);
+  background: #070d18;
+}
+
+/* Night sky behind the whole page: a cool wash that deepens toward the end. */
+.story-page--moonlight::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(78% 48% at 82% -6%, rgba(140, 190, 255, 0.16), transparent 62%),
+    radial-gradient(60% 45% at 8% 4%, rgba(70, 110, 185, 0.12), transparent 68%),
+    linear-gradient(180deg, #0b1526 0%, #070d18 55%, #05080f 100%);
+}
+
+/* Moonlight, not candlelight: the hero wash and the ornament turn cold. */
+.story-page--moonlight .story-hero::after {
+  background-image:
+    radial-gradient(circle at 50% 18%, rgba(150, 200, 255, 0.14), transparent 40%),
+    linear-gradient(180deg, transparent 0%, rgba(6, 12, 24, 0.22) 58%, rgba(5, 8, 15, 0.46) 100%);
+}
+
+/* The existing ornament reads as the moon once it has a bright, tight core. */
+.story-page--moonlight .story-hero-ornament {
+  background: radial-gradient(circle,
+      rgba(232, 242, 255, 0.42) 0%,
+      rgba(190, 218, 252, 0.18) 12%,
+      rgba(122, 167, 221, 0.10) 30%,
+      transparent 64%);
+}
+
+.story-page--moonlight .story-hero-overlay {
+  background: linear-gradient(to top,
+      rgba(5, 9, 17, 0.95) 0%,
+      rgba(7, 13, 24, 0.35) 50%,
+      rgba(7, 13, 24, 0.6) 100%);
+}
+
+.story-page--moonlight .story-hero-copy::before {
+  background: linear-gradient(90deg, rgba(220, 232, 247, 0.9), transparent);
+}
+
+/* Headings and emphasis take the moonlit ink. */
+.story-page--moonlight .story-hero-title,
+.story-page--moonlight .story-section-title,
+.story-page--moonlight .story-crew-name,
+.story-page--moonlight .story-cast-actor,
+.story-page--moonlight .story-achievement-title,
+.story-page--moonlight .story-note-quote,
+.story-page--moonlight .story-note-body p:first-child::first-letter,
+.story-page--moonlight .story-back-link:hover {
+  color: var(--moon-ink);
+}
+
+/* Panels pick up a blue cast instead of neutral grey. */
+.story-page--moonlight .story-narrative-block,
+.story-page--moonlight .story-cast-card,
+.story-page--moonlight .story-timeline-card,
+.story-page--moonlight .story-note-panel {
+  border-color: var(--moon-line);
+  background-image: linear-gradient(160deg,
+      rgba(150, 190, 245, 0.055),
+      rgba(120, 160, 220, 0.018));
+}
+
+.story-page--moonlight .story-back-section,
+.story-page--moonlight .story-note-body p:first-child::first-letter {
+  border-color: var(--moon-line);
+}
+
+.story-page--moonlight .story-trailer-wrap,
+.story-page--moonlight .story-timeline-node {
+  background: var(--moon-panel);
+}
+
+.story-page--moonlight .story-timeline-node[data-active='true'] {
+  background: var(--moon-ink);
+  box-shadow: 0 0 0 0.35rem rgba(122, 167, 221, 0.16);
+}
+
+.story-page--moonlight .story-cast-portrait-wrap,
+.story-page--moonlight .story-narrative-image-wrap {
+  background: var(--moon-panel);
+}
+
+.story-page--moonlight .story-cast-portrait--placeholder {
+  background: linear-gradient(145deg, #16243a, #0b1322);
+}
+
+/* Grade the decorative side loops toward the same cold cast. */
+.story-page--moonlight .story-side-gif img {
+  filter: saturate(0.62) contrast(1.06) brightness(0.72) hue-rotate(-12deg);
+}
+
+.story-page--moonlight .story-divider {
+  background: linear-gradient(to right, transparent, var(--moon-line), transparent);
+}
+
+.story-page--moonlight .story-lightbox {
+  background: rgba(5, 9, 17, 0.94);
+}
