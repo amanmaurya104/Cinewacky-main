@@ -2,14 +2,20 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import StoryArcGallery from '@/components/story/StoryArcGallery';
 import { CircularGallery, type GalleryItem } from '@/components/ui/circular-gallery';
 
 type Props = {
   images: string[];
   title: string;
+  /**
+   * `ring` is the default 3D carousel of 16:9 stills; `arc` fans portrait cards
+   * over a rising disc and is opted into per story via `galleryLayout`.
+   */
+  layout?: 'ring' | 'arc';
 };
 
-export default function StoryGallery({ images, title }: Props) {
+export default function StoryGallery({ images, title, layout = 'ring' }: Props) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const close = useCallback(() => setActiveIndex(null), []);
@@ -42,7 +48,7 @@ export default function StoryGallery({ images, title }: Props) {
 
   return (
     <section
-      className="story-section story-section--wide story-gallery-section"
+      className={`story-section story-section--wide story-gallery-section story-gallery-section--${layout}`}
       aria-labelledby="gallery-heading"
     >
       <div className="story-gallery-stage">
@@ -53,11 +59,20 @@ export default function StoryGallery({ images, title }: Props) {
           </h2>
         </div>
 
-        <CircularGallery
-          items={galleryItems}
-          onItemSelect={setActiveIndex}
-          className="story-gallery-ring"
-        />
+        {layout === 'arc' ? (
+          <StoryArcGallery
+            images={uniqueImages}
+            title={title}
+            onItemSelect={setActiveIndex}
+            className="story-gallery-ring"
+          />
+        ) : (
+          <CircularGallery
+            items={galleryItems}
+            onItemSelect={setActiveIndex}
+            className="story-gallery-ring"
+          />
+        )}
       </div>
 
       <AnimatePresence>

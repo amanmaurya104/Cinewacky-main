@@ -1144,19 +1144,113 @@
   }
 }
 
+.story-gallery-section--arc {
+  padding-bottom: clamp(4rem, 10vh, 9rem);
+}
+
+/* ─── Arc gallery ───────────────────────────────────────────────────────────
+   Opted into per story with `galleryLayout: 'arc'` in the story data, which
+   makes StoryGallery render StoryArcGallery instead of the default ring.
+
+   All of the geometry — card size, arc radius, per-card angle — is measured
+   against the stage in the component and arrives here as inline styles, so
+   everything below is surface only: colour, edges and cursor. */
+.story-arc {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  /* Horizontal drag spins the fan; vertical drag still scrolls the page. */
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Keep the cards' stacking order from reaching the section intro above. */
+  isolation: isolate;
+}
+
+.story-arc:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.35);
+  outline-offset: -1px;
+}
+
+.story-arc--dragging {
+  cursor: grabbing;
+}
+
+/* Zero-sized anchor at the top of the arc; every card is placed relative to it. */
+.story-arc-fan {
+  position: absolute;
+  left: 50%;
+  width: 0;
+  height: 0;
+  z-index: 10;
+}
+
+.story-arc-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.75rem;
+  background: #000;
+  cursor: pointer;
+  will-change: transform;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.story-arc-card[aria-current] {
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.7);
+}
+
+.story-arc-image {
+  object-fit: cover;
+  transition: filter 0.25s linear;
+}
+
+/* A full-height stage leaves the fan stranded in the middle of a tall phone
+   screen, so the arc layout takes a shorter one. */
+@media (max-width: 767px) {
+  .story-gallery-section--arc .story-gallery-stage {
+    height: 78svh;
+    min-height: 30rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-arc-card,
+  .story-arc-image {
+    transition: none;
+  }
+}
+
 /* ─── Moonlight theme ───────────────────────────────────────────────────────
    Applied by `theme: 'moonlight'` in the story data, which puts
    `.story-page--moonlight` on <main>. Every rule below is an additive,
-   higher-specificity override of the default ivory-on-black treatment, so no
-   base rule has to change and the other five stories are untouched.
+   higher-specificity override of the default treatment, so no base rule has to
+   change and the other five stories are untouched.
 
-   The palette trades warm ivory (#ffffe4) and red (#ff4d4d) for moonlit
-   silver-blue on deep midnight navy. */
+   This story does not just recolour the default page, it re-sets it. Kali is a
+   poster: uppercase Montserrat, glass cards, rounded corners, a marquee.
+   Moonlight is a page from a screenplay: a light serif at display size, no
+   boxes at all, hairlines doing the dividing, and the seven narrative passages
+   hung off a gauge in the gutter rather than numbered 01–07.
+
+   Palette: moonlit silver-blue on midnight navy, with one warm exception.
+   Silt is the colour of delta water; the moon is the only blue thing out
+   there. It appears on the tide gauge and nowhere else that isn't the tide. */
 .story-page--moonlight {
   --accent: #7aa7dd;
   --moon-ink: #dce8f7;
   --moon-panel: #0e1626;
   --moon-line: rgba(150, 185, 235, 0.16);
+  --moon-silt: #b99a72;
+  --moon-display: var(--font-moonlight-display), "Cormorant Garamond", Georgia, serif;
   background: #070d18;
 }
 
@@ -1173,20 +1267,80 @@
     linear-gradient(180deg, #0b1526 0%, #070d18 55%, #05080f 100%);
 }
 
-/* Moonlight, not candlelight: the hero wash and the ornament turn cold. */
-.story-page--moonlight .story-hero::after {
-  background-image:
-    radial-gradient(circle at 50% 18%, rgba(150, 200, 255, 0.14), transparent 40%),
-    linear-gradient(180deg, transparent 0%, rgba(6, 12, 24, 0.22) 58%, rgba(5, 8, 15, 0.46) 100%);
+/* ── Type ──────────────────────────────────────────────────────────────────
+   The serif is used at size and nowhere small: titles, names, the pull-quote.
+   Body copy, labels and data stay on Montserrat so the page keeps a spine. */
+.story-page--moonlight .story-hero-title,
+.story-page--moonlight .story-section-title,
+.story-page--moonlight .story-crew-card-name,
+.story-page--moonlight .story-cast-character,
+.story-page--moonlight .story-achievement-title,
+.story-page--moonlight .story-note-quote {
+  font-family: var(--moon-display);
+  font-weight: 300;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--moon-ink);
 }
 
-/* The existing ornament reads as the moon once it has a bright, tight core. */
+.story-page--moonlight .story-section,
+.story-page--moonlight .story-section--wide {
+  max-width: 1400px;
+}
+
+.story-page--moonlight .story-section-title {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.95;
+}
+
+/* Eyebrows carry a silt tick, the same mark the tide gauge uses. */
+.story-page--moonlight .story-section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  letter-spacing: 0.34em;
+  color: rgba(190, 214, 244, 0.42);
+}
+
+.story-page--moonlight .story-section-eyebrow::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 1px;
+  background: var(--moon-silt);
+  opacity: 0.65;
+}
+
+.story-page--moonlight .story-synopsis {
+  font-size: clamp(1.125rem, 2.4vw, 1.5rem);
+  line-height: 1.8;
+  color: rgba(214, 228, 245, 0.74);
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────────────
+   The ornament stops being a generic glow and becomes the thing the film is
+   named after: a hard little disc high on the right, with a corona. */
+.story-page--moonlight .story-hero::after {
+  background-image:
+    radial-gradient(circle at 78% 22%, rgba(150, 200, 255, 0.16), transparent 38%),
+    linear-gradient(180deg, transparent 0%, rgba(6, 12, 24, 0.22) 58%, rgba(5, 8, 15, 0.5) 100%);
+}
+
 .story-page--moonlight .story-hero-ornament {
-  background: radial-gradient(circle,
-      rgba(232, 242, 255, 0.42) 0%,
-      rgba(190, 218, 252, 0.18) 12%,
-      rgba(122, 167, 221, 0.10) 30%,
-      transparent 64%);
+  left: auto;
+  right: clamp(1rem, 5vw, 5rem);
+  top: clamp(1rem, 5vh, 3.5rem);
+  width: min(46vw, 320px);
+  height: min(46vw, 320px);
+  transform: none;
+  filter: blur(1.5px);
+  background: radial-gradient(circle at 50% 50%,
+      rgba(240, 247, 255, 0.95) 0%,
+      rgba(232, 243, 255, 0.9) 23%,
+      rgba(196, 222, 252, 0.16) 24%,
+      rgba(150, 190, 245, 0.09) 42%,
+      transparent 66%);
 }
 
 .story-page--moonlight .story-hero-overlay {
@@ -1196,36 +1350,406 @@
       rgba(7, 13, 24, 0.6) 100%);
 }
 
+/* Tagline reads first, as the epigraph it actually is; the title lands under
+   it. The heading still comes first in the DOM for assistive tech. */
+.story-page--moonlight .story-hero-copy {
+  right: auto;
+  display: flex;
+  flex-direction: column;
+  max-width: min(92vw, 48rem);
+}
+
 .story-page--moonlight .story-hero-copy::before {
-  background: linear-gradient(90deg, rgba(220, 232, 247, 0.9), transparent);
+  order: -2;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg,
+      rgba(220, 232, 247, 0.55),
+      rgba(220, 232, 247, 0.06) 55%,
+      transparent);
 }
 
-/* Headings and emphasis take the moonlit ink. */
-.story-page--moonlight .story-hero-title,
-.story-page--moonlight .story-section-title,
-.story-page--moonlight .story-crew-name,
-.story-page--moonlight .story-cast-actor,
-.story-page--moonlight .story-achievement-title,
-.story-page--moonlight .story-note-quote,
-.story-page--moonlight .story-note-body p:first-child::first-letter,
-.story-page--moonlight .story-back-link:hover {
-  color: var(--moon-ink);
+.story-page--moonlight .story-hero-tagline {
+  order: -1;
+  margin: 0 0 1.1rem;
+  max-width: 34rem;
+  font-family: var(--moon-display);
+  font-style: italic;
+  font-size: clamp(1.05rem, 2.4vw, 1.6rem);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: rgba(214, 230, 250, 0.66);
 }
 
-/* Panels pick up a blue cast instead of neutral grey. */
-.story-page--moonlight .story-narrative-block,
-.story-page--moonlight .story-cast-card,
-.story-page--moonlight .story-timeline-card,
-.story-page--moonlight .story-note-panel {
-  border-color: var(--moon-line);
-  background-image: linear-gradient(160deg,
-      rgba(150, 190, 245, 0.055),
-      rgba(120, 160, 220, 0.018));
+.story-page--moonlight .story-hero-title {
+  font-size: clamp(3rem, 10vw, 8rem);
+  line-height: 0.88;
+  letter-spacing: -0.015em;
 }
 
-.story-page--moonlight .story-back-section,
-.story-page--moonlight .story-note-body p:first-child::first-letter {
-  border-color: var(--moon-line);
+/* ── The tide ──────────────────────────────────────────────────────────────
+   The seven passages are not a sequence, so they lose the 01–07 numbering.
+   What they are is a film cutting between Tara's wedding morning and the year
+   behind it, so each passage is marked with which of the two it belongs to,
+   against a gauge that fills as you read down. */
+.story-page--moonlight .story-narrative-track {
+  position: relative;
+  padding-left: clamp(1.25rem, 3.5vw, 3.25rem);
+}
+
+.story-page--moonlight .story-tide-gauge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: var(--moon-line);
+}
+
+.story-page--moonlight .story-tide-level {
+  position: absolute;
+  inset: 0;
+  transform-origin: top center;
+  background: linear-gradient(180deg,
+      rgba(185, 154, 114, 0.12),
+      var(--moon-silt) 45%,
+      rgba(185, 154, 114, 0.55));
+}
+
+.story-page--moonlight .story-tide-mark {
+  position: absolute;
+  top: 0.4rem;
+  left: calc(-1 * clamp(1.25rem, 3.5vw, 3.25rem));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.story-page--moonlight .story-tide-dot {
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--moon-silt);
+  border-radius: 50%;
+  background: #070d18;
+}
+
+.story-page--moonlight .story-tide-mark[data-time='now'] .story-tide-dot {
+  border-color: var(--moon-ink);
+  background: var(--moon-ink);
+  box-shadow: 0 0 0 4px rgba(220, 232, 247, 0.09);
+}
+
+.story-page--moonlight .story-tide-when {
+  writing-mode: vertical-rl;
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateX(0.6rem);
+  color: rgba(185, 154, 114, 0.7);
+}
+
+.story-page--moonlight .story-tide-mark[data-time='now'] .story-tide-when {
+  color: rgba(220, 232, 247, 0.6);
+}
+
+/* No cards. The passages sit on the page, divided by hairlines. */
+.story-page--moonlight .story-narrative-block {
+  position: relative;
+  align-items: start;
+  margin-bottom: clamp(3rem, 7vw, 5rem);
+  padding: 0 0 clamp(3rem, 7vw, 5rem);
+  border: 0;
+  border-bottom: 1px solid var(--moon-line);
+  border-radius: 0;
+  background: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.story-page--moonlight .story-narrative-block:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.story-page--moonlight .story-narrative-index {
+  display: none;
+}
+
+.story-page--moonlight .story-narrative-text {
+  max-width: 40rem;
+  font-size: clamp(1rem, 1.35vw, 1.125rem);
+  line-height: 1.95;
+  color: rgba(214, 228, 245, 0.7);
+}
+
+.story-page--moonlight .story-narrative-image-wrap {
+  aspect-ratio: 3 / 2;
+  border-radius: 0;
+  background: var(--moon-panel);
+}
+
+.story-page--moonlight .story-narrative-image-wrap::after {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  /* Uneven columns, and the image hangs below the text's first line, so a
+     passage never reads as a matched pair of panels. */
+  .story-page--moonlight .story-narrative-block {
+    grid-template-columns: 6fr 5fr;
+    gap: clamp(2.5rem, 6vw, 5.5rem);
+  }
+
+  .story-page--moonlight .story-narrative-image-wrap {
+    margin-top: 2.75rem;
+  }
+
+  .story-page--moonlight .story-narrative-block--reverse .story-narrative-image-wrap {
+    margin-top: 0;
+  }
+
+  .story-page--moonlight .story-narrative-block--reverse .story-narrative-copy {
+    margin-top: 2.75rem;
+  }
+}
+
+/* ── Credits ─────────────────────────────────────────────────────────────
+   Moonlight bills its crew as cards rather than a credit roll: a panel each,
+   number set back, role as the small label, the name carrying the weight.
+   These classes are only rendered by StoryCrew's `cards` layout, which no
+   other story opts into. */
+.story-crew-cards {
+  display: grid;
+  /* Fixed at four rather than auto-fit: the eight credits then fill two whole
+     rows instead of leaving orphans in a five-wide track. Every breakpoint
+     below divides eight evenly for the same reason. */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.85rem, 1.6vw, 1.25rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.story-crew-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-height: 100%;
+  padding: clamp(1.4rem, 2.4vw, 1.9rem);
+  overflow: hidden;
+  border: 1px solid var(--moon-line, rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.045) 0%,
+    rgba(255, 255, 255, 0.012) 55%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease,
+    background 0.4s ease;
+}
+
+/* A low glow rises out of the card's base on hover, like moonlight off water. */
+.story-crew-card::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 60%;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 100% at 50% 100%,
+    rgba(185, 154, 114, 0.18) 0%,
+    rgba(185, 154, 114, 0) 70%
+  );
+  transition: opacity 0.5s ease;
+}
+
+.story-crew-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--moon-silt, #b99a72);
+}
+
+.story-crew-card:hover::after {
+  opacity: 1;
+}
+
+.story-crew-card-index {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(190, 214, 244, 0.28);
+  transition: color 0.4s ease;
+}
+
+.story-crew-card:hover .story-crew-card-index {
+  color: var(--moon-silt, #b99a72);
+}
+
+.story-crew-card-role {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(190, 214, 244, 0.46);
+}
+
+.story-crew-card-name {
+  margin-top: auto;
+  padding-top: 0.35rem;
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: var(--moon-ink, #ffffe4);
+}
+
+@media (max-width: 900px) {
+  .story-crew-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .story-crew-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .story-crew-card {
+    gap: 0.4rem;
+    padding: 1.1rem 1rem;
+  }
+
+  /* A display serif at 2rem inside a 150px card breaks names mid-word. */
+  .story-crew-card-name {
+    font-size: 1.25rem;
+  }
+
+  .story-crew-card-role {
+    letter-spacing: 0.16em;
+  }
+}
+
+/* ── Cast ───────────────────────────────────────────────────────────────
+   Four people, so they stand still. The character is what you meet in the
+   film, so it leads; the actor's name sits under it. */
+.story-page--moonlight .story-cast-row {
+  display: grid;
+  /* Columns are capped rather than 1fr, so the scope stills stay small; the
+     leftover width is then dealt out evenly between them instead of piling up
+     on the right, which keeps the row flush with the heading at both edges. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 220px));
+  justify-content: space-between;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.story-page--moonlight .story-cast-card {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  padding: 1.25rem 0 0;
+  border: 0;
+  border-top: 1px solid var(--moon-line);
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  text-align: left;
+}
+
+.story-page--moonlight .story-cast-portrait-wrap {
+  order: 1;
+  aspect-ratio: 2 / 3;
+  margin-bottom: 0;
+  border-radius: 0;
+  background: var(--moon-panel);
+}
+
+.story-page--moonlight .story-cast-character {
+  order: 2;
+  margin: 1.15rem 0 0;
+  font-size: clamp(1.375rem, 2.4vw, 1.75rem);
+  line-height: 1.1;
+}
+
+.story-page--moonlight .story-cast-actor {
+  order: 3;
+  margin: 0.45rem 0 0;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  color: rgba(190, 214, 244, 0.45);
+}
+
+.story-page--moonlight .story-cast-portrait--placeholder {
+  background: linear-gradient(145deg, #16243a, #0b1322);
+}
+
+/* Comet tilt: the grid item is now the CometCard wrapper and the hairline
+   card rides its tilting plane. The section clips by default for the marquee,
+   so it has to open up here or the tilt and hover lift get cut off. Corners
+   stay square — nothing else on this page is rounded. */
+.story-page--moonlight .story-cast-section {
+  overflow: visible;
+}
+
+.story-page--moonlight .story-cast-comet,
+.story-page--moonlight .story-cast-comet > * {
+  height: 100%;
+}
+
+.story-page--moonlight .story-cast-comet > *,
+.story-page--moonlight .story-cast-comet > * > * {
+  border-radius: 0;
+}
+
+.story-page--moonlight .story-cast-comet .story-cast-card {
+  height: 100%;
+}
+
+/* The comet glare is a pointer affordance: with no mouse it never moves off
+   centre, so it just sits there as a white haze over every still. The
+   component sets its opacity inline, hence !important. */
+@media (hover: none) {
+  .story-page--moonlight .story-cast-comet > * > :last-child {
+    opacity: 0 !important;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Two to a row, filling the width — `space-between` only earns its keep
+     when there is leftover width to deal out, and on a phone there is none. */
+  .story-page--moonlight .story-cast-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
+    gap: 1rem;
+  }
+
+  .story-page--moonlight .story-cast-character {
+    margin-top: 0.9rem;
+    font-size: 1.25rem;
+  }
+
+  .story-page--moonlight .story-cast-actor {
+    letter-spacing: 0.16em;
+  }
+}
+
+/* ── Everything else loses its box ─────────────────────────────────────────
+   Square corners and hairlines throughout, so the arc gallery's rounded cards
+   read as the one soft shape on the page. */
+.story-page--moonlight .story-trailer-wrap,
+.story-page--moonlight .story-timeline-card {
+  border-radius: 0;
 }
 
 .story-page--moonlight .story-trailer-wrap,
@@ -1233,23 +1757,59 @@
   background: var(--moon-panel);
 }
 
+.story-page--moonlight .story-timeline-card {
+  border-color: var(--moon-line);
+  background-image: linear-gradient(160deg,
+      rgba(150, 190, 245, 0.055),
+      rgba(120, 160, 220, 0.018));
+}
+
 .story-page--moonlight .story-timeline-node[data-active='true'] {
   background: var(--moon-ink);
   box-shadow: 0 0 0 0.35rem rgba(122, 167, 221, 0.16);
 }
 
-.story-page--moonlight .story-cast-portrait-wrap,
-.story-page--moonlight .story-narrative-image-wrap {
-  background: var(--moon-panel);
+/* The timeline's progress line is water too, so it takes the silt. */
+.story-page--moonlight .story-timeline-path-progress {
+  stroke: var(--moon-silt);
+  filter: drop-shadow(0 0 6px rgba(185, 154, 114, 0.4));
 }
 
-.story-page--moonlight .story-cast-portrait--placeholder {
-  background: linear-gradient(145deg, #16243a, #0b1322);
+.story-page--moonlight .story-note-panel {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
 }
 
-/* Grade the decorative side loops toward the same cold cast. */
-.story-page--moonlight .story-side-gif img {
-  filter: saturate(0.62) contrast(1.06) brightness(0.72) hue-rotate(-12deg);
+.story-page--moonlight .story-note-mark {
+  display: none;
+}
+
+.story-page--moonlight .story-note-quote {
+  max-width: 46rem;
+  padding-left: 0;
+  border-left: 0;
+  font-style: normal;
+  font-size: clamp(1.625rem, 4vw, 3rem);
+  line-height: 1.25;
+}
+
+.story-page--moonlight .story-note-body p:first-child::first-letter {
+  color: var(--moon-ink);
+}
+
+.story-page--moonlight .story-note-flourish {
+  background: linear-gradient(90deg, var(--moon-silt), transparent);
+}
+
+.story-page--moonlight .story-back-section {
+  border-color: var(--moon-line);
+}
+
+.story-page--moonlight .story-back-link:hover {
+  color: var(--moon-ink);
 }
 
 .story-page--moonlight .story-divider {
@@ -1258,4 +1818,30 @@
 
 .story-page--moonlight .story-lightbox {
   background: rgba(5, 9, 17, 0.94);
+}
+
+/* The arc gallery in moonlit blues rather than the default neutral black. */
+.story-page--moonlight .story-arc-card {
+  border-color: var(--moon-line);
+  background: var(--moon-panel);
+}
+
+.story-page--moonlight .story-arc-card[aria-current] {
+  border-color: rgba(172, 206, 250, 0.42);
+}
+
+@media (max-width: 767px) {
+  /* The gauge tucks against the edge and drops its labels; the marks alone
+     still tell you which passages are the morning and which are the year. */
+  .story-page--moonlight .story-narrative-track {
+    padding-left: 1.25rem;
+  }
+
+  .story-page--moonlight .story-tide-mark {
+    left: -1.25rem;
+  }
+
+  .story-page--moonlight .story-tide-when {
+    display: none;
+  }
 }

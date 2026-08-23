@@ -100,7 +100,13 @@ function TimelineItem({
   );
 }
 
-export default function StoryAchievements({ achievements }: Props) {
+/**
+ * Split from the export below so every hook here — `useScroll` in particular —
+ * runs only when there is a timeline to measure. Bailing out after the hooks
+ * left `useScroll` pointed at a ref that never filled, which throws on the
+ * three stories that carry no achievements.
+ */
+function AchievementsTimeline({ achievements }: Props) {
   const timelineRef = useRef<HTMLDivElement>(null);
   const itemEls = useRef<(HTMLLIElement | null)[]>([]);
   const [layout, setLayout] = useState<Layout>(EMPTY_LAYOUT);
@@ -182,8 +188,6 @@ export default function StoryAchievements({ achievements }: Props) {
     };
   }, [achievements.length]);
 
-  if (!achievements.length) return null;
-
   const path = buildPath(layout.points, layout.height);
 
   return (
@@ -241,4 +245,9 @@ export default function StoryAchievements({ achievements }: Props) {
       </div>
     </section>
   );
+}
+
+export default function StoryAchievements({ achievements }: Props) {
+  if (!achievements.length) return null;
+  return <AchievementsTimeline achievements={achievements} />;
 }

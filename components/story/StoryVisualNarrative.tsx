@@ -1,6 +1,12 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import {
+  motion,
+  useInView,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from 'framer-motion';
 import Image from 'next/image';
 import { useRef } from 'react';
 import TypedText from '@/components/story/TypedText';
@@ -8,16 +14,30 @@ import type { StoryNarrativeBlock } from '@/types/story';
 
 type Props = {
   blocks: StoryNarrativeBlock[];
+  eyebrow?: string;
+  title?: string;
+  /**
+   * `tide` swaps the numbered card stack for an unboxed run of passages hung
+   * off a gauge in the gutter, marked with the time each passage belongs to.
+   */
+  variant?: 'cards' | 'tide';
+};
+
+const WHEN_LABEL: Record<NonNullable<StoryNarrativeBlock['time']>, string> = {
+  now: 'This morning',
+  then: 'That year',
 };
 
 function NarrativeBlock({
   block,
   reverse,
   index,
+  tide,
 }: {
   block: StoryNarrativeBlock;
   reverse: boolean;
   index: number;
+  tide: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: '-10% 0px' });
@@ -62,6 +82,13 @@ function NarrativeBlock({
       variants={sectionVariants}
       transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1], delay: index * 0.04 }}
     >
+      {tide && block.time ? (
+        <span className="story-tide-mark" data-time={block.time}>
+          <span className="story-tide-dot" aria-hidden="true" />
+          <span className="story-tide-when">{WHEN_LABEL[block.time]}</span>
+        </span>
+      ) : null}
+
       <motion.div
         className="story-narrative-copy"
         initial="hidden"
@@ -97,18 +124,60 @@ function NarrativeBlock({
   );
 }
 
-export default function StoryVisualNarrative({ blocks }: Props) {
+export default function StoryVisualNarrative({
+  blocks,
+  eyebrow = 'Visual narrative',
+  title = 'The Journey',
+  variant = 'cards',
+}: Props) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  // The gauge fills as the passages go by — the year closing in on the morning.
+  const { scrollYProgress } = useScroll({
+    target: trackRef,
+    offset: ['start 80%', 'end 70%'],
+  });
+  const level = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 28,
+    mass: 0.4,
+  });
+
   if (!blocks.length) return null;
 
+  const tide = variant === 'tide';
+
   return (
-    <section className="story-section story-section--wide" aria-labelledby="visual-narrative-heading">
-      <p className="story-section-eyebrow">Visual narrative</p>
+    <section
+      className={`story-section story-section--wide${tide ? ' story-narrative-section--tide' : ''}`}
+      aria-labelledby="visual-narrative-heading"
+    >
+      <p className="story-section-eyebrow">{eyebrow}</p>
       <h2 id="visual-narrative-heading" className="story-section-title">
-        The Journey
+        {title}
       </h2>
-      {blocks.map((block, index) => (
-        <NarrativeBlock key={`${block.image}-${index}`} block={block} index={index} reverse={index % 2 === 1} />
-      ))}
+
+      <div className="story-narrative-track" ref={trackRef}>
+        {tide ? (
+          <div className="story-tide-gauge" aria-hidden="true">
+            <motion.span
+              className="story-tide-level"
+              style={{ scaleY: reduceMotion ? 1 : level }}
+            />
+          </div>
+        ) : null}
+
+        {blocks.map((block, index) => (
+          <NarrativeBlock
+            key={`${block.image}-${index}`}
+            block={block}
+            index={index}
+            reverse={index % 2 === 1}
+            tide={tide}
+          />
+        ))}
+      </div>
     </section>
   );
 }

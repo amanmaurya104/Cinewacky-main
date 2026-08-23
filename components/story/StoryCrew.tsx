@@ -6,21 +6,72 @@ import type { StoryCrewMember } from '@/types/story';
 
 type Props = {
   crew: StoryCrewMember[];
+  /**
+   * `credits` is the default end-credit roll. `cards` stands each name in its
+   * own panel — used by Moonlight Dreams, whose crew doubles as its billing.
+   */
+  layout?: 'credits' | 'cards';
 };
 
-export default function StoryCrew({ crew }: Props) {
+export default function StoryCrew({ crew, layout = 'credits' }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: '-12% 0px' });
   const reduceMotion = useReducedMotion();
 
   if (!crew.length) return null;
 
-  return (
-    <section ref={sectionRef} className="story-section" aria-labelledby="visionaries-heading">
+  const heading = (
+    <>
       <p className="story-section-eyebrow">Behind the lens</p>
       <h2 id="visionaries-heading" className="story-section-title">
         The Visionaries
       </h2>
+    </>
+  );
+
+  if (layout === 'cards') {
+    return (
+      <section
+        ref={sectionRef}
+        className="story-section story-section--wide"
+        aria-labelledby="visionaries-heading"
+      >
+        {heading}
+
+        <ol className="story-crew-cards">
+          {crew.map((member, index) => (
+            <motion.li
+              key={`${member.role}-${member.name}`}
+              className="story-crew-card"
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
+              animate={
+                inView
+                  ? { opacity: 1, y: 0 }
+                  : reduceMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, y: 24 }
+              }
+              transition={{
+                duration: 0.7,
+                ease: [0.22, 1, 0.36, 1],
+                delay: index * 0.06,
+              }}
+            >
+              <span className="story-crew-card-index" aria-hidden="true">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <span className="story-crew-card-role">{member.role}</span>
+              <span className="story-crew-card-name">{member.name}</span>
+            </motion.li>
+          ))}
+        </ol>
+      </section>
+    );
+  }
+
+  return (
+    <section ref={sectionRef} className="story-section" aria-labelledby="visionaries-heading">
+      {heading}
 
       <ol className="story-crew-credits">
         {crew.map((member, index) => {

@@ -13,6 +13,7 @@ import StoryTrailer from '@/components/story/StoryTrailer';
 import StoryVisualNarrative from '@/components/story/StoryVisualNarrative';
 import TypedText from '@/components/story/TypedText';
 import { getProjectBySlug } from '@/data/projects';
+import { moonlightDisplay } from '@/lib/fonts';
 import {
   getAdjacentStories,
   getAllStoryParams,
@@ -51,11 +52,22 @@ export default async function StoryPage({ params }: Props) {
 
   const { prev, next } = getAdjacentStories(slug, storySlug);
 
+  // Moonlight is the one story with its own structure, not just its own
+  // palette: a display serif, an unboxed narrative hung off a tide gauge, a
+  // still cast row, and no side loops competing with the night sky.
+  const isMoonlight = story.theme === 'moonlight';
+
   return (
     <main
-      className={`story-page${story.theme ? ` story-page--${story.theme}` : ''}`}
+      className={[
+        'story-page',
+        story.theme ? `story-page--${story.theme}` : '',
+        isMoonlight ? moonlightDisplay.variable : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
     >
-      <AlternatingSideGifs />
+      {isMoonlight ? null : <AlternatingSideGifs />}
 
       {/* <StoryNav
         projectSlug={slug}
@@ -79,11 +91,20 @@ export default async function StoryPage({ params }: Props) {
         <TypedText text={story.synopsis} className="story-synopsis" />
       </section>
 
-      <StoryVisualNarrative blocks={story.visualNarrative} />
+      <StoryVisualNarrative
+        blocks={story.visualNarrative}
+        eyebrow={isMoonlight ? 'One year, two weddings' : undefined}
+        title={isMoonlight ? 'The Tide' : undefined}
+        variant={isMoonlight ? 'tide' : undefined}
+      />
 
-      <StoryCrew crew={story.crew} />
-      <StoryCast cast={story.cast} />
-      <StoryGallery images={story.gallery} title={story.title} />
+      <StoryCrew crew={story.crew} layout={isMoonlight ? 'cards' : undefined} />
+      <StoryCast cast={story.cast} layout={isMoonlight ? 'comet' : undefined} />
+      <StoryGallery
+        images={story.gallery}
+        title={story.title}
+        layout={story.galleryLayout}
+      />
       <StoryTrailer trailer={story.trailer} poster={story.poster} title={story.title} />
       <StoryAchievements achievements={story.achievements} />
 
