@@ -12,6 +12,12 @@ import StoryProducerNote from '@/components/story/StoryProducerNote';
 import StoryTrailer from '@/components/story/StoryTrailer';
 import StoryVisualNarrative from '@/components/story/StoryVisualNarrative';
 import TypedText from '@/components/story/TypedText';
+import ArchiveDocumentary from '@/components/documentary/ArchiveDocumentary';
+import DocumentaryStandard from '@/components/documentary/DocumentaryStandard';
+import {
+  getAllDocumentaryParams,
+  getDocumentaryForProject,
+} from '@/data/documentaries';
 import { getProjectBySlug } from '@/data/projects';
 import { moonlightDisplay } from '@/lib/fonts';
 import {
@@ -20,35 +26,59 @@ import {
   getStoryBySlug,
 } from '@/lib/stories';
 import '@/styles/story.css';
+import '@/styles/documentary.css';
+import '@/styles/documentary-archive.css';
 
 interface Props {
   params: Promise<{ slug: string; storySlug: string }>;
 }
 
+// Stories and documentaries share this segment: both are pieces of work that
+// belong to a project, so both live at /project/<project>/<piece>.
 export function generateStaticParams() {
-  return getAllStoryParams();
+  return [...getAllStoryParams(), ...getAllDocumentaryParams()];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, storySlug } = await params;
   const story = getStoryBySlug(slug, storySlug);
 
-  if (!story) {
-    return { title: 'Story Not Found | Cinewacky' };
+  if (story) {
+    return {
+      title: `${story.title} | Cinewacky`,
+      description: story.synopsis,
+    };
   }
 
-  return {
-    title: `${story.title} | Cinewacky`,
-    description: story.synopsis,
-  };
+  const documentary = getDocumentaryForProject(slug, storySlug);
+
+  if (documentary) {
+    return {
+      title: `${documentary.title} | Cinewacky`,
+      description: documentary.tagline ?? documentary.synopsis?.[0],
+    };
+  }
+
+  return { title: 'Not Found | Cinewacky' };
 }
 
 export default async function StoryPage({ params }: Props) {
   const { slug, storySlug } = await params;
   const project = getProjectBySlug(slug);
+  if (!project) return notFound();
+
   const story = getStoryBySlug(slug, storySlug);
 
-  if (!project || !story) return notFound();
+  if (!story) {
+    const documentary = getDocumentaryForProject(slug, storySlug);
+    if (!documentary) return notFound();
+
+    return documentary.theme === 'archive' ? (
+      <ArchiveDocumentary documentary={documentary} />
+    ) : (
+      <DocumentaryStandard documentary={documentary} />
+    );
+  }
 
   const { prev, next } = getAdjacentStories(slug, storySlug);
 

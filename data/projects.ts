@@ -1,5 +1,9 @@
 import { Project } from '@/types/project';
 
+// Every life-beyond-lens tile opens the same documentary for now; give a tile
+// its own slug here once there is a second entry in data/documentaries.ts.
+const DOC = 'life-beyond-lens';
+
 const projects: Project[] = [
   {
     id: 1,
@@ -16,6 +20,24 @@ const projects: Project[] = [
     year: '2024',
     duration: '12:34',
     client: 'Independent',
+    layout: 'mosaic',
+    // Files under public/showcase/life-beyond-lens/. `title` is what the tile
+    // shows — rename freely, the filename is only the asset lookup.
+    // `feature: true` puts a tile in the tall left column; the rest fill the
+    // right stack. Order within each column follows this list.
+    media: [
+      { file: 'OPENING 2.jpg', title: 'CRAFT COUNCIL OF INDIA', feature: true, documentary: DOC },
+      {
+        file: 'OPENING 1.mp4',
+        title: 'BIRD OF DUSK',
+        // caption: 'Cinewacky / India',
+        feature: true,
+        documentary: DOC,
+      },
+      { file: 'OPENING 3.jpg', title: 'INTO THE CHINA TOWN', documentary: DOC },
+      { file: 'DOCU TRAILER .mp4', title: 'OUR DOCUMENTARY TRAILER', documentary: DOC },
+      { file: 'OPENING 5.jpg', title: 'KING OF THE ROAD: Wim Wenders', documentary: DOC },
+    ],
   },
   {
     id: 2,

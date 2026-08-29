@@ -1,0 +1,171 @@
+/* A row of tall feature tiles beside a stack of wide ones. The page keeps the
+   site's own fixed header (ShowcaseHeader) rather than carrying a nav rail. */
+
+.project-mosaic {
+  display: grid;
+  grid-template-columns: minmax(0, 42vw) minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #000;
+  color: #fff;
+}
+
+/* ---------- columns ---------- */
+
+.project-mosaic-feature-column {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.project-mosaic-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- tiles ---------- */
+
+.project-mosaic-tile {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+  height: max(240px, 33.3333dvh);
+}
+
+/* The feature tiles share the column's width and always fill its height. The
+   descendant selector matters: a plain `.project-mosaic-tile--feature` ties on
+   specificity with `.project-mosaic-tile`, so the responsive height below would
+   win on source order and leave dead space under the row. */
+.project-mosaic-feature-column .project-mosaic-tile {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+.project-mosaic-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (hover: hover) {
+  .project-mosaic-tile:hover .project-mosaic-media {
+    transform: scale(1.04);
+  }
+}
+
+/* Keeps the title legible over bright frames. */
+.project-mosaic-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0) 52%);
+}
+
+.project-mosaic-caption {
+  position: absolute;
+  z-index: 3;
+  left: clamp(1rem, 2vw, 2rem);
+  right: clamp(1rem, 2vw, 2rem);
+  bottom: clamp(1rem, 2.2vw, 2rem);
+  pointer-events: none;
+}
+
+.project-mosaic-title {
+  margin: 0;
+  font-size: clamp(1rem, 1.45vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.project-mosaic-title--feature {
+  font-size: clamp(1.25rem, 2.1vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffe4;
+}
+
+.project-mosaic-meta {
+  margin: 0.4rem 0 0;
+  font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* The whole tile is the link; there is no play affordance, because the click
+   opens the documentary page rather than starting the film here. */
+.project-mosaic-open {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1280px) {
+  .project-mosaic {
+    grid-template-columns: minmax(0, 48vw) minmax(0, 1fr);
+  }
+}
+
+/* One column: the two feature tiles keep their row, the stack runs beneath. */
+@media (max-width: 1024px) {
+  .project-mosaic {
+    grid-template-columns: 1fr;
+  }
+
+  .project-mosaic-feature-column {
+    position: static;
+    height: max(340px, 62vw);
+  }
+
+  .project-mosaic-tile {
+    height: max(240px, 56.25vw);
+  }
+}
+
+/* Phones: each feature tile is only ~50vw wide, so give the row enough height
+   to stay roughly portrait, and pull the overlay type down to match. */
+@media (max-width: 640px) {
+  .project-mosaic-feature-column {
+    height: max(360px, 104vw);
+  }
+
+  .project-mosaic-caption {
+    left: 0.9rem;
+    right: 0.9rem;
+    bottom: 0.9rem;
+  }
+
+  .project-mosaic-title {
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+  }
+
+  .project-mosaic-title--feature {
+    font-size: 0.95rem;
+  }
+
+  .project-mosaic-meta {
+    margin-top: 0.25rem;
+    font-size: 0.7rem;
+  }
+
+  /* The scrim has to work over a much shorter tile. */
+  .project-mosaic-tile::after {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0) 62%);
+  }
+}

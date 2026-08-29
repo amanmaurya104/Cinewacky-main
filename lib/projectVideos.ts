@@ -65,3 +65,63 @@ export function getProjectVideoMeta(project: Project): string | undefined {
   const parts = [project.client, project.year].filter(Boolean);
   return parts.length ? parts.join(' / ') : project.tagline;
 }
+
+type ProjectMediaTileBase = {
+  title: string;
+  caption?: string;
+  feature: boolean;
+  /** Where the tile navigates when clicked, if anywhere. */
+  href?: string;
+};
+
+export type ProjectMediaTile =
+  | (ProjectMediaTileBase & {
+      kind: 'video';
+      /** Short silent loop, played on hover. */
+      preview: string;
+      poster: string;
+    })
+  | (ProjectMediaTileBase & {
+      kind: 'image';
+      src: string;
+    });
+
+// The documentary pages are not published yet, so every tile that names one is
+// parked on the maintenance screen. Flip this to false to send tiles through to
+// /project/<project>/<documentary>; the route and its data are already in place.
+const PARK_TILES_ON_MAINTENANCE: boolean = true;
+
+// Mosaic tiles never point at the full film: the documentary cuts here are
+// 43MB and 25MB. Hover plays the ~1MB loop built by scripts/build-hero-loops.mjs,
+// and clicking opens the documentary page rather than an inline player.
+export function getProjectMediaTiles(project: Project): ProjectMediaTile[] {
+  if (!project.media?.length) return [];
+
+  return project.media.map((item) => {
+    const base = {
+      title: item.title,
+      caption: item.caption,
+      feature: item.feature ?? false,
+      href: item.documentary
+        ? PARK_TILES_ON_MAINTENANCE
+          ? '/maintenance'
+          : `/project/${project.slug}/${item.documentary}`
+        : undefined,
+    };
+
+    if (!/\.mp4$/i.test(item.file)) {
+      return {
+        ...base,
+        kind: 'image' as const,
+        src: showcaseVideoSrc(project.slug, item.file),
+      };
+    }
+
+    return {
+      ...base,
+      kind: 'video' as const,
+      preview: showcaseLoopSrc(project.slug, item.file),
+      poster: showcasePosterSrc(project.slug, item.file),
+    };
+  });
+}

@@ -1,0 +1,470 @@
+/* Bird of Dusk — the archive theme.
+ *
+ * The film was assembled out of archive, so the page is built as the album that
+ * assembly would have lived in: an ink-dark board, paper panels mounted on it,
+ * plate numbers pressed into the margin in red, and a contact sheet at the end.
+ * Every rule here is scoped under `.archive` so it cannot reach the default
+ * documentary template in documentary.css.
+ */
+
+.archive {
+  --board: #14100c;
+  --board-deep: #0d0a08;
+  --paper: #ebe3d3;
+  --paper-edge: #d5cab4;
+  --ink: #241c15;
+  --ink-soft: #6a5e50;
+  --vermilion: #b33a2b;
+  --board-text: #cfc3ae;
+  --board-mute: rgba(207, 195, 174, 0.72);
+  --hair: rgba(207, 195, 174, 0.2);
+
+  --display: var(--font-archive-display), "Bodoni Moda", Didot, Georgia, serif;
+  --text: var(--font-archive-text), Newsreader, Georgia, serif;
+  --utility: var(--font-archive-utility), "Courier Prime", "Courier New", monospace;
+
+  --page: min(1180px, 90vw);
+  --band: clamp(3.5rem, 9vw, 8rem);
+
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--board);
+  color: var(--board-text);
+  font-family: var(--text);
+}
+
+/* The back link, at the foot of the page. */
+
+.archive-link {
+  color: var(--board-mute);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.25s ease;
+}
+
+.archive-link:hover,
+.archive-link:focus-visible {
+  color: var(--vermilion);
+}
+
+/* ---------- hero ---------- */
+
+.archive-hero {
+  padding-bottom: var(--band);
+}
+
+.archive-hero-window {
+  position: relative;
+  height: clamp(360px, 74vh, 780px);
+  overflow: hidden;
+  background: var(--board-deep);
+}
+
+.archive-hero-window img {
+  object-fit: cover;
+}
+
+/* The title is a label pasted onto the foot of the plate — the album gesture,
+   stated once, at the top of the page. */
+.archive-titlecard {
+  position: relative;
+  z-index: 2;
+  width: min(860px, 88vw);
+  margin: clamp(-8rem, -9vw, -4rem) auto 0;
+  padding: clamp(1.75rem, 3.5vw, 3.25rem);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.55);
+}
+
+.archive-kicker {
+  margin: 0 0 clamp(0.75rem, 1.5vw, 1.25rem);
+  font-family: var(--utility);
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--vermilion);
+}
+
+.archive-title {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(2.75rem, 7.5vw, 6rem);
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+
+.archive-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+  padding: clamp(1rem, 2vw, 1.5rem) 0 0;
+  border-top: 1px solid var(--paper-edge);
+  list-style: none;
+  font-family: var(--utility);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.archive-slip {
+  margin: 0.85rem 0 0;
+  font-family: var(--utility);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ---------- overture ---------- */
+
+.archive-overture {
+  width: var(--page);
+  margin: 0 auto;
+  padding-bottom: var(--band);
+}
+
+.archive-epigraph {
+  max-width: 22ch;
+  margin: 0 0 clamp(2rem, 4vw, 3.5rem);
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.75rem, 4.2vw, 3.25rem);
+  line-height: 1.12;
+  color: var(--paper);
+}
+
+.archive-columns {
+  columns: 2;
+  column-gap: clamp(2rem, 4vw, 4rem);
+  max-width: 76ch;
+  font-size: clamp(1rem, 1.15vw, 1.1rem);
+  line-height: 1.72;
+  color: var(--board-mute);
+}
+
+.archive-columns p {
+  margin: 0 0 1.15rem;
+  break-inside: avoid-column;
+}
+
+/* ---------- passages ---------- */
+
+.archive-passage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.5rem, 3.5vw, 4rem);
+  width: var(--page);
+  margin: 0 auto;
+  padding-bottom: var(--band);
+}
+
+.archive-passage--flip {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+}
+
+.archive-passage--flip .archive-panel {
+  order: 2;
+}
+
+.archive-panel {
+  padding: clamp(1.75rem, 3vw, 3.25rem);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.45);
+}
+
+.archive-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 0.9rem;
+  font-family: var(--utility);
+  font-size: 0.68rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.archive-eyebrow::before {
+  content: "";
+  width: 1.75rem;
+  height: 2px;
+  background: var(--vermilion);
+}
+
+.archive-heading {
+  margin: 0 0 clamp(1.25rem, 2.5vw, 2rem);
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.archive-prose p {
+  margin: 0 0 1.25rem;
+  max-width: 66ch;
+  font-size: clamp(1rem, 1.15vw, 1.1rem);
+  line-height: 1.78;
+  color: var(--ink);
+}
+
+.archive-prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* A rubricated initial, the way a set page opens. */
+.archive-prose p:first-of-type::first-letter {
+  float: left;
+  margin: 0.12em 0.1em 0 0;
+  font-family: var(--display);
+  font-size: 3.6em;
+  line-height: 0.78;
+  color: var(--vermilion);
+}
+
+/* The plate holds while the prose scrolls past it. */
+.archive-passage-plate {
+  position: sticky;
+  top: clamp(1.5rem, 4vh, 3rem);
+}
+
+/* ---------- plates ---------- */
+
+.archive-plate {
+  margin: 0;
+  padding: 0.55rem 0.55rem 0.45rem;
+  background: var(--paper);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+}
+
+.archive-plate-window {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--board-deep);
+}
+
+.archive-plate-window img {
+  object-fit: cover;
+}
+
+.archive-plate-slip {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  padding: 0.6rem 0.15rem 0.1rem;
+  font-family: var(--utility);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.archive-plate-number {
+  color: var(--vermilion);
+}
+
+/* ---------- voices ---------- */
+
+.archive-voices {
+  width: var(--page);
+  margin: 0 auto;
+  padding-bottom: var(--band);
+}
+
+.archive-voices .archive-eyebrow {
+  color: var(--board-mute);
+}
+
+.archive-voices-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: clamp(2rem, 4vw, 4rem);
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.archive-voices-label {
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--hair);
+  font-family: var(--utility);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--board-mute);
+}
+
+.archive-voices-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.archive-voices-group li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.archive-voice-name {
+  font-family: var(--display);
+  font-size: clamp(1.05rem, 1.5vw, 1.4rem);
+  color: var(--paper);
+}
+
+.archive-voice-role {
+  font-family: var(--utility);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--board-mute);
+}
+
+/* ---------- screening ---------- */
+
+.archive-screening {
+  width: var(--page);
+  margin: 0 auto;
+  padding-bottom: var(--band);
+}
+
+.archive-screening-mount {
+  padding: clamp(0.6rem, 1.2vw, 1.1rem);
+  background: var(--paper);
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.45);
+}
+
+.archive .documentary-section-title {
+  margin: 0.2rem 0.2rem 0.85rem;
+  font-family: var(--utility);
+  font-weight: 400;
+  font-size: 0.68rem;
+  letter-spacing: 0.26em;
+  color: var(--ink-soft);
+}
+
+/* ---------- contact sheet ---------- */
+
+.archive-sheet {
+  width: var(--page);
+  margin: 0 auto;
+  padding-bottom: var(--band);
+  /* Frames sit outside the measure while they are still scattered. Clipping
+     only the horizontal axis keeps that from adding a page-wide scrollbar,
+     without capping the section's height. */
+  overflow-x: clip;
+}
+
+.archive-sheet-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: clamp(1rem, 2vw, 1.5rem);
+  border-bottom: 1px solid var(--hair);
+}
+
+.archive-sheet-head .archive-eyebrow,
+.archive-sheet-head .archive-slip {
+  margin: 0;
+  color: var(--board-mute);
+}
+
+/* The grid holds the filed positions from the start; the scatter is transform
+   only, so nothing reflows as the frames land. */
+.archive-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr));
+  gap: clamp(0.6rem, 1.2vw, 1rem);
+  margin-top: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.archive-plate--sheet {
+  padding: 0.35rem 0.35rem 0.25rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.archive-plate--sheet .archive-plate-slip {
+  padding: 0.4rem 0.1rem 0.05rem;
+  font-size: 0.58rem;
+}
+
+/* ---------- colophon ---------- */
+
+.archive-colophon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  width: var(--page);
+  margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem) 0 clamp(3rem, 6vw, 5rem);
+  border-top: 1px solid var(--hair);
+  font-family: var(--utility);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--board-mute);
+}
+
+.archive-colophon p {
+  margin: 0;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .archive-passage {
+    grid-template-columns: 1fr;
+  }
+
+  .archive-passage--flip .archive-panel {
+    order: 0;
+  }
+
+  .archive-passage-plate {
+    position: static;
+  }
+
+  .archive-columns {
+    columns: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .archive {
+    --page: 90vw;
+  }
+
+  .archive-hero-window {
+    height: max(320px, 62vh);
+  }
+
+  .archive-titlecard {
+    width: 90vw;
+    margin-top: -3.5rem;
+  }
+
+  .archive-prose p:first-of-type::first-letter {
+    font-size: 3em;
+  }
+
+  .archive-sheet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 140px), 1fr));
+  }
+}

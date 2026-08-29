@@ -20,6 +20,7 @@ import { promisify } from 'node:util';
 const run = promisify(execFile);
 
 const SHOWCASE = 'public/showcase/reel-vibe-uncut';
+const LIFE_BEYOND_LENS = 'public/showcase/life-beyond-lens';
 
 // Mirrors the heroVideo entries in data/stories.ts.
 // `start` skips any fade-from-black so the loop and poster open on real image.
@@ -32,6 +33,10 @@ const SOURCES = [
   // Also a banner on the project page, which plays loops rather than films.
   { file: `${SHOWCASE}/KALI .mp4`, start: 3 },
   { file: 'public/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer.mp4', start: 3 },
+  // Tiles on the life-beyond-lens mosaic, which plays loops rather than films.
+  { file: `${LIFE_BEYOND_LENS}/DOCU TRAILER .mp4`, start: 3 },
+  { file: `${LIFE_BEYOND_LENS}/DOCU.mp4`, start: 3 },
+  { file: `${LIFE_BEYOND_LENS}/OPENING 1.mp4`, start: 1 },
 ];
 
 const DURATION = 12;

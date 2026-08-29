@@ -1,0 +1,311 @@
+@import "./variables.css";
+
+.documentary-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #000;
+  color: #fff;
+  font-family: var(--font-proxima-nova), "Proxima Nova", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- hero ---------- */
+
+.documentary-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.documentary-hero-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+.documentary-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.1) 60%);
+}
+
+.documentary-hero-copy {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: clamp(1.5rem, 5vw, 4.5rem);
+}
+
+.documentary-back {
+  display: inline-block;
+  margin-bottom: clamp(1rem, 2vw, 1.75rem);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.documentary-back:hover {
+  color: #ffffe4;
+}
+
+.documentary-title {
+  margin: 0;
+  font-size: clamp(2.25rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: #ffffe4;
+}
+
+.documentary-tagline {
+  margin: clamp(0.75rem, 1.5vw, 1.25rem) 0 0;
+  max-width: 46ch;
+  font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ---------- meta ---------- */
+
+.documentary-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.25rem, 3vw, 3rem);
+  margin: clamp(1.5rem, 3vw, 2.5rem) 0 0;
+}
+
+.documentary-meta-row dt {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.documentary-meta-row dd {
+  margin: 0.35rem 0 0;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+
+/* ---------- sections ---------- */
+
+.documentary-section-title {
+  margin: 0 0 clamp(1rem, 2vw, 1.75rem);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.documentary-info,
+.documentary-watch,
+.documentary-stills,
+.documentary-awards {
+  padding: clamp(3rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4.5rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.documentary-info {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 6rem);
+}
+
+.documentary-synopsis p {
+  margin: 0 0 1.15rem;
+  max-width: 62ch;
+  font-size: clamp(1rem, 1.35vw, 1.2rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.documentary-credit {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.documentary-credit dt {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.documentary-credit dd {
+  margin: 0;
+  font-size: 0.9rem;
+  text-align: right;
+  color: #fff;
+}
+
+/* ---------- player ---------- */
+
+.documentary-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+}
+
+.documentary-player-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.documentary-player-start {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.documentary-player-ring {
+  display: grid;
+  place-items: center;
+  width: clamp(56px, 6vw, 92px);
+  height: clamp(56px, 6vw, 92px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.documentary-player-ring svg {
+  margin-left: 4px;
+}
+
+.documentary-player-start:hover .documentary-player-ring,
+.documentary-player-start:focus-visible .documentary-player-ring {
+  transform: scale(1.06);
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* ---------- stills ---------- */
+
+.documentary-stills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: clamp(0.5rem, 1.2vw, 1rem);
+}
+
+.documentary-still {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+.documentary-still img {
+  object-fit: cover;
+  transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (hover: hover) {
+  .documentary-still:hover img {
+    transform: scale(1.04);
+  }
+}
+
+/* ---------- awards ---------- */
+
+.documentary-awards ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.documentary-awards li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.documentary-award-title {
+  font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+  color: #ffffe4;
+}
+
+.documentary-award-detail {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .documentary-info {
+    grid-template-columns: 1fr;
+  }
+
+  .documentary-hero {
+    height: max(520px, 88dvh);
+  }
+}
+
+@media (max-width: 640px) {
+  /* A full-height hero on a phone is mostly empty frame above the copy. */
+  .documentary-hero {
+    height: max(440px, 72dvh);
+  }
+
+  .documentary-hero-copy {
+    padding: 1.25rem 1.25rem 2rem;
+  }
+
+  .documentary-info,
+  .documentary-watch,
+  .documentary-stills,
+  .documentary-awards {
+    padding: 2.75rem 1.25rem;
+  }
+
+  .documentary-meta {
+    gap: 1rem 1.75rem;
+  }
+
+  /* Role and name collide once the column is this narrow. */
+  .documentary-credit {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .documentary-credit dd {
+    text-align: left;
+  }
+
+  .documentary-stills-grid {
+    grid-template-columns: 1fr;
+  }
+}
