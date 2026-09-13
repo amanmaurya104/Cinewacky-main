@@ -26,15 +26,25 @@ const projects: Project[] = [
     // `feature: true` puts a tile in the tall left column; the rest fill the
     // right stack. Order within each column follows this list.
     media: [
-      { file: 'OPENING 2.jpg', title: 'CRAFT COUNCIL OF INDIA', feature: true, documentary: DOC },
+      {
+        file: 'OPENING 2.jpg',
+        title: 'CRAFT COUNCIL OF INDIA',
+        feature: true,
+        documentary: 'craft-council-of-india',
+      },
       {
         file: 'OPENING 1.mp4',
         title: 'BIRD OF DUSK',
         // caption: 'Cinewacky / India',
         feature: true,
-        documentary: DOC,
+        documentary: 'bird-of-dusk',
       },
-      { file: 'OPENING 3.jpg', title: 'INTO THE CHINA TOWN', documentary: DOC },
+      { file: 'OPENING 3.jpg', title: 'INTO THE CHINA TOWN', documentary: 'test-of-china' },
+      {
+        file: 'NIVEDITA.jpg',
+        title: 'MARGARET TO NIVEDITA',
+        documentary: 'margaret-to-nivedita',
+      },
       { file: 'DOCU TRAILER .mp4', title: 'OUR DOCUMENTARY TRAILER', documentary: DOC },
       { file: 'OPENING 5.jpg', title: 'KING OF THE ROAD: Wim Wenders', documentary: DOC },
     ],

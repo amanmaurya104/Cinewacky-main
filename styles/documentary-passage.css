@@ -1,0 +1,1162 @@
+/* Margaret to Nivedita — the passage theme.
+ *
+ * The film is a journey between two names, so the page is filed by the places
+ * on it rather than by section number, hour or material. Each chapter is a
+ * station: a numeral, a town, a county and a year cut into the margin, with a
+ * single rule running down the page behind them as the road.
+ *
+ * One idea carries the layout. Every frame of this documentary was shot in
+ * Ireland, in weather, and the only warm colour anywhere in it is the ochre of
+ * a nun's robe in one interview. So the page is cut from pale wet stone and
+ * holds exactly one warm accent — and that accent travels. Each station sets a
+ * `--travel` from 0 to 1 and everything that carries colour in it mixes that far
+ * from slate toward ochre, so by the last station the page has crossed over.
+ * The colour is the argument rather than the decoration.
+ *
+ * It sits on cold stone where the craft page sits on warm paper, and it is pale
+ * where the archive album, the dragon market and the moonlight story are all
+ * black. The display face is Cinzel, cut from Roman inscriptional capitals,
+ * because what this camera photographs over and over is lettering in stone: a
+ * chapel datestone of 1832, a war memorial, a wall of plaques, a churchyard.
+ *
+ * Every rule is scoped under `.passage` so it cannot reach the album in
+ * documentary-archive.css, the market in documentary-dragon.css, the record in
+ * documentary-craft.css, or the default template in documentary.css.
+ */
+
+.passage {
+  --stone: #e5e7e1;
+  --stone-deep: #d8dcd3;
+  --stone-edge: #c7ccc1;
+  --stone-dark: #1a211e;
+
+  --ink: #191f1c;
+  --ink-soft: rgba(25, 31, 28, 0.76);
+  --ink-mute: rgba(25, 31, 28, 0.56);
+  --ink-faint: rgba(25, 31, 28, 0.36);
+  --hair: rgba(25, 31, 28, 0.18);
+  --hair-soft: rgba(25, 31, 28, 0.09);
+
+  /* The two ends of the crossing. */
+  --slate: #4b625f;
+  --ochre: #b06a17;
+  --travel: 0;
+  --mark: var(--slate);
+
+  --display: var(--font-passage-display), "Cinzel", "Trajan Pro", Georgia, serif;
+  --text: var(--font-passage-text), "Lora", Georgia, serif;
+  --utility: var(--font-passage-utility), "Karla", system-ui, sans-serif;
+  --bengali: var(--font-passage-bengali), "Noto Serif Bengali", "Shonar Bangla",
+    "Vrinda", serif;
+
+  --step--2: clamp(0.66rem, 0.63rem + 0.14vw, 0.74rem);
+  --step--1: clamp(0.78rem, 0.74rem + 0.18vw, 0.87rem);
+  --step-0: clamp(1.01rem, 0.97rem + 0.2vw, 1.13rem);
+  --step-1: clamp(1.18rem, 1.06rem + 0.6vw, 1.48rem);
+  --step-2: clamp(1.5rem, 1.2rem + 1.5vw, 2.3rem);
+  --step-3: clamp(2rem, 1.5rem + 2.6vw, 3.2rem);
+  --step-4: clamp(2.4rem, 1.2rem + 5.2vw, 5.4rem);
+
+  --page: min(1240px, 90vw);
+  --band: clamp(3.5rem, 9vw, 8rem);
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--stone);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: var(--step-0);
+  font-weight: 400;
+  line-height: 1.76;
+}
+
+/* Stone is never one flat colour. A cold wash and a fine grain, so the page
+ * reads as a cut surface rather than as a fill. */
+.passage-ground {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(80% 34% at 12% 4%, rgba(75, 98, 95, 0.1), transparent 72%),
+    radial-gradient(70% 30% at 90% 62%, rgba(176, 106, 23, 0.06), transparent 74%),
+    linear-gradient(180deg, var(--stone) 0%, var(--stone) 54%, var(--stone-deep) 100%);
+}
+
+.passage > header,
+.passage > section,
+.passage > nav,
+.passage > div,
+.passage > footer {
+  position: relative;
+  z-index: 1;
+}
+
+.passage-heading {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.008em;
+  text-wrap: balance;
+}
+
+/* --travel is set inline, 0 at the first station and 1 at the last, and --mark
+ * is the colour that far along the crossing. It is declared here rather than on
+ * `.passage` because a custom property substitutes its var()s where it is
+ * declared: one --mark on the root would resolve at travel 0 and inherit that
+ * single colour down the whole page, and nothing would travel. */
+.passage-station,
+.passage-itinerary-stop {
+  --mark: color-mix(in oklab, var(--slate), var(--ochre) calc(var(--travel) * 100%));
+}
+
+/* ---- hero ---------------------------------------------------------------- */
+
+/* The other themed pages on this site all set their title over moving footage.
+ * This one does not: a memorial page puts the lettering on the stone and mounts
+ * the picture beneath it, and that order is the whole difference in tone. */
+.passage-hero {
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: clamp(4rem, 11vh, 8rem) 0;
+}
+
+.passage-mast {
+  text-align: center;
+}
+
+.passage-mast-commission {
+  margin: 0 0 clamp(2rem, 5vw, 3.4rem);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* The title is the journey, set as the journey: the name she was born with, a
+ * rule the width of the page, the name she was given. */
+.passage-mast-title {
+  display: grid;
+  justify-items: center;
+  gap: clamp(1.1rem, 2.6vw, 2rem);
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.passage-mast-from,
+.passage-mast-to {
+  font-size: var(--step-4);
+  letter-spacing: 0.1em;
+  /* Cinzel is an all-caps face; the indent puts back the optical centring the
+   * trailing letterspace steals. */
+  text-indent: 0.1em;
+}
+
+.passage-mast-from {
+  color: var(--slate);
+}
+
+.passage-mast-to {
+  color: var(--ochre);
+  font-weight: 600;
+}
+
+/* A rule with a lozenge cut into it — the mason's mark between two inscriptions
+ * on one stone. */
+.passage-mast-rule {
+  position: relative;
+  display: block;
+  width: min(520px, 70%);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--hair) 14%,
+    var(--hair) 86%,
+    transparent
+  );
+}
+
+.passage-mast-rule::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  background: var(--stone);
+  border: 1px solid color-mix(in oklab, var(--slate), var(--ochre) 50%);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.passage-mast-line {
+  max-width: 34ch;
+  margin: clamp(2rem, 4.5vw, 3rem) auto 0;
+  font-size: var(--step-1);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: balance;
+}
+
+.passage-mast-facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem clamp(1rem, 2.4vw, 1.9rem);
+  margin: clamp(1.6rem, 3.5vw, 2.4rem) 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.passage-mast-facts li + li::before {
+  content: '·';
+  margin-right: clamp(1rem, 2.4vw, 1.9rem);
+  color: var(--ink-faint);
+}
+
+/* The one plate that moves, mounted under the inscription. Double-ruled, the
+ * way a memorial panel is set into its surround. */
+.passage-hero-backdrop {
+  position: relative;
+  margin-top: clamp(3rem, 7vw, 5.5rem);
+  padding: clamp(7px, 1vw, 12px);
+  border: 1px solid var(--hair);
+  background: var(--stone-deep);
+}
+
+.passage-hero-loop {
+  display: block;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  object-fit: cover;
+  /* Shot in July and graded warm. Pulled back toward the weather the rest of
+   * the film is in, so the page does not open on a postcard. */
+  filter: saturate(0.62) contrast(1.04) brightness(0.96);
+}
+
+.passage-hero-veil {
+  position: absolute;
+  inset: clamp(7px, 1vw, 12px);
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(26, 33, 30, 0.22), transparent 34%),
+    linear-gradient(0deg, rgba(26, 33, 30, 0.24), transparent 30%);
+}
+
+/* ---- the name ------------------------------------------------------------ */
+
+.passage-name {
+  display: grid;
+  grid-template-columns: minmax(0, 0.62fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2.5rem, 6vw, 5.5rem);
+  width: var(--page);
+  margin: var(--band) auto 0;
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  border-block: 1px solid var(--hair);
+}
+
+/* The only photograph of her in the whole delivery. It is printed on a white
+ * card in the film, so it keeps its card here rather than being cropped into
+ * the page. */
+.passage-portrait {
+  margin: 0;
+}
+
+.passage-portrait-window {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: #f2f2ee;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.5),
+    0 18px 40px -26px rgba(26, 33, 30, 0.6);
+}
+
+.passage-portrait-window img {
+  object-fit: cover;
+}
+
+.passage-portrait figcaption,
+.passage-motion figcaption,
+.passage-mount figcaption {
+  margin-top: 0.8rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  color: var(--ink-mute);
+}
+
+.passage-name-heading {
+  margin: 0 0 clamp(1.4rem, 3vw, 2.2rem);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.passage-name-born {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-1);
+  letter-spacing: 0.14em;
+  color: var(--slate);
+}
+
+/* The word Vivekananda gave her, set in the script it was given in and at the
+ * size the page gives to nothing else. */
+.passage-name-bengali {
+  margin: clamp(0.6rem, 1.4vw, 1rem) 0 0;
+  font-family: var(--bengali);
+  font-size: var(--step-4);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--ochre);
+}
+
+.passage-name-gloss {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1rem;
+  margin: clamp(0.7rem, 1.6vw, 1.1rem) 0 0;
+}
+
+.passage-name-roman {
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.passage-name-meaning {
+  font-size: var(--step-1);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.passage-name-on {
+  margin: clamp(1.2rem, 2.6vw, 1.8rem) 0 0;
+  padding-top: clamp(1.2rem, 2.6vw, 1.8rem);
+  border-top: 1px solid var(--hair-soft);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  color: var(--ink-mute);
+}
+
+/* ---- overture ------------------------------------------------------------ */
+
+.passage-overture {
+  width: var(--page);
+  margin: var(--band) auto 0;
+}
+
+.passage-epigraph {
+  max-width: 24ch;
+  margin: 0 0 clamp(2rem, 4.5vw, 3.2rem);
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 400;
+  line-height: 1.32;
+  letter-spacing: 0.01em;
+  color: var(--slate);
+  text-wrap: balance;
+}
+
+/* Two columns of type, the way an order of service sets its opening page. It
+ * collapses long before the columns get too narrow to read. */
+.passage-overture-prose {
+  columns: 2;
+  column-gap: clamp(2.5rem, 6vw, 5rem);
+  max-width: 92ch;
+  color: var(--ink-soft);
+}
+
+.passage-overture-prose p {
+  margin: 0 0 1.5em;
+  break-inside: avoid;
+}
+
+.passage-overture-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.passage-overture-prose p:first-child::first-letter {
+  float: left;
+  margin: 0.08em 0.1em 0 0;
+  font-family: var(--display);
+  font-size: 3.1em;
+  line-height: 0.82;
+  color: var(--slate);
+}
+
+/* ---- itinerary ----------------------------------------------------------- */
+
+/* The whole film as a line of places, with each dot already the colour its
+ * chapter will be. It is the map and the colour key at once. */
+.passage-itinerary {
+  width: var(--page);
+  margin: var(--band) auto 0;
+}
+
+.passage-itinerary-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.4rem, 4vw, 3.4rem);
+  margin: 0;
+  padding: clamp(1.4rem, 3vw, 2rem) 0;
+  list-style: none;
+  border-block: 1px solid var(--hair);
+}
+
+.passage-itinerary-stop {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  gap: 0.1rem 0.7rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.passage-itinerary-dot {
+  grid-row: span 2;
+  width: 9px;
+  height: 9px;
+  background: var(--mark);
+  border-radius: 50%;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.passage-itinerary-place {
+  font-family: var(--display);
+  font-size: var(--step--1);
+  letter-spacing: 0.16em;
+  color: var(--ink);
+}
+
+.passage-itinerary-year {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+}
+
+.passage-itinerary-stop:hover .passage-itinerary-dot,
+.passage-itinerary-stop:focus-visible .passage-itinerary-dot {
+  transform: scale(1.35);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--mark), transparent 82%);
+}
+
+.passage-itinerary-stop:focus-visible {
+  outline: 2px solid var(--mark);
+  outline-offset: 6px;
+}
+
+/* ---- the road, and the stations on it ------------------------------------ */
+
+/* One rule runs the length of every chapter and the markers sit on it, so the
+ * page has a spine you can see rather than a stack of sections. */
+.passage-road {
+  position: relative;
+  width: var(--page);
+  margin-inline: auto;
+}
+
+.passage-road::before {
+  content: '';
+  position: absolute;
+  top: var(--band);
+  bottom: clamp(3rem, 8vw, 7rem);
+  left: 4px;
+  width: 1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--slate) 4%,
+    color-mix(in oklab, var(--slate), var(--ochre) 50%) 52%,
+    var(--ochre) 94%,
+    transparent
+  );
+  opacity: 0.42;
+}
+
+.passage-station {
+  display: grid;
+  grid-template-columns: clamp(9rem, 15vw, 13rem) minmax(0, 1fr);
+  gap: 0 clamp(2.5rem, 5vw, 4.5rem);
+  padding-top: var(--band);
+}
+
+.passage-marker {
+  position: sticky;
+  top: clamp(2rem, 8vh, 5rem);
+  align-self: start;
+  display: grid;
+  gap: 0.2rem;
+  padding-left: 1.9rem;
+}
+
+.passage-marker-dot {
+  position: absolute;
+  top: 0.5em;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  background: var(--mark);
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px var(--stone);
+}
+
+.passage-marker-numeral {
+  font-family: var(--display);
+  font-size: var(--step--2);
+  letter-spacing: 0.3em;
+  color: var(--mark);
+}
+
+.passage-marker-place {
+  font-family: var(--display);
+  font-size: var(--step-1);
+  line-height: 1.15;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+
+.passage-marker-region,
+.passage-marker-year {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.passage-marker-year {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--hair);
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.passage-station-body {
+  max-width: 62ch;
+}
+
+.passage-prose {
+  margin-top: clamp(1.2rem, 2.6vw, 1.8rem);
+  color: var(--ink-soft);
+}
+
+.passage-prose p {
+  margin: 0 0 1.4em;
+}
+
+.passage-prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- inscriptions -------------------------------------------------------- */
+
+/* Lettering the camera found, set the way it was cut: caps, wide, centred, and
+ * shadowed into the surface rather than raised off it. */
+.passage-stone {
+  margin: clamp(2rem, 4.5vw, 3rem) 0 0;
+  padding: clamp(1.6rem, 3.5vw, 2.6rem) clamp(1.4rem, 3vw, 2.4rem);
+  background: var(--stone-deep);
+  border: 1px solid var(--hair-soft);
+  box-shadow:
+    inset 0 1px 2px rgba(26, 33, 30, 0.14),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.55);
+  text-align: center;
+}
+
+.passage-stone blockquote {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(0.95rem, 0.85rem + 0.6vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  color: color-mix(in oklab, var(--ink), var(--stone) 22%);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  text-wrap: balance;
+}
+
+.passage-stone figcaption {
+  margin-top: 1.1rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* ---- plates inside a station --------------------------------------------- */
+
+.passage-motion {
+  grid-column: 2;
+  margin: clamp(2rem, 4.5vw, 3rem) 0 0;
+}
+
+.passage-motion-window {
+  position: relative;
+  overflow: hidden;
+  background: var(--stone-dark);
+  border: 1px solid var(--hair);
+}
+
+.passage-motion-media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  filter: saturate(0.7) contrast(1.03);
+}
+
+.passage-mounts {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: clamp(1.4rem, 3vw, 2.4rem);
+  margin-top: clamp(2rem, 4.5vw, 3.2rem);
+}
+
+/* The column count is set by how many plates there are rather than by how many
+ * happen to fit, so a station never strands its last frame alone on a row: one
+ * plate is the station's own wide shot and runs the full measure, an even count
+ * pairs off, and three sit in a row. */
+.passage-mounts[data-count='1'] {
+  grid-template-columns: 1fr;
+}
+
+.passage-mounts[data-count='2'],
+.passage-mounts[data-count='4'],
+.passage-mounts[data-count='6'] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.passage-mounts[data-count='3'],
+.passage-mounts[data-count='5'] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.passage-mount {
+  margin: 0;
+}
+
+.passage-mount-window {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--stone-edge);
+  border: 1px solid var(--hair);
+}
+
+.passage-mount--tall .passage-mount-window {
+  aspect-ratio: 3 / 4;
+}
+
+.passage-mount-window img {
+  object-fit: cover;
+  filter: saturate(0.86);
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.passage-mount:hover .passage-mount-window img {
+  transform: scale(1.02);
+}
+
+/* ---- the ledger ---------------------------------------------------------- */
+
+/* What the town still has, set against what the name still carries. The two
+ * halves of one person, printed as one row. */
+.passage-ledger {
+  width: var(--page);
+  margin: var(--band) auto 0;
+}
+
+.passage-ledger-head {
+  max-width: 56ch;
+}
+
+.passage-ledger-note {
+  margin: 1rem 0 0;
+  font-style: italic;
+  color: var(--ink-mute);
+}
+
+.passage-ledger-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4rem minmax(0, 1fr);
+  gap: 0 clamp(1rem, 2.5vw, 2rem);
+  margin-top: clamp(2.2rem, 5vw, 3.4rem);
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--hair);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.passage-ledger-columns span:last-child {
+  grid-column: 3;
+}
+
+.passage-ledger-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.passage-ledger-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0 clamp(1rem, 2.5vw, 2rem);
+  padding: clamp(0.9rem, 2vw, 1.3rem) 0;
+  border-bottom: 1px solid var(--hair-soft);
+}
+
+.passage-ledger-here {
+  color: var(--ink-soft);
+}
+
+/* The crossing itself, once per row. */
+.passage-ledger-join {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, var(--slate), var(--ochre));
+  opacity: 0.55;
+}
+
+.passage-ledger-join::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -1px;
+  width: 5px;
+  height: 5px;
+  background: var(--ochre);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.passage-ledger-there {
+  font-family: var(--display);
+  font-size: var(--step--1);
+  line-height: 1.55;
+  letter-spacing: 0.05em;
+  color: color-mix(in oklab, var(--ochre), var(--ink) 34%);
+}
+
+/* ---- the player ---------------------------------------------------------- */
+
+.passage-watch {
+  width: var(--page);
+  margin: var(--band) auto 0;
+}
+
+.passage-watch .documentary-section-title {
+  margin: 0 0 clamp(1.2rem, 2.6vw, 1.8rem);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.passage-watch .documentary-player {
+  position: relative;
+  overflow: hidden;
+  background: var(--stone-dark);
+  border: 1px solid var(--hair);
+  aspect-ratio: 16 / 9;
+}
+
+.passage-watch .documentary-player-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.passage-watch .documentary-player-start {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: rgba(26, 33, 30, 0.2);
+  color: var(--stone);
+  cursor: pointer;
+}
+
+.passage-watch .documentary-player-ring {
+  display: grid;
+  place-items: center;
+  width: clamp(4rem, 8vw, 5.6rem);
+  height: clamp(4rem, 8vw, 5.6rem);
+  border: 1px solid rgba(229, 231, 225, 0.7);
+  border-radius: 50%;
+  background: rgba(26, 33, 30, 0.32);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.passage-watch .documentary-player-start:hover .documentary-player-ring {
+  background: color-mix(in oklab, var(--ochre), transparent 30%);
+  transform: scale(1.06);
+}
+
+/* ---- epitaph ------------------------------------------------------------- */
+
+/* The film ends at a graveside at nightfall, and so does the page. This is the
+ * one band of dark stone on it. */
+.passage-epitaph {
+  margin: var(--band) 0 0;
+  padding: clamp(4rem, 10vw, 7.5rem) max(5vw, calc((100vw - var(--page)) / 2));
+  background: var(--stone-dark);
+  text-align: center;
+}
+
+.passage-epitaph blockquote {
+  max-width: 30ch;
+  margin: 0 auto;
+  font-size: var(--step-2);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #e7e9e3;
+  text-wrap: balance;
+}
+
+.passage-epitaph-source {
+  margin: clamp(1.6rem, 3.5vw, 2.4rem) 0 0;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--ochre), #e7e9e3 30%);
+}
+
+/* ---- contact sheet ------------------------------------------------------- */
+
+.passage-sheet {
+  width: var(--page);
+  margin: var(--band) auto 0;
+}
+
+.passage-sheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem 2rem;
+  padding-bottom: clamp(1.2rem, 2.6vw, 1.8rem);
+  border-bottom: 1px solid var(--hair);
+}
+
+.passage-sheet-count {
+  margin: 0;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.passage-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 10.5rem), 1fr));
+  gap: clamp(1rem, 2.2vw, 1.8rem);
+  margin: clamp(1.6rem, 3.5vw, 2.4rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.passage-chip {
+  margin: 0;
+}
+
+.passage-chip-window {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--stone-edge);
+  border: 1px solid var(--hair-soft);
+}
+
+.passage-chip-window img {
+  object-fit: cover;
+  filter: saturate(0.8);
+  transition: filter 0.4s ease;
+}
+
+.passage-chip:hover .passage-chip-window img {
+  filter: saturate(1);
+}
+
+.passage-chip figcaption {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: 0.55rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  line-height: 1.45;
+  color: var(--ink-mute);
+}
+
+.passage-chip-number {
+  letter-spacing: 0.2em;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- colophon ------------------------------------------------------------ */
+
+.passage-colophon {
+  width: var(--page);
+  margin: var(--band) auto 0;
+  padding-block: clamp(2.5rem, 6vw, 4rem) clamp(4rem, 9vw, 7rem);
+  border-top: 1px solid var(--hair);
+}
+
+.passage-credits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: clamp(1.2rem, 3vw, 2.4rem);
+  margin: 0;
+}
+
+.passage-credits dt {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.passage-credits dd {
+  margin: 0.4rem 0 0;
+  font-family: var(--display);
+  font-size: var(--step--1);
+  letter-spacing: 0.05em;
+  color: var(--ink);
+}
+
+.passage-awards {
+  display: grid;
+  gap: 0.7rem;
+  margin: clamp(2rem, 4.5vw, 3rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.passage-awards li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1rem;
+}
+
+.passage-award-title {
+  font-family: var(--display);
+  font-size: var(--step--1);
+  letter-spacing: 0.05em;
+  color: var(--ochre);
+}
+
+.passage-award-detail {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  color: var(--ink-mute);
+}
+
+.passage-colophon-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  padding-top: clamp(1.4rem, 3vw, 2rem);
+  border-top: 1px solid var(--hair-soft);
+}
+
+.passage-colophon-foot p {
+  margin: 0;
+  max-width: 52ch;
+  font-size: var(--step--1);
+  font-style: italic;
+  color: var(--ink-mute);
+}
+
+.passage-back {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ochre);
+  padding-bottom: 0.3rem;
+  transition: color 0.25s ease;
+}
+
+.passage-back::before {
+  content: '← ';
+  color: var(--ochre);
+}
+
+.passage-back:hover {
+  color: var(--ochre);
+}
+
+/* ---- narrow -------------------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .passage-name {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .passage-portrait {
+    width: min(62%, 20rem);
+  }
+
+  .passage-overture-prose {
+    columns: 1;
+  }
+
+  /* The marker stops being a margin and becomes a headline: the numeral, the
+   * place and the year on one line above the prose, with the road running
+   * behind it as before. */
+  .passage-road::before {
+    left: 3px;
+  }
+
+  .passage-station {
+    grid-template-columns: 1fr;
+    gap: clamp(1.4rem, 4vw, 2rem) 0;
+  }
+
+  .passage-marker {
+    /* relative, not static: the dot is absolutely placed against this marker,
+     * and dropping the containing block sends every station's dot to the top
+     * of the road instead of to its own chapter. */
+    position: relative;
+    top: auto;
+    grid-template-columns: auto auto 1fr;
+    align-items: baseline;
+    gap: 0 0.8rem;
+    padding-left: 1.6rem;
+  }
+
+  .passage-marker-dot {
+    top: 0.45em;
+  }
+
+  .passage-marker-region {
+    grid-column: 3;
+  }
+
+  .passage-marker-year {
+    grid-column: 1 / -1;
+    margin-top: 0.6rem;
+    justify-self: start;
+  }
+
+  .passage-station-body,
+  .passage-motion,
+  .passage-mounts {
+    grid-column: 1;
+    padding-left: 1.6rem;
+  }
+
+  .passage-mounts[data-count] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .passage-ledger-columns,
+  .passage-ledger-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .passage-ledger-columns span:last-child {
+    grid-column: 1;
+  }
+
+  /* The joining rule turns to run down the row, since the two halves now stack
+   * rather than face each other. */
+  .passage-ledger-join {
+    width: 2.5rem;
+    margin: 0.2rem 0;
+  }
+
+  .passage-ledger-columns {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .passage {
+    --page: 90vw;
+  }
+
+  .passage-mast-facts {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .passage-mast-facts li + li::before {
+    content: none;
+  }
+
+  .passage-hero-loop {
+    aspect-ratio: 16 / 10;
+  }
+
+  .passage-sheet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 8rem), 1fr));
+  }
+
+  .passage-mounts[data-count] {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .passage-mount-window img,
+  .passage-chip-window img,
+  .passage-itinerary-dot,
+  .passage-watch .documentary-player-ring {
+    transition: none;
+  }
+
+  .passage-mount:hover .passage-mount-window img {
+    transform: none;
+  }
+}

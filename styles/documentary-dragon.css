@@ -1,0 +1,760 @@
+/* Test of China — the dragon theme.
+ *
+ * The film follows a Chinese breakfast market in Kolkata that opens in the dark
+ * and is packed up by the middle of the morning, so the page runs on that
+ * clock: a black ground and an ember-hot dragon at the top, daylight and cold
+ * steam by the colophon. The hours in the margin are the section markers, which
+ * is why there is not a single eyebrow label on the page.
+ *
+ * The palette is sampled off the footage rather than off a flag: charcoal and
+ * ember from the fire plate, the cold blue-grey of backlit steam, and the loud
+ * plastic magenta of the bowls the soup is served in.
+ *
+ * Every rule is scoped under `.dragon` so it cannot reach the archive album in
+ * documentary-archive.css or the default template in documentary.css.
+ */
+
+.dragon {
+  --ink: #0a0807;
+  --ink-deep: #050403;
+  --ink-warm: #17110d;
+
+  --ember: #e2452a;
+  --gold: #f0b661;
+  --steam: #8fa8b8;
+  --magenta: #d9455f;
+
+  --paper: #e8e1d6;
+  --mute: rgba(232, 225, 214, 0.6);
+  --faint: rgba(232, 225, 214, 0.38);
+  --hair: rgba(232, 225, 214, 0.14);
+
+  --dawn: #cdc6ba;
+  --dawn-ink: #191411;
+  --dawn-mute: rgba(25, 20, 17, 0.62);
+  --dawn-hair: rgba(25, 20, 17, 0.18);
+
+  --display: var(--font-dragon-display), "Fraunces", Georgia, serif;
+  --text: var(--font-dragon-text), "IBM Plex Sans", system-ui, sans-serif;
+  --utility: var(--font-dragon-utility), "IBM Plex Mono", ui-monospace, monospace;
+  /* No webfont for the characters: every desktop and phone ships a Song-style
+   * serif already, and shipping one would cost megabytes for forty glyphs. */
+  --han: "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", "Noto Serif TC",
+    PMingLiU, SimSun, "MS Mincho", serif;
+
+  --step--1: clamp(0.78rem, 0.74rem + 0.18vw, 0.86rem);
+  --step-0: clamp(1.02rem, 0.98rem + 0.2vw, 1.13rem);
+  --step-1: clamp(1.22rem, 1.1rem + 0.6vw, 1.5rem);
+  --step-2: clamp(1.7rem, 1.4rem + 1.5vw, 2.4rem);
+  --step-3: clamp(2.1rem, 1.6rem + 2.6vw, 3.4rem);
+  --step-4: clamp(3.1rem, 1.2rem + 8vw, 8.4rem);
+
+  --page: min(1240px, 90vw);
+  --band: clamp(4.5rem, 11vw, 10rem);
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--ink-deep);
+  color: var(--paper);
+  font-family: var(--text);
+  font-size: var(--step-0);
+  font-weight: 300;
+  line-height: 1.72;
+}
+
+/* The ground the whole page sits on, and the fixed canvas over it. Content
+ * stays on z-index 2 so the dragon swims between the two. */
+
+.dragon-ground {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(120% 26% at 72% 22%, rgba(226, 69, 42, 0.14), transparent 68%),
+    radial-gradient(90% 24% at 12% 46%, rgba(143, 168, 184, 0.07), transparent 72%),
+    linear-gradient(180deg, var(--ink-deep) 0%, var(--ink) 26%, var(--ink-warm) 88%);
+}
+
+/* The opening frame. It is pinned to the top of the document rather than living
+ * inside the hero so that it, the canvas and the masthead can be stacked in
+ * that order: film, dragon, type. */
+.dragon-backdrop {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.dragon-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.dragon-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.dragon > header,
+.dragon > section,
+.dragon > footer {
+  position: relative;
+  z-index: 2;
+}
+
+/* The sheet and the colophon paint their own grounds, so they have to cover the
+ * canvas rather than let the dragon swim through them. */
+.dragon-sheet,
+.dragon-colophon {
+  z-index: 3;
+}
+
+/* ---- hero ---------------------------------------------------------------- */
+
+.dragon-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 100svh;
+  padding: var(--band) 0 clamp(3rem, 8vw, 6rem);
+}
+
+/* A playing video gets its own compositing layer in Chromium and paints over
+ * anything without a stacking context of its own, which is what swallowed the
+ * masthead first time round. Both layers are explicit now. */
+.dragon-hero-loop,
+.dragon-hero-veil {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.dragon-hero-loop {
+  z-index: 0;
+  object-fit: cover;
+  /* The clip is graded warm and the type sits on top of it, so it is pushed
+   * down and cooled before anything is asked to read over it. */
+  filter: saturate(0.8) contrast(1.06) brightness(0.6);
+}
+
+.dragon-hero-veil {
+  z-index: 1;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 4, 3, 0.86) 0%,
+      rgba(5, 4, 3, 0.2) 38%,
+      rgba(5, 4, 3, 0.6) 76%,
+      var(--ink-deep) 100%
+    ),
+    linear-gradient(
+      96deg,
+      rgba(5, 4, 3, 0.92) 0%,
+      rgba(5, 4, 3, 0.42) 44%,
+      rgba(5, 4, 3, 0) 74%
+    );
+}
+
+.dragon-mast {
+  position: relative;
+  z-index: 2;
+  width: var(--page);
+  margin-inline: auto;
+}
+
+.dragon-mast-commission {
+  margin: 0 0 clamp(1.2rem, 3vw, 2.2rem);
+  color: var(--mute);
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  letter-spacing: 0.06em;
+}
+
+.dragon-mast-title {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1rem, 2.6vw, 2.4rem);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* The characters are set as a column beside the Latin, not as a translation
+ * under it: they are the piece of type carrying the culture, so the Latin face
+ * never has to imitate one. */
+.dragon-mast-han {
+  writing-mode: vertical-rl;
+  flex: none;
+  color: var(--ember);
+  font-family: var(--han);
+  font-size: clamp(1.6rem, 4.4vw, 4.4rem);
+  line-height: 1;
+  letter-spacing: 0.12em;
+  opacity: 0.66;
+}
+
+.dragon-mast-latin {
+  display: block;
+  max-width: 9ch;
+  font-family: var(--display);
+  font-size: var(--step-4);
+  font-variation-settings: "SOFT" 18, "WONK" 1, "opsz" 144;
+  line-height: 0.86;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.dragon-mast-line {
+  max-width: 36ch;
+  margin: clamp(1.4rem, 3vw, 2.4rem) 0 0;
+  color: var(--mute);
+  font-size: var(--step-0);
+}
+
+/* The one orchestrated entrance on the page. Everything after this is either
+ * the dragon or a response to something the reader did. */
+@media (prefers-reduced-motion: no-preference) {
+  .dragon-mast-commission,
+  .dragon-mast-han,
+  .dragon-mast-latin,
+  .dragon-mast-line {
+    animation: dragon-settle 1.1s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  .dragon-mast-han {
+    animation-delay: 0.22s;
+  }
+
+  .dragon-mast-latin {
+    animation-delay: 0.1s;
+  }
+
+  .dragon-mast-line {
+    animation-delay: 0.42s;
+  }
+}
+
+@keyframes dragon-settle {
+  from {
+    opacity: 0;
+    transform: translateY(0.7rem);
+  }
+}
+
+/* ---- overture ------------------------------------------------------------ */
+
+.dragon-overture {
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: var(--band);
+}
+
+.dragon-epigraph {
+  max-width: 22ch;
+  margin: 0 0 clamp(2rem, 5vw, 3.6rem);
+  color: var(--gold);
+  font-family: var(--display);
+  font-size: var(--step-3);
+  font-variation-settings: "SOFT" 60, "WONK" 1, "opsz" 72;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.dragon-overture-text {
+  max-width: 54ch;
+  margin: 0 0 1.4em;
+  margin-inline-start: calc(8.5rem + clamp(1.5rem, 4vw, 4rem));
+  font-size: var(--step-1);
+  line-height: 1.64;
+}
+
+/* ---- chapters ------------------------------------------------------------ */
+
+.dragon-chapter {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0 clamp(1.5rem, 4vw, 4rem);
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: var(--band);
+  border-top: 1px solid var(--hair);
+}
+
+.dragon-rail {
+  position: sticky;
+  top: 22vh;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.dragon-rail-time {
+  color: var(--paper);
+  font-family: var(--utility);
+  font-size: var(--step-0);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.dragon-rail-han {
+  writing-mode: vertical-rl;
+  color: var(--ember);
+  font-family: var(--han);
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  line-height: 1;
+  letter-spacing: 0.18em;
+}
+
+.dragon-rail-gloss {
+  max-width: 7rem;
+  color: var(--faint);
+  font-size: var(--step--1);
+  line-height: 1.4;
+}
+
+.dragon-chapter-body {
+  grid-column: 2;
+  max-width: 32rem;
+}
+
+.dragon-heading {
+  margin: 0 0 clamp(1.2rem, 2.6vw, 2rem);
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-variation-settings: "SOFT" 34, "WONK" 1, "opsz" 48;
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.dragon-prose p {
+  margin: 0 0 1.35em;
+}
+
+.dragon-prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* Frames laid out the way they would be on a light table: different sizes,
+ * knocked out of alignment, never a row of matching cards. */
+
+.dragon-lighttable {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: clamp(1rem, 2.4vw, 2rem);
+  row-gap: clamp(2.5rem, 6vw, 5.5rem);
+  /* The field is capped just past the prose measure beside it. Left to fill the
+   * column it ran to well over twice the width of the text on a wide screen,
+   * which pushed the frames so far apart that they stopped reading as one
+   * arrangement and the smaller ones looked like mistakes. */
+  max-width: 58rem;
+  margin-top: clamp(3rem, 7vw, 5.5rem);
+}
+
+.dragon-frame {
+  grid-column: span 6;
+  margin: 0;
+}
+
+/* Two sizes only, seven columns and five, alternating sides. A light table is
+ * meant to look unsquared, not unplanned: at a 7-to-4 spread the second frame
+ * read as a thumbnail of the first rather than as another frame beside it. */
+.dragon-lighttable > :nth-child(4n + 1) {
+  grid-column: 1 / span 7;
+}
+
+.dragon-lighttable > :nth-child(4n + 2) {
+  grid-column: 8 / span 5;
+  transform: translateY(11%);
+}
+
+/* The two frames of a row must not share a column: grid pushes the second onto
+ * a row of its own the moment they overlap, which opens a hole down the middle
+ * of the table. Rows here are 7+5 and 6+5, both clear of each other. */
+.dragon-lighttable > :nth-child(4n + 3) {
+  grid-column: 1 / span 6;
+  transform: translateY(-2%);
+}
+
+.dragon-lighttable > :nth-child(4n + 4) {
+  grid-column: 8 / span 5;
+  transform: translateY(6%);
+}
+
+.dragon-frame-window {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+}
+
+.dragon-frame-window img {
+  object-fit: cover;
+}
+
+.dragon-frame figcaption {
+  margin-top: 0.75rem;
+  color: var(--faint);
+  font-size: var(--step--1);
+  line-height: 1.45;
+}
+
+/* ---- the board ----------------------------------------------------------- */
+
+.dragon-board {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0 clamp(1.5rem, 4vw, 4rem);
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: var(--band);
+  border-top: 1px solid var(--hair);
+}
+
+.dragon-board-head,
+.dragon-board-list {
+  grid-column: 2;
+}
+
+.dragon-board-head {
+  max-width: 34rem;
+  margin-bottom: clamp(2rem, 5vw, 3.4rem);
+}
+
+.dragon-board-note {
+  margin: 0;
+  color: var(--mute);
+}
+
+.dragon-board-list {
+  margin: 0;
+}
+
+.dragon-board-row {
+  display: grid;
+  grid-template-columns: minmax(10rem, 15rem) minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 3rem);
+  padding-block: clamp(1.1rem, 2.6vw, 1.9rem);
+  border-top: 1px solid var(--hair);
+}
+
+.dragon-board-row dt {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+}
+
+.dragon-board-han {
+  color: var(--paper);
+  font-family: var(--han);
+  font-size: var(--step-1);
+  line-height: 1.2;
+}
+
+.dragon-board-roman {
+  color: var(--steam);
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+}
+
+.dragon-board-row dd {
+  margin: 0;
+  color: var(--mute);
+}
+
+/* ---- contact sheet ------------------------------------------------------- */
+
+.dragon-sheet {
+  padding-block: var(--band);
+  background: linear-gradient(180deg, transparent, rgba(35, 25, 19, 0.55));
+}
+
+.dragon-sheet-head,
+.dragon-sheet-grid {
+  width: var(--page);
+  margin-inline: auto;
+}
+
+.dragon-sheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem 1.6rem;
+  margin-bottom: clamp(2rem, 5vw, 3.2rem);
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--hair);
+}
+
+.dragon-sheet-han {
+  margin: 0;
+  color: var(--ember);
+  font-family: var(--han);
+  font-size: var(--step-1);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+}
+
+.dragon-sheet-count {
+  margin: 0 0 0 auto;
+  color: var(--faint);
+  font-size: var(--step--1);
+}
+
+.dragon-sheet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+  gap: clamp(0.9rem, 2vw, 1.6rem);
+  padding: 0;
+  margin-block: 0;
+  list-style: none;
+}
+
+.dragon-chip {
+  margin: 0;
+}
+
+.dragon-chip-window {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #000;
+}
+
+.dragon-chip-window img {
+  object-fit: cover;
+  filter: saturate(0.7) brightness(0.86);
+  transition: filter 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dragon-chip:hover .dragon-chip-window img,
+.dragon-chip:focus-within .dragon-chip-window img {
+  filter: none;
+  transform: scale(1.04);
+}
+
+.dragon-chip figcaption {
+  display: flex;
+  gap: 0.55rem;
+  margin-top: 0.55rem;
+  color: var(--faint);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.dragon-chip-number {
+  flex: none;
+  color: var(--ember);
+  font-family: var(--utility);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- colophon ------------------------------------------------------------ */
+
+/* The market packs up and the light comes in. This is the one place on the page
+ * where the ground goes light and the text turns over with it. */
+.dragon-colophon {
+  padding-block: var(--band) clamp(3rem, 7vw, 5rem);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(86, 74, 62, 0.9) 16%,
+    rgba(176, 167, 153, 0.98) 34%,
+    var(--dawn) 48%
+  );
+  color: var(--dawn-ink);
+}
+
+.dragon-credits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: clamp(1.4rem, 3vw, 2.6rem);
+  width: var(--page);
+  margin: 0 auto clamp(3rem, 7vw, 5rem);
+}
+
+.dragon-credits dt {
+  color: var(--dawn-mute);
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+}
+
+.dragon-credits dd {
+  margin: 0.35rem 0 0;
+  font-family: var(--display);
+  font-size: var(--step-1);
+  font-variation-settings: "SOFT" 40, "WONK" 1, "opsz" 30;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.dragon-attribution {
+  width: var(--page);
+  margin: 0 auto clamp(1.5rem, 4vw, 2.5rem);
+  color: var(--dawn-mute);
+  font-size: var(--step--1);
+}
+
+.dragon-attribution a {
+  color: var(--dawn-ink);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(25, 20, 17, 0.3);
+}
+
+.dragon-attribution a:hover {
+  border-bottom-color: var(--ember);
+  color: var(--ember);
+}
+
+.dragon-colophon-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  width: var(--page);
+  margin-inline: auto;
+  padding-top: clamp(1.2rem, 3vw, 2rem);
+  border-top: 1px solid var(--dawn-hair);
+}
+
+.dragon-colophon-foot p {
+  margin: 0;
+  color: var(--dawn-mute);
+  font-size: var(--step--1);
+}
+
+.dragon-back {
+  color: var(--dawn-ink);
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(226, 69, 42, 0.5);
+  padding-bottom: 0.15rem;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.dragon-back:hover {
+  color: var(--ember);
+  border-bottom-color: var(--ember);
+}
+
+.dragon :focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 3px;
+}
+
+.dragon-colophon :focus-visible {
+  outline-color: var(--dawn-ink);
+}
+
+/* ---- narrow ------------------------------------------------------------- */
+
+@media (max-width: 880px) {
+  .dragon-mast-title {
+    align-items: center;
+  }
+
+  .dragon-mast-han {
+    writing-mode: horizontal-tb;
+    letter-spacing: 0.08em;
+  }
+
+  .dragon-mast-latin {
+    max-width: 12ch;
+  }
+
+  .dragon-overture-text {
+    margin-inline-start: 0;
+  }
+
+  .dragon-chapter {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The rail turns into a line above the heading rather than a column beside
+   * it, so it stops being a sticky sliver on a phone. */
+  .dragon-rail {
+    position: static;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .dragon-rail-han {
+    writing-mode: horizontal-tb;
+    font-size: var(--step-1);
+    letter-spacing: 0.1em;
+  }
+
+  .dragon-rail-gloss {
+    max-width: none;
+  }
+
+  .dragon-chapter-body,
+  .dragon-lighttable {
+    grid-column: 1;
+  }
+
+  .dragon-lighttable {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dragon-frame,
+  .dragon-lighttable > :nth-child(4n + 1),
+  .dragon-lighttable > :nth-child(4n + 2),
+  .dragon-lighttable > :nth-child(4n + 3),
+  .dragon-lighttable > :nth-child(4n + 4) {
+    grid-column: 1;
+    transform: none;
+  }
+
+  .dragon-board {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dragon-board-head,
+  .dragon-board-list {
+    grid-column: 1;
+  }
+
+  .dragon-board-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+
+  .dragon-sheet-count {
+    margin-left: 0;
+  }
+
+  .dragon-sheet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 8.5rem), 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dragon-chip-window img {
+    transition: none;
+  }
+
+  .dragon-chip:hover .dragon-chip-window img,
+  .dragon-chip:focus-within .dragon-chip-window img {
+    transform: none;
+  }
+}

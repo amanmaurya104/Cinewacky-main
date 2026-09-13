@@ -1,0 +1,833 @@
+/* Craft Council of India — the craft theme.
+ *
+ * The film is about handicraft, so the page is filed the way a craft collection
+ * is filed: by material. Each chapter is one substance — clay, thread, metal,
+ * wood, mask — and the swatch pinned in its margin is the section marker, which
+ * is why the page carries no section numbers and no eyebrow labels.
+ *
+ * It sits on warm paper while the archive, dragon and moonlight pages all sit
+ * on black. That is the point: this footage is small objects held close and lit
+ * warm, and on paper they read as mounted plates in a sample book rather than
+ * as frames in a reel. The swatch colours are sampled off the footage itself —
+ * Baluchari red, Dokra brass, Panchmura terracotta, the magenta of a Chhau
+ * mask — so the page is coloured by the work rather than by a palette.
+ *
+ * Every rule is scoped under `.craft` so it cannot reach the album in
+ * documentary-archive.css, the market in documentary-dragon.css, or the default
+ * template in documentary.css.
+ */
+
+.craft {
+  --paper: #f4eee3;
+  --paper-deep: #ebe2d2;
+  --paper-edge: #e2d7c3;
+
+  --ink: #201a13;
+  --ink-soft: rgba(32, 26, 19, 0.74);
+  --ink-mute: rgba(32, 26, 19, 0.55);
+  --ink-faint: rgba(32, 26, 19, 0.38);
+  --hair: rgba(32, 26, 19, 0.16);
+  --hair-soft: rgba(32, 26, 19, 0.09);
+
+  /* Sampled off the footage. --swatch is set per chapter from the data. */
+  --terracotta: #9c4a2a;
+  --baluchari: #a5192c;
+  --brass: #a8853c;
+  --timber: #a07c4e;
+  --chhau: #cf3c7c;
+  --swatch: var(--terracotta);
+
+  --display: var(--font-craft-display), "Eczar", Georgia, serif;
+  --text: var(--font-craft-text), "Spectral", Georgia, serif;
+  --utility: var(--font-craft-utility), "Archivo", system-ui, sans-serif;
+  --bengali: var(--font-craft-bengali), "Noto Serif Bengali", "Shonar Bangla",
+    "Vrinda", serif;
+
+  --step--2: clamp(0.66rem, 0.63rem + 0.14vw, 0.74rem);
+  --step--1: clamp(0.78rem, 0.74rem + 0.18vw, 0.87rem);
+  --step-0: clamp(1.03rem, 0.99rem + 0.2vw, 1.15rem);
+  --step-1: clamp(1.2rem, 1.08rem + 0.6vw, 1.5rem);
+  --step-2: clamp(1.6rem, 1.3rem + 1.5vw, 2.4rem);
+  --step-3: clamp(2rem, 1.5rem + 2.6vw, 3.3rem);
+  --step-4: clamp(2.9rem, 1.1rem + 7.6vw, 7.6rem);
+
+  --page: min(1280px, 90vw);
+  --band: clamp(4rem, 10vw, 9rem);
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: var(--step-0);
+  font-weight: 400;
+  line-height: 1.74;
+}
+
+/* A faint warm wash rather than a flat fill, so a page of mounted plates does
+ * not read as a spreadsheet. */
+.craft-ground {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(90% 30% at 84% 8%, rgba(156, 74, 42, 0.07), transparent 70%),
+    radial-gradient(70% 26% at 6% 52%, rgba(168, 133, 60, 0.06), transparent 74%),
+    linear-gradient(180deg, var(--paper) 0%, var(--paper) 60%, var(--paper-deep) 100%);
+}
+
+.craft > header,
+.craft > section,
+.craft > nav,
+.craft > footer {
+  position: relative;
+  z-index: 1;
+}
+
+.craft-heading {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 500;
+  line-height: 1.14;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+/* ---- hero ---------------------------------------------------------------- */
+
+.craft-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 100svh;
+  padding: var(--band) 0 clamp(3rem, 7vw, 6rem);
+  overflow: hidden;
+}
+
+.craft-hero-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.craft-hero-loop {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The source is the warp of a loom shot against bokeh: already the right
+   * colour for this page, only a shade too literal at full saturation. */
+  filter: saturate(0.94) contrast(1.02);
+}
+
+/* The frame does not stop, it dissolves into the paper — so the title block
+ * reads as printed on the same sheet as everything below it. */
+.craft-hero-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(20, 14, 9, 0.52) 0%,
+      rgba(20, 14, 9, 0.26) 34%,
+      rgba(20, 14, 9, 0.58) 72%,
+      var(--paper) 100%
+    ),
+    linear-gradient(90deg, rgba(20, 14, 9, 0.42), transparent 62%);
+}
+
+.craft-mast {
+  position: relative;
+  z-index: 1;
+  width: var(--page);
+  margin-inline: auto;
+  color: #f6efe3;
+}
+
+.craft-mast-commission {
+  margin: 0 0 clamp(1rem, 2.4vw, 1.9rem);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(246, 239, 227, 0.72);
+}
+
+.craft-mast-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-4);
+  font-weight: 500;
+  line-height: 0.94;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+  text-shadow: 0 0.04em 0.5em rgba(18, 12, 7, 0.42);
+}
+
+.craft-mast-line {
+  max-width: 46ch;
+  margin: clamp(1.1rem, 2.4vw, 1.9rem) 0 0;
+  font-size: var(--step-1);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.44;
+  color: rgba(246, 239, 227, 0.9);
+}
+
+.craft-mast-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem clamp(1rem, 2.4vw, 2.1rem);
+  margin: clamp(1.6rem, 3vw, 2.6rem) 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(246, 239, 227, 0.68);
+}
+
+.craft-mast-facts li {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2.1rem);
+}
+
+.craft-mast-facts li + li::before {
+  content: "";
+  width: 1px;
+  height: 0.85em;
+  background: rgba(246, 239, 227, 0.34);
+}
+
+/* ---- overture: the film's own title cards -------------------------------- */
+
+.craft-overture {
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: clamp(3.5rem, 9vw, 8rem) clamp(2.5rem, 6vw, 5rem);
+}
+
+/* The trailer burns three cards into the picture in an italic serif. They are
+ * the film's own words about itself, so the page opens on them rather than on
+ * a synopsis — set in the text face's italic, which is the nearest match. */
+.craft-cards {
+  display: grid;
+  gap: clamp(0.9rem, 2.2vw, 1.8rem);
+  margin: 0 0 clamp(3rem, 7vw, 6rem);
+  padding: 0;
+  list-style: none;
+}
+
+.craft-card {
+  position: relative;
+  padding-left: clamp(1.6rem, 4vw, 3.4rem);
+  font-size: var(--step-3);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+}
+
+.craft-card::before {
+  content: "";
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: clamp(0.8rem, 2.4vw, 2.1rem);
+  height: 1px;
+  background: var(--swatch);
+}
+
+/* Each card steps further in than the last, the way the trailer lets them
+ * build. The third one carries the film into the body of the page. */
+.craft-card:nth-child(2) {
+  margin-left: clamp(0rem, 5vw, 4.5rem);
+}
+
+.craft-card:nth-child(3) {
+  margin-left: clamp(0rem, 10vw, 9rem);
+}
+
+.craft-card:nth-child(1) {
+  --swatch: var(--terracotta);
+}
+
+.craft-card:nth-child(2) {
+  --swatch: var(--brass);
+}
+
+.craft-card:nth-child(3) {
+  --swatch: var(--chhau);
+}
+
+.craft-overture-prose {
+  max-width: 68ch;
+  margin-left: auto;
+  font-size: var(--step-1);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.craft-overture-prose p {
+  margin: 0 0 1.1em;
+}
+
+.craft-overture-prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- swatch index -------------------------------------------------------- */
+
+/* The whole film as five colours. It is a table of contents, but the useful
+ * part is the colour: the reader learns the page's structure by seeing the
+ * swatch, then meets it again in the margin of each chapter. */
+.craft-index {
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: clamp(2rem, 5vw, 4rem);
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+}
+
+.craft-index-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
+  gap: clamp(0.9rem, 2vw, 1.8rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.craft-index-chip {
+  display: grid;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.craft-index-block {
+  height: clamp(3rem, 7vw, 5.5rem);
+  background: var(--swatch);
+  /* The chip is a material sample, so it gets the deckle of a torn paper edge
+   * rather than a rounded corner. */
+  clip-path: polygon(0 0, 100% 0, 100% 94%, 82% 100%, 41% 95%, 0 100%);
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.craft-index-chip:hover .craft-index-block,
+.craft-index-chip:focus-visible .craft-index-block {
+  transform: translateY(-0.35rem);
+}
+
+.craft-index-name {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.craft-index-bengali {
+  font-family: var(--bengali);
+  font-size: var(--step--1);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--ink-mute);
+}
+
+/* ---- chapters ------------------------------------------------------------ */
+
+.craft-chapter {
+  display: grid;
+  grid-template-columns: minmax(8rem, 13rem) minmax(0, 1fr);
+  column-gap: clamp(2rem, 5vw, 5rem);
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: var(--band);
+  border-bottom: 1px solid var(--hair-soft);
+}
+
+.craft-chapter:last-of-type {
+  border-bottom: 0;
+}
+
+/* Sticky so the material stays named for the length of its chapter. */
+.craft-rail {
+  position: sticky;
+  top: clamp(1.5rem, 5vh, 4rem);
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+  grid-row: span 3;
+  height: max-content;
+}
+
+.craft-rail-block {
+  height: clamp(3.5rem, 9vw, 7rem);
+  margin-bottom: 0.4rem;
+  background: var(--swatch);
+  clip-path: polygon(0 0, 100% 0, 100% 95%, 78% 100%, 38% 96%, 0 100%);
+}
+
+.craft-rail-name {
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.craft-rail-bengali {
+  font-family: var(--bengali);
+  font-size: var(--step-1);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--swatch);
+}
+
+.craft-rail-roman {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+
+.craft-rail-place {
+  margin-top: 0.5rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--hair);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.craft-chapter-body {
+  max-width: 62ch;
+}
+
+.craft-prose {
+  margin-top: clamp(1.2rem, 2.4vw, 2rem);
+  color: var(--ink-soft);
+}
+
+.craft-prose p {
+  margin: 0 0 1.15em;
+}
+
+.craft-prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* The opening line of each chapter is set in small caps, so the eye lands on
+ * the prose rather than on the plates below it. */
+.craft-prose p:first-child::first-line {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+
+/* ---- motion plate -------------------------------------------------------- */
+
+.craft-motion {
+  grid-column: 2;
+  margin: clamp(2.2rem, 5vw, 4rem) 0 0;
+}
+
+.craft-motion-window {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--paper-edge);
+  box-shadow: 0 1.4rem 2.6rem -1.6rem rgba(32, 20, 10, 0.5);
+}
+
+.craft-motion-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---- mounted plates ------------------------------------------------------ */
+
+.craft-mounts {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.1rem, 2.6vw, 2.4rem);
+  margin-top: clamp(2.2rem, 5vw, 4rem);
+}
+
+/* A single plate gets the whole column and a wide crop: with nothing beside it
+ * to compare against, the picture has to carry the chapter on its own. */
+.craft-mounts[data-count="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.craft-mounts[data-count="1"] .craft-mount-window {
+  aspect-ratio: 21 / 9;
+}
+
+/* Every still in this film is a 16:9 video frame, so that is the default: a
+ * plate is shown as it was shot. */
+.craft-mount-window {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--paper-edge);
+  box-shadow: 0 1.2rem 2.2rem -1.5rem rgba(32, 20, 10, 0.55);
+}
+
+.craft-mount-window img {
+  object-fit: cover;
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.craft-mount:hover .craft-mount-window img {
+  transform: scale(1.035);
+}
+
+/* Plates hang off a line rather than sitting in a flat grid — every second one
+ * drops, the way work is pinned to a board. */
+.craft-mount:nth-child(even) {
+  margin-top: clamp(1.2rem, 4vw, 3.4rem);
+}
+
+/* Opt-in, and only for plates that are pure texture — a portrait crop of a
+ * 16:9 frame throws away well over half its width, which ruins any plate with
+ * a subject standing in it but costs a piece of cloth nothing. */
+.craft-mount--tall .craft-mount-window {
+  aspect-ratio: 3 / 4;
+}
+
+.craft-mount figcaption,
+.craft-motion figcaption {
+  margin-top: 0.7rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+}
+
+/* ---- register ------------------------------------------------------------ */
+
+/* The wall panel: what the crafts are called and where they are still worked.
+ * Set on the deeper paper so it reads as a printed panel rather than as more
+ * of the essay. */
+.craft-register {
+  padding-block: var(--band);
+  background: var(--paper-deep);
+  border-block: 1px solid var(--hair);
+}
+
+.craft-register-head {
+  width: var(--page);
+  margin-inline: auto;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.craft-register-note {
+  max-width: 54ch;
+  margin: 0.9rem 0 0;
+  font-size: var(--step-0);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink-mute);
+}
+
+.craft-register-list {
+  width: var(--page);
+  margin-inline: auto;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--hair);
+}
+
+.craft-register-row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.6fr) minmax(0, 0.45fr) minmax(0, 1.5fr);
+  gap: 0.35rem clamp(1rem, 3vw, 2.5rem);
+  align-items: baseline;
+  padding: clamp(0.9rem, 2vw, 1.4rem) 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.craft-register-craft {
+  font-family: var(--display);
+  font-size: var(--step-1);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.craft-register-place {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.craft-register-detail {
+  font-size: var(--step--1);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* ---- trailer ------------------------------------------------------------- */
+
+.craft-watch {
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: var(--band);
+}
+
+/* documentary.css sets this heading for a dark page; on paper it has to be
+ * ink, and it is the one label on this page that names a section. */
+.craft .documentary-section-title {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  color: var(--ink-mute);
+}
+
+.craft .documentary-player {
+  box-shadow: 0 2rem 4rem -2rem rgba(32, 20, 10, 0.6);
+}
+
+/* ---- contact sheet ------------------------------------------------------- */
+
+.craft-sheet {
+  width: var(--page);
+  margin-inline: auto;
+  padding-block: var(--band);
+  border-top: 1px solid var(--hair);
+}
+
+.craft-sheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem clamp(1.5rem, 4vw, 3rem);
+  align-items: baseline;
+  margin-bottom: clamp(1.8rem, 4vw, 3rem);
+}
+
+.craft-sheet-count {
+  margin: 0;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.craft-sheet-grid {
+  display: grid;
+  /* 8rem rather than something roomier so a phone still gets two columns: a
+   * contact sheet read one frame at a time is just a gallery. */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 8rem), 1fr));
+  gap: clamp(0.9rem, 2vw, 1.6rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.craft-chip-window {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--paper-edge);
+}
+
+.craft-chip-window img {
+  object-fit: cover;
+}
+
+.craft-chip figcaption {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--ink-mute);
+}
+
+.craft-chip-number {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-faint);
+}
+
+/* ---- colophon ------------------------------------------------------------ */
+
+.craft-colophon {
+  padding-block: var(--band) clamp(3rem, 7vw, 5rem);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.craft-credits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: clamp(1.4rem, 3vw, 2.6rem);
+  width: var(--page);
+  margin-inline: auto;
+  margin-block: 0 clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.craft-credits dt {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(244, 238, 227, 0.5);
+}
+
+.craft-credits dd {
+  margin: 0.45rem 0 0;
+  font-family: var(--display);
+  font-size: var(--step-1);
+  font-weight: 400;
+}
+
+.craft-colophon-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem clamp(1.5rem, 4vw, 3rem);
+  align-items: baseline;
+  justify-content: space-between;
+  width: var(--page);
+  margin-inline: auto;
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  border-top: 1px solid rgba(244, 238, 227, 0.16);
+}
+
+.craft-colophon-foot p {
+  margin: 0;
+  font-size: var(--step--1);
+  font-style: italic;
+  font-weight: 300;
+  color: rgba(244, 238, 227, 0.62);
+}
+
+.craft-back {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(244, 238, 227, 0.4);
+  padding-bottom: 0.3rem;
+  transition: border-color 0.3s ease;
+}
+
+.craft-back:hover,
+.craft-back:focus-visible {
+  border-bottom-color: var(--paper);
+}
+
+/* ---- narrow -------------------------------------------------------------- */
+
+@media (max-width: 880px) {
+  .craft-chapter {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: clamp(1.5rem, 4vw, 2.5rem);
+  }
+
+  /* The rail stops being a margin and becomes a masthead for the chapter: a
+   * sticky column has nowhere to sit once the text runs full width. */
+  .craft-rail {
+    position: static;
+    grid-row: auto;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 1rem;
+  }
+
+  .craft-rail-block {
+    grid-row: span 2;
+    width: 3.2rem;
+    height: 3.2rem;
+    margin-bottom: 0;
+  }
+
+  .craft-rail-bengali {
+    align-self: start;
+  }
+
+  .craft-rail-roman,
+  .craft-rail-place {
+    grid-column: 2;
+  }
+
+  .craft-rail-place {
+    margin-top: 0.2rem;
+  }
+
+  .craft-motion,
+  .craft-mounts {
+    grid-column: 1;
+  }
+
+  .craft-mounts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .craft-mount:nth-child(even) {
+    margin-top: 0;
+  }
+
+  .craft-mount--tall .craft-mount-window {
+    aspect-ratio: 4 / 3;
+  }
+
+  .craft-register-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .craft-card:nth-child(2),
+  .craft-card:nth-child(3) {
+    margin-left: 0;
+  }
+
+  .craft-overture-prose {
+    margin-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .craft-index-block,
+  .craft-mount-window img {
+    transition: none;
+  }
+
+  .craft-mount:hover .craft-mount-window img {
+    transform: none;
+  }
+}

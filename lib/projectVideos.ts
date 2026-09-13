@@ -86,10 +86,10 @@ export type ProjectMediaTile =
       src: string;
     });
 
-// The documentary pages are not published yet, so every tile that names one is
-// parked on the maintenance screen. Flip this to false to send tiles through to
-// /project/<project>/<documentary>; the route and its data are already in place.
-const PARK_TILES_ON_MAINTENANCE: boolean = true;
+// The documentary pages are published, so tiles open them directly. Flip this
+// back to true to park every tile that names a documentary on the maintenance
+// screen again; the route and its data stay in place either way.
+const PARK_TILES_ON_MAINTENANCE: boolean = false;
 
 // Mosaic tiles never point at the full film: the documentary cuts here are
 // 43MB and 25MB. Hover plays the ~1MB loop built by scripts/build-hero-loops.mjs,

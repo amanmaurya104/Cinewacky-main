@@ -14,6 +14,9 @@ import StoryVisualNarrative from '@/components/story/StoryVisualNarrative';
 import TypedText from '@/components/story/TypedText';
 import ArchiveDocumentary from '@/components/documentary/ArchiveDocumentary';
 import DocumentaryStandard from '@/components/documentary/DocumentaryStandard';
+import CraftDocumentary from '@/components/documentary/craft/CraftDocumentary';
+import DragonDocumentary from '@/components/documentary/dragon/DragonDocumentary';
+import PassageDocumentary from '@/components/documentary/passage/PassageDocumentary';
 import {
   getAllDocumentaryParams,
   getDocumentaryForProject,
@@ -28,6 +31,9 @@ import {
 import '@/styles/story.css';
 import '@/styles/documentary.css';
 import '@/styles/documentary-archive.css';
+import '@/styles/documentary-craft.css';
+import '@/styles/documentary-dragon.css';
+import '@/styles/documentary-passage.css';
 
 interface Props {
   params: Promise<{ slug: string; storySlug: string }>;
@@ -73,11 +79,23 @@ export default async function StoryPage({ params }: Props) {
     const documentary = getDocumentaryForProject(slug, storySlug);
     if (!documentary) return notFound();
 
-    return documentary.theme === 'archive' ? (
-      <ArchiveDocumentary documentary={documentary} />
-    ) : (
-      <DocumentaryStandard documentary={documentary} />
-    );
+    if (documentary.theme === 'archive') {
+      return <ArchiveDocumentary documentary={documentary} />;
+    }
+
+    if (documentary.theme === 'dragon') {
+      return <DragonDocumentary documentary={documentary} />;
+    }
+
+    if (documentary.theme === 'craft') {
+      return <CraftDocumentary documentary={documentary} />;
+    }
+
+    if (documentary.theme === 'passage') {
+      return <PassageDocumentary documentary={documentary} />;
+    }
+
+    return <DocumentaryStandard documentary={documentary} />;
   }
 
   const { prev, next } = getAdjacentStories(slug, storySlug);
