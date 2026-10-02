@@ -46,7 +46,11 @@ const projects: Project[] = [
         documentary: 'margaret-to-nivedita',
       },
       { file: 'DOCU TRAILER .mp4', title: 'OUR DOCUMENTARY TRAILER', documentary: DOC },
-      { file: 'OPENING 5.jpg', title: 'KING OF THE ROAD: Wim Wenders', documentary: DOC },
+      {
+        file: 'OPENING 5.jpg',
+        title: 'KING OF THE ROAD: Wim Wenders',
+        documentary: 'king-of-the-road',
+      },
     ],
   },
   {

@@ -68,7 +68,6 @@ function filmStills(slug: string, count = 8): string[] {
   );
 }
 
-const darkRisingStills = filmStills('dark-rising');
 const mistimukhStills = filmStills('mistimukh');
 const trailerForFictionStills = filmStills('trailer-for-fiction');
 const theCatStills = filmStills('the-cat');
@@ -242,32 +241,6 @@ const stories: Story[] = [
     producerNote:
       '"In a world of shadows, the truth will always find its way" Born from a shoestring budget and driven by a collective of fiercely dedicated, up-and-coming filmmakers, Kali emerges as a testament to the power of passion and ingenuity. The crew, many from the very slum where the story unfolds, worked alongside up-and-coming talent from across West Bengal, infusing the film with authenticity and heart. A true labour of love, this film pioneers a fresh approach to superhero storytelling — one that is authentic, rooted in real human experience, and non-exploitative. It goes beyond mere spectacle, translating its raw energy not just on screen but in the very methodology of its creation. Kali reimagines the superhero myth, transforming it into something more profound — more human. It’s a meditation on justice, vengeance, and the blurred lines between dreams and reality, built for cinematic scale yet grounded in an emotional depth only possible through high-end arthouse filmmaking. This film is a bold step toward telling stories that resonate on a deeper level — stories that stir empathy, ignite awareness, and provoke meaningful change. It reflects my vision as a director: to weave social relevance into gripping genre narratives that challenge the status quo. We invite you to step into a world where heroism is born from the ordinary, where the power of will can turn the most fragile into the extraordinary. Kali is a celebration of light, even in the darkest corners, where the fight for justice isn’t just a battle — it’s an awakening.',
     trailer: KALI_TRAILER,
-  },
-  {
-    slug: 'dark-rising',
-    projectSlug: PROJECT,
-    title: 'Dark Rising',
-    tagline: 'From shadow, something stirs.',
-    heroVideo: heroLoop('DARK RISING.mp4'),
-    poster: heroPoster('DARK RISING.mp4'),
-    thumbnail: heroPoster('DARK RISING.mp4'),
-    synopsis:
-      'A slow-burn ascent through tension and revelation — where the darkest hour holds the sharpest truth.',
-    visualNarrative: [
-      {
-        text: 'Shadows lengthen. The world contracts to a single point of focus — something is about to break the surface.',
-        image: darkRisingStills[1],
-      },
-      {
-        text: 'Light fractures through smoke and rain. The rise is not triumphant — it is inevitable.',
-        image: darkRisingStills[4],
-      },
-    ],
-    crew: sharedCrew,
-    cast: [{ actor: 'Lead', character: 'The Ascendant', portrait: darkRisingStills[2] }],
-    gallery: darkRisingStills,
-    achievements: [],
-    trailer: video('DARK RISING.mp4'),
   },
   {
     slug: 'mistimukh',

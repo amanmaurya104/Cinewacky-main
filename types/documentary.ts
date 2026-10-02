@@ -18,6 +18,13 @@ export interface DocumentaryPlate {
    * the sides costs nothing. A plate with a subject in it loses its framing.
    */
   tall?: boolean;
+  /**
+   * Intrinsic size, for plates laid out at their own aspect ratio rather than
+   * cropped into a fixed window — the Dark Rising set photographs are a mix of
+   * portrait, 3:2 and 4:3 phone frames.
+   */
+  width?: number;
+  height?: number;
 }
 
 /** A titled run of prose, optionally mounted beside a plate. */
@@ -158,9 +165,11 @@ export interface Documentary {
    * 'archive' swaps the default dark template for the album layout;
    * 'dragon' for the market-morning layout with the steam dragon behind it;
    * 'craft' for the material record, filed by what the work is made of;
-   * 'passage' for the memorial, filed by the places on a crossing.
+   * 'passage' for the memorial, filed by the places on a crossing;
+   * 'rising' for the development dossier, filed as a case record;
+   * 'road' for the tour record, laid out like the tour's own poster.
    */
-  theme?: 'archive' | 'dragon' | 'craft' | 'passage';
+  theme?: 'archive' | 'dragon' | 'craft' | 'passage' | 'rising' | 'road';
   tagline?: string;
   /** One paragraph per entry. */
   synopsis?: string[];
@@ -179,6 +188,9 @@ export interface Documentary {
   stills?: string[];
   credits?: DocumentaryCredit[];
   awards?: DocumentaryAward[];
+  /** Overrides for the <title> and meta description, when the brief gives them. */
+  seoTitle?: string;
+  seoDescription?: string;
   /** Back link target, e.g. /project/life-beyond-lens. */
   projectSlug?: string;
   projectTitle?: string;
@@ -248,4 +260,170 @@ export interface Documentary {
   /** The closing line, set alone over the contact sheet. */
   epitaph?: string;
   epitaphSource?: string;
+
+  /* ---- rising theme ---- */
+  dossier?: DocumentaryDossier;
+
+  /* ---- road theme ---- */
+  road?: DocumentaryRoad;
+}
+
+/* ---- rising theme ------------------------------------------------------- */
+
+/** One line of a labelled record, e.g. 'Proposed duration' / 'Approx. 60 min'. */
+export interface DocumentaryFact {
+  label: string;
+  value: string;
+}
+
+/** A numbered entry in a dossier list: a theme, a reason, an intention. */
+export interface DocumentaryEntry {
+  title: string;
+  note: string;
+  plate?: DocumentaryPlate;
+}
+
+/**
+ * One of the two scales the project is told at. `status` is the point of the
+ * section: what was shot is drawn solid, what is only proposed is drawn as an
+ * outline, so the page cannot be read as claiming a finished series.
+ */
+export interface DocumentaryLevel {
+  level: string;
+  title: string;
+  text: string;
+  status: 'shot' | 'proposed';
+  plate?: DocumentaryPlate;
+}
+
+/** An ability concept named in the official material. */
+export interface DocumentaryPower {
+  character: string;
+  ability: string;
+  performer?: string;
+  /** Picks the card's treatment: brushed steel or ember. */
+  element: 'metal' | 'fire';
+}
+
+export interface DocumentaryDepartment {
+  department: string;
+  credits: DocumentaryCredit[];
+}
+
+/**
+ * The Dark Rising page is built from a research dossier rather than from a
+ * finished film, and keeps the dossier's distinction between what is verified,
+ * what is the project's own claim and what is only proposed. Every field that
+ * carries that distinction (`recordNote`, `levelsNote`, `figuresNote`, ...)
+ * prints, so the caveats travel with the facts.
+ */
+export interface DocumentaryDossier {
+  /** Studio line over the title, e.g. 'SD Films'. */
+  producedBy: string;
+  associate: string;
+
+  record: DocumentaryFact[];
+  recordNote: string;
+
+  question: string;
+  questionPlate: DocumentaryPlate;
+
+  concept: DocumentaryPassage;
+  conceptCoda: string;
+  themes: DocumentaryEntry[];
+
+  story: DocumentaryPassage;
+  levels: DocumentaryLevel[];
+  levelsNote: string;
+
+  ground: DocumentaryPassage;
+  reasons: DocumentaryEntry[];
+  groundCoda: string[];
+  set: DocumentaryPlate[];
+
+  roster: { character: string; performer: string }[];
+  rosterNote: string;
+  powers: DocumentaryPower[];
+  powersNote: string;
+
+  approach: DocumentaryPassage;
+  intentions: DocumentaryEntry[];
+  approachNote: string;
+
+  unveiling: DocumentaryPassage;
+  unveilingWhen: string;
+  unveilingWhere: string;
+  figures: DocumentaryFact[];
+  figuresNote: string;
+
+  departments: DocumentaryDepartment[];
+  creditsNote: string;
+  companies: DocumentaryCredit[];
+
+  frames: DocumentaryPlate[];
+}
+
+/* ---- road theme --------------------------------------------------------- */
+
+/**
+ * One city on the tour. Only the stop the film covers carries dates and
+ * venues; the brief gives none for the others, so none are printed.
+ */
+export interface DocumentaryRoadStop {
+  city: string;
+  dates?: string;
+  /** The stop the documentary was shot at. */
+  here?: boolean;
+}
+
+export interface DocumentaryFilm {
+  title: string;
+  year: string;
+}
+
+/**
+ * King of the Road records one stop of a travelling retrospective, so the page
+ * is laid out in the tour's own poster language and organised around the
+ * route: the five cities, with the one the film was made in marked on it.
+ */
+export interface DocumentaryRoad {
+  /** Set small over the title, e.g. 'Wim Wenders'. */
+  kicker: string;
+  /** Set under the title, e.g. 'The India Journey & Kolkata Chapter'. */
+  subtitle: string;
+  /** Short counts printed in the hero, e.g. '18 films'. */
+  counts: string[];
+  heroPlate: DocumentaryPlate;
+
+  /** The opening sentence, set large on its own. */
+  lede: string;
+  overture: string[];
+
+  routeTitle: string;
+  routeSpan: string;
+  stops: DocumentaryRoadStop[];
+
+  life: DocumentaryPassage;
+  filmography: DocumentaryFilm[];
+  filmographyNote: string;
+  lifeCoda: string;
+
+  tour: DocumentaryPassage;
+  tourLevels: DocumentaryEntry[];
+
+  kolkata: DocumentaryPassage;
+  kolkataFacts: DocumentaryFact[];
+  kolkataPlate?: DocumentaryPlate;
+
+  perspective: DocumentaryPassage;
+  ideas: DocumentaryEntry[];
+
+  /** The tour artwork, mounted as found objects. */
+  artwork: DocumentaryPlate[];
+
+  associations: DocumentaryCredit[];
+  crew: DocumentaryCredit[];
+
+  /** The one-paragraph summary, set as the closing statement. */
+  card: string;
 }

@@ -12,13 +12,16 @@ export default function ProjectVideoStack({ project }: Props) {
   const meta = getProjectVideoMeta(project);
   const category = project.category.toUpperCase();
   const isReelVibeUncut = project.slug === 'reel-vibe-uncut';
+  // On Reel Vibe Uncut only the finished pages open; the rest park on
+  // /maintenance until they have one.
+  const liveReelPages = new Set(['kali', 'dark-rising']);
 
   return (
     <div className="project-video-stack">
       {videos.map((video, index) => {
         const storySlug = getStorySlugForVideo(project.slug, video.filename);
         const storyHref = isReelVibeUncut
-          ? storySlug === 'kali'
+          ? storySlug && liveReelPages.has(storySlug)
             ? `/project/${project.slug}/${storySlug}`
             : '/maintenance'
           : storySlug

@@ -1,3 +1,4 @@
+import documentaries from '@/data/documentaries';
 import stories from '@/data/stories';
 import { showcaseVideoSrc } from '@/lib/projectVideos';
 import type { Story } from '@/types/story';
@@ -48,5 +49,12 @@ export function getStorySlugForVideo(
       item.heroVideo === videoSrc ||
       item.trailer === videoSrc
   );
-  return story?.slug;
+  if (story) return story.slug;
+
+  // A film can also open a documentary page under the same project — Dark
+  // Rising does — matched by the full-length source the page plays.
+  return documentaries.find(
+    (documentary) =>
+      documentary.projectSlug === projectSlug && documentary.video === videoSrc
+  )?.slug;
 }

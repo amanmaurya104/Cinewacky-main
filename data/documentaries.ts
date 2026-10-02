@@ -40,6 +40,23 @@ function mnAsset(filename: string): string {
   return `/documentaries/margaret-to-nivedita/${filename}`;
 }
 
+// Written by scripts/build-dark-rising.mjs: ten 2.37:1 grabs off the proof of
+// concept in timecode order (frame-10 is the title card), and fourteen
+// photographs from the Kibera shoot.
+function drFrame(n: number): string {
+  return `/documentaries/dark-rising/frames/frame-${String(n).padStart(2, '0')}.jpg`;
+}
+
+function drSet(n: number): string {
+  return `/documentaries/dark-rising/set/set-${String(n).padStart(2, '0')}.jpg`;
+}
+
+// The two pieces of tour artwork, served from where they were delivered. Both
+// are small enough (59-187KB) that next/image does all the work.
+function korAsset(filename: string): string {
+  return `/projects/life-beyond-lens/king-of-the-road/${encodeURIComponent(filename)}`;
+}
+
 export const documentaries: Documentary[] = [
   {
     id: 'life-beyond-lens',
@@ -703,6 +720,442 @@ export const documentaries: Documentary[] = [
 
     colophon:
       'Margaret to Nivedita — a Cinewacky production record. Twenty minutes, shot in Ireland, 2017.',
+    projectSlug: LBL,
+    projectTitle: 'Life Beyond Lens',
+  },
+  {
+    id: 'dark-rising',
+    slug: 'dark-rising',
+    theme: 'rising',
+    title: 'Dark Rising',
+    // Every fact here comes from Dark_Rising_Research_Dossier.docx, and the
+    // dossier's own caveats are kept as printed notes rather than dropped:
+    // this is a series in development with a proof of concept, not a released
+    // short film, and the audience figures are the project's own claim.
+    tagline: 'A superhero fantasy-drama, rooted in Kibera',
+    director: 'Souvid Datta',
+    location: 'Kibera, Nairobi',
+    factLine: [
+      'Created & written by Souvid Datta',
+      'Proof of concept',
+      'Kibera, Nairobi, Kenya',
+    ],
+
+    heroLoop: showcaseVideoSrc('reel-vibe-uncut', 'DARK RISING-loop.mp4'),
+    heroPoster: showcaseVideoSrc('reel-vibe-uncut', 'DARK RISING-poster.jpg'),
+    // 62MB; the player only fetches it once someone presses play.
+    video: showcaseVideoSrc('reel-vibe-uncut', 'DARK RISING.mp4'),
+    videoPoster: drFrame(10),
+    videoLabel: 'First-look teaser',
+
+    dossier: {
+      producedBy: 'SD Films',
+      associate: 'Cinewacky',
+
+      record: [
+        { label: 'Format', value: 'Fantasy-drama episodic / superhero series concept' },
+        { label: 'Proposed duration', value: 'Approximately 60 minutes' },
+        { label: 'Production stage', value: 'In development' },
+        { label: 'Proof of concept', value: 'Kibera, Nairobi, Kenya' },
+        { label: 'Approach', value: 'Micro-budget production with street casting' },
+        { label: 'Production company', value: 'SD Films' },
+        { label: 'First unveiled', value: 'MCM Comic Con, London — May 2018' },
+        {
+          label: 'Genre',
+          value: 'Superhero fantasy-drama with science-fiction and social themes',
+        },
+      ],
+      recordNote:
+        'Dark Rising is a proposed 60-minute episodic fantasy-drama — a superhero series in development, not a released standalone short film. The Nairobi footage is a proof of concept for the larger series.',
+
+      question:
+        'What would people actually do if they possessed extraordinary power in a world already shaped by inequality, discrimination and political conflict?',
+      questionPlate: { src: drFrame(7), caption: 'Hooded, against the dusk' },
+
+      concept: {
+        eyebrow: 'The central concept',
+        title: 'The Superiors',
+        paragraphs: [
+          'Dark Rising imagines a world where people develop extraordinary abilities, but the story is not built around conventional heroic mythology.',
+          'The official project description presents a world of “Superiors” — characters whose powers emerge from traumatic experiences and disenfranchised social environments. These individuals are not necessarily noble superheroes. They may be morally compromised, politically ambitious, damaged or closer to villains than traditional protagonists.',
+        ],
+      },
+      conceptCoda:
+        'The project explores power as a social and moral problem, rather than only as a source of action spectacle.',
+      themes: [
+        {
+          title: 'Power and responsibility',
+          note: 'How individuals respond when they gain abilities beyond ordinary human limits.',
+        },
+        {
+          title: 'Identity and discrimination',
+          note: 'How societies react to people who are perceived as different or threatening.',
+        },
+        {
+          title: 'Political ambition',
+          note: 'The relationship between extraordinary abilities and the desire to influence or control society.',
+        },
+        {
+          title: 'Personal redemption',
+          note: 'Whether damaged individuals can reconstruct their moral identities.',
+        },
+        {
+          title: 'Collective identity',
+          note: 'How communities respond to fear, exclusion and emerging superhuman populations.',
+        },
+        {
+          title: 'Humanity versus supremacy',
+          note: 'Whether possessing power makes someone more liberated — or more dangerous.',
+        },
+      ],
+
+      story: {
+        eyebrow: 'Story and premise',
+        title: 'A young man, his sister, and a rising power',
+        paragraphs: [
+          'The first-look material centres on troubled young people in East Africa who begin discovering dangerous and powerful abilities.',
+          'According to the trailer description, the pilot follows a politically ambitious young man in Kenya who explores his emerging powers, trains his younger sister and begins pursuing greater political influence. The wider concept expands from East Africa to an international world of superhumans struggling to exist within a society that has become increasingly reactionary toward them.',
+        ],
+      },
+      levels: [
+        {
+          level: 'Level 1',
+          title: 'The Nairobi proof of concept',
+          text: 'A grounded story set in Kibera, involving young characters, emerging abilities and the relationship between power, family and ambition.',
+          status: 'shot',
+          plate: { src: drFrame(8), caption: 'Brother and sister' },
+        },
+        {
+          level: 'Level 2',
+          title: 'The proposed international series',
+          text: 'A broader narrative involving superhuman characters across different communities and countries, together with social, political and moral conflict.',
+          status: 'proposed',
+        },
+      ],
+      levelsNote:
+        'The published trailer and project description establish the concept and proposed direction. They do not establish that a completed full season or finished feature-length film has been released.',
+
+      ground: {
+        eyebrow: 'The Nairobi and Kibera connection',
+        title: 'Shot in Kibera, cast from its streets',
+        paragraphs: [
+          "One of the project's defining production choices was filming the proof of concept in Kibera, Nairobi, using local street casting and a micro-budget approach. The official website identifies several cast members from the Kibera community.",
+        ],
+      },
+      reasons: [
+        {
+          title: 'Production authenticity',
+          note: 'The story is situated within a specific social and geographical environment rather than an abstract superhero city.',
+        },
+        {
+          title: 'Representation',
+          note: 'The project seeks to move beyond the predominantly American urban settings and conventional character models associated with mainstream superhero entertainment.',
+        },
+      ],
+      groundCoda: [
+        "The creator's stated intention is to place characters from underrepresented communities at the centre of the narrative, treating their experiences as complex human stories rather than simply as background material.",
+        'The official material describes the proof of concept as made with limited resources and the generosity of collaborators — an ambitious genre concept developed through a small-scale international production model.',
+      ],
+      // Intrinsic sizes, so the set wall lays each photograph out at its own
+      // shape instead of cropping the portraits.
+      set: [
+        { src: drSet(1), width: 768, height: 960, caption: 'A portrait between set-ups' },
+        { src: drSet(2), width: 960, height: 638, caption: 'Shooting at the kerosene depot' },
+        { src: drSet(3), width: 960, height: 640, caption: 'Close quarters in the lanes' },
+        { src: drSet(4), width: 960, height: 640, caption: 'Script in hand, between takes' },
+        { src: drSet(5), width: 960, height: 640, caption: 'Boom and camera on the rail line' },
+        { src: drSet(6), width: 960, height: 720, caption: 'An audience for the drone' },
+        { src: drSet(7), width: 960, height: 720, caption: 'The drone over Kibera' },
+        { src: drSet(8), width: 768, height: 960, caption: 'Portrait' },
+        { src: drSet(9), width: 960, height: 720, caption: 'Night on the tracks' },
+        { src: drSet(10), width: 960, height: 720, caption: 'Reading the scene' },
+        { src: drSet(11), width: 960, height: 720, caption: 'Direction, pages in hand' },
+        { src: drSet(12), width: 960, height: 720, caption: 'Walking up to the location' },
+        { src: drSet(13), width: 960, height: 720, caption: 'Street life, mid-shoot' },
+        { src: drSet(14), width: 960, height: 640, caption: 'Read-through against the tin' },
+      ],
+
+      roster: [
+        { character: 'Dalila Sialo', performer: 'Ann Marie Chibole' },
+        { character: 'Sefu Sialo', performer: 'Maxmillan Odhiambo' },
+        { character: 'Malia Sialo', performer: 'Sabrina Faridah Athman' },
+        { character: 'Solomon Kidenda', performer: 'Felix Peter Otieno' },
+        { character: 'Deepak Datta', performer: 'Souvid Datta' },
+        { character: 'Mary', performer: 'Michelle Mueni' },
+        { character: 'Teacher', performer: 'Barrett Atho “Jublak”' },
+        { character: 'Melanie McKay', performer: 'Ildiko Preszly' },
+        { character: 'News Presenter', performer: 'Hans Morgeneyer' },
+        { character: 'Radio Presenter', performer: 'Vivian Onyuna' },
+        { character: 'Leonard', performer: 'Jared Ochieng' },
+      ],
+      rosterNote:
+        "From the cast listing on the project's official website, which also includes supporting performers, government officers, gang members, market characters and additional performers.",
+      powers: [
+        {
+          character: 'Sefu Sialo',
+          ability: 'Metal manipulation',
+          performer: 'Maxmillan Odhiambo',
+          element: 'metal',
+        },
+        { character: 'Damini Datta', ability: 'Fire-wielding powers', element: 'fire' },
+      ],
+      powersNote:
+        'The public information does not establish the full limits, rules or narrative development of these abilities.',
+
+      approach: {
+        eyebrow: 'Visual and directorial approach',
+        title: 'Hyper-real, global, morally complicated',
+        paragraphs: [
+          'The creator describes Dark Rising as a project aiming for a hyper-realistic tone, global scope and cinematic vision. Rather than presenting a conventional battle between idealised heroes and clearly defined villains, the project aims to create morally complicated characters and contemporary social contexts.',
+        ],
+      },
+      intentions: [
+        {
+          title: 'Grounded genre filmmaking',
+          note: "Superhero abilities are placed within recognisable social environments, including Nairobi's Kibera community.",
+          plate: { src: drFrame(5), caption: 'A wall of notes and protest' },
+        },
+        {
+          title: 'Community-centred characters',
+          note: 'The project uses local casting and seeks to expand representation within the superhero genre.',
+          plate: { src: drFrame(2), caption: 'Balancing on the rail line' },
+        },
+        {
+          title: 'Moral ambiguity',
+          note: 'Characters are presented as people struggling with power, trauma and competing ethical choices rather than as simple heroes.',
+          plate: { src: drFrame(3), caption: 'A doorway of light' },
+        },
+        {
+          title: 'International world-building',
+          note: 'The concept expands beyond a single city toward an international network of superhuman characters and political consequences.',
+          plate: { src: drFrame(9), caption: 'Uniforms in the lane' },
+        },
+      ],
+      approachNote: "These are the creator's stated artistic aims and the project's published positioning.",
+
+      unveiling: {
+        eyebrow: 'Comic Con London',
+        title: 'First seen on Centre Stage',
+        paragraphs: [
+          "The project was publicly unveiled at MCM Comic Con London in May 2018, at Centre Stage at London's ExCeL venue. The official website says the presentation included the first teaser trailer and the launch of a fan website.",
+          "A contemporary report from The People's Movies, dated 28 May 2018, also described Dark Rising as a superhero television series in development and identified Souvid Datta and Chris Bouchard in connection with the project.",
+        ],
+      },
+      unveilingWhen: 'May 2018',
+      unveilingWhere: 'MCM Comic Con · ExCeL, London',
+      figures: [
+        { label: 'Fans signed up', value: '3,000+' },
+        { label: 'Countries', value: '14' },
+      ],
+      figuresNote:
+        "As stated on the official project page, through the project's temporary website. Not independently audited.",
+
+      departments: [
+        {
+          department: 'Direction and camera',
+          credits: [
+            { role: 'Director & Director of Photography', name: 'Souvid Datta' },
+            { role: 'Assistant DOP', name: 'Mike Lolly P' },
+            { role: 'Second Camera', name: 'Mike Dimo' },
+            { role: 'Camera Assistant', name: 'Eugene Mutisya' },
+          ],
+        },
+        {
+          department: 'Production',
+          credits: [
+            { role: 'Creator', name: 'Souvid Datta' },
+            { role: 'Production Coordinator', name: 'Leonard Klishko' },
+            { role: 'Location Manager', name: 'Nixon Ochieng Oloo' },
+            { role: 'Assistant Director', name: 'Melanie Cura Daball' },
+            { role: 'Runner', name: 'Stephen Otieno Ofuona' },
+          ],
+        },
+        {
+          department: 'Post-production and sound',
+          credits: [
+            { role: 'Supervising Editor', name: 'Subhajit Prasad' },
+            { role: 'Music Director', name: 'Soumik Datta' },
+            { role: 'CG Artist & VFX', name: 'Michal Wojtasik' },
+            { role: 'CG Artist 2', name: 'Slawek Jedrzejewski' },
+            { role: 'Sound Design & Mix', name: 'Evgeny Ryabovol' },
+            { role: 'Sound Mix', name: 'Nick Morchang' },
+          ],
+        },
+      ],
+      creditsNote: 'Songs performed by Bianju Morris and Moroko Kalihari.',
+      companies: [
+        { role: 'Produced by', name: 'SD Films' },
+        { role: 'Written & created by', name: 'Souvid Datta' },
+        { role: 'Development producer', name: 'Chris Bouchard' },
+        { role: 'In association with', name: 'Cinewacky' },
+      ],
+
+      // The cut in timecode order, title card last.
+      frames: Array.from({ length: 10 }, (_, i) => ({ src: drFrame(i + 1) })),
+    },
+
+    colophon: 'Dark Rising — a development record. SD Films, in association with Cinewacky.',
+    // Lives under Reel Vibe Uncut beside Kali: its DARK RISING video tile opens
+    // this page (lib/stories.ts getStorySlugForVideo matches it by `video`).
+    projectSlug: 'reel-vibe-uncut',
+    projectTitle: 'Reel Vibe Uncut',
+  },
+  {
+    id: 'king-of-the-road',
+    slug: 'king-of-the-road',
+    theme: 'road',
+    title: 'King of the Road',
+    // Every fact here comes from King_of_the_Road_Profile.docx. Its accuracy
+    // checklist is still open: the producer designation for Max Mueller
+    // Kolkata and the "In association with" wording are unconfirmed, and the
+    // tour poster gives the span as Feb 5 – March 1 where the profile gives
+    // 5–23 February. The profile's dates are used.
+    tagline: 'Wim Wenders — the India journey and the Kolkata chapter',
+    seoTitle: 'King of the Road: Wim Wenders in India & Kolkata | Documentary',
+    seoDescription:
+      'Explore our documentary on Wim Wenders’ first India visit, the King of the Road retrospective, and his special Kolkata chapter.',
+    director: 'Wim Wenders',
+    location: 'Kolkata',
+
+    road: {
+      kicker: 'Wim Wenders',
+      subtitle: 'The India Journey & Kolkata Chapter',
+      counts: ['18 films', '5 cities', 'A first visit to India'],
+      heroPlate: { src: asset('OPENING 5.jpg'), caption: 'From the documentary' },
+
+      lede: 'Cinema is a way of travelling without leaving the frame — and for Wim Wenders, the road has always been one of cinema’s most powerful spaces.',
+      overture: [
+        'Across a career spanning more than five decades, Wenders has explored movement, memory, solitude, landscape, identity, and the quiet poetry of everyday life. His films often turn journeys into encounters and ordinary spaces into emotionally charged cinematic landscapes.',
+        'King of the Road — The India Tour marked a significant new chapter in Wenders’ artistic journey: his first visit to India in February 2025. Presented by the Film Heritage Foundation, in association with the Wim Wenders Stiftung and in collaboration with Goethe-Institut / Max Mueller Bhavan, the travelling retrospective brought 18 films to five Indian cities between 5 and 23 February 2025.',
+        'Through our visual documentation and editorial treatment, King of the Road becomes a record of a cultural encounter: a filmmaker’s journey meeting the creative soul of Kolkata, and a moment in which cinema creates a bridge between different histories, geographies, and ways of seeing.',
+      ],
+
+      routeTitle: 'The India Tour',
+      routeSpan: '5–23 February 2025',
+      stops: [
+        { city: 'Mumbai' },
+        { city: 'Thiruvananthapuram' },
+        { city: 'Kolkata', dates: '16–19 Feb', here: true },
+        { city: 'New Delhi' },
+        { city: 'Pune' },
+      ],
+
+      life: {
+        eyebrow: 'Life and cinematic journey',
+        title: 'A road that began in Düsseldorf',
+        paragraphs: [
+          'Wim Wenders was born in Düsseldorf, Germany, in 1945 and became internationally recognised as one of the major figures associated with the New German Cinema of the 1970s. His creative work extends across directing, screenwriting, producing, photography, and visual art.',
+          'Rather than relying only on conventional plot mechanics, Wenders frequently builds his films around atmosphere, movement, observation, and the emotional relationship between people and places.',
+        ],
+      },
+      filmography: [
+        { title: 'Alice in the Cities', year: '1974' },
+        { title: 'The Wrong Move', year: '1975' },
+        { title: 'Kings of the Road', year: '1976' },
+        { title: 'The American Friend', year: '1977' },
+        { title: 'Paris, Texas', year: '1984' },
+        { title: 'Tokyo-Ga', year: '1985' },
+        { title: 'Wings of Desire', year: '1987' },
+        { title: 'Buena Vista Social Club', year: '1999' },
+        { title: 'Pina', year: '2011' },
+        { title: 'Perfect Days', year: '2023' },
+      ],
+      filmographyNote:
+        'Selected works. Together they show a continuing interest in the road movie, the documentary gaze, memory, music, architecture, and the human experience of time.',
+      lifeCoda:
+        'Landscapes are not merely backgrounds; they can function as emotional spaces. Journeys are not only geographical movements; they can also represent displacement, discovery, uncertainty, and transformation.',
+
+      tour: {
+        eyebrow: 'The India Tour',
+        title: 'Eighteen films, five cities, one first visit',
+        paragraphs: [
+          'The India Tour was conceived as a travelling retrospective dedicated to Wenders’ work across more than half a century. The programme presented 18 films — features, short films, and documentaries — in Mumbai, Thiruvananthapuram, Kolkata, New Delhi, and Pune, with Wenders attending screenings and taking part in public conversations and engagements with film communities.',
+          'The official event description records that this was Wenders’ first visit to India. In the Goethe-Institut’s published introduction, Wenders reflected on India’s abundance of landscapes and images and on the central place of cinema in the country’s cultural life. His statement also acknowledged the Film Heritage Foundation’s work in preserving, restoring, and bringing Indian film heritage to contemporary audiences.',
+        ],
+      },
+      tourLevels: [
+        {
+          title: 'A retrospective',
+          note: 'Of Wenders’ own cinema, across more than half a century.',
+        },
+        {
+          title: 'An exchange',
+          note: 'With India’s film culture — screenings joined to conversations, masterclasses, and encounters with audiences, students, and filmmakers.',
+        },
+      ],
+
+      kolkata: {
+        eyebrow: 'The Kolkata chapter',
+        title: 'Four days in a city of cinema',
+        paragraphs: [
+          'Kolkata hosted the India Tour from 16 to 19 February 2025, with screenings at Nandan and Basusree. The city chapter also included public events such as a masterclass with Wim Wenders and related conversations involving Donata Wenders.',
+          'Kolkata’s importance in this context comes from its long-standing cultural relationship with cinema. The city’s creative ecosystem has been shaped by filmmakers, writers, theatre practitioners, musicians, photographers, and visual artists. Its film culture has historically encouraged close viewing, critical discussion, archival interest, and the exchange of ideas across generations.',
+          'The Kolkata encounter can therefore be understood as more than a stop on a travelling programme. It brought Wenders’ work into contact with a city whose cultural identity has been deeply influenced by cinema and artistic debate.',
+        ],
+      },
+      kolkataFacts: [
+        { label: 'Dates', value: '16–19 February 2025' },
+        { label: 'Screenings', value: 'Nandan and Basusree' },
+        { label: 'Programme', value: '16 of the 18 films' },
+        { label: 'Public events', value: 'A masterclass with Wim Wenders; conversations with Donata Wenders' },
+      ],
+
+      perspective: {
+        eyebrow: 'Editorial perspective',
+        title: 'Three ideas in one frame',
+        paragraphs: [
+          'Our documentary approaches the India visit through the language of observation and cultural documentation. It connects the public event with the wider story of Wenders’ artistic life, while giving special attention to Kolkata as a creative environment. The purpose is not simply to list screenings or reproduce an event report, but to place the encounter within a broader reflection on cinema, movement, memory, and artistic exchange.',
+        ],
+      },
+      ideas: [
+        {
+          title: 'The journey of a filmmaker',
+          note: 'Wenders’ artistic life, from the New German Cinema of the 1970s to Perfect Days.',
+        },
+        {
+          title: 'A first India visit',
+          note: 'The cultural significance of his first journey to India, in February 2025.',
+        },
+        {
+          title: 'The creative character of Kolkata',
+          note: 'A city where cinema is not merely an entertainment form, but a living part of cultural conversation.',
+        },
+      ],
+
+      artwork: [
+        {
+          src: korAsset('Wim-Wenders-Poster-1.jpg.jpeg'),
+          width: 768,
+          height: 1024,
+          caption: 'The India Tour — official poster',
+        },
+        {
+          src: korAsset('ww_final-compressed_seite_03-700x423.jpg.jpeg'),
+          width: 700,
+          height: 423,
+          caption: 'The India Tour — campaign artwork',
+        },
+      ],
+
+      associations: [
+        { role: 'In association with', name: 'Film Heritage Foundation' },
+        { role: 'In association with', name: 'Wim Wenders Stiftung (Wim Wenders Foundation)' },
+        { role: 'In collaboration with', name: 'Goethe-Institut / Max Mueller Bhavan Kolkata' },
+        { role: 'Produced by', name: 'Max Mueller Kolkata' },
+      ],
+      crew: [
+        { role: 'Project Coordinator', name: 'Sharmitha' },
+        { role: 'Camera', name: 'Basab Mallick' },
+        { role: 'Editor', name: 'Subhajit Prasad' },
+        { role: 'Technical Post-Production Support', name: 'Cinewacky Production' },
+        { role: 'Production Coordinator', name: 'Moinak Guho' },
+        { role: 'Assistant Editor', name: 'Snigdha Prasad' },
+      ],
+
+      card: 'King of the Road explores the life and cinematic vision of Wim Wenders, his first visit to India in February 2025, and the special cultural encounter that unfolded in Kolkata — cinema as a language of movement, memory, and creative exchange.',
+    },
+
+    colophon: 'King of the Road — a Cinewacky documentary record. Kolkata, February 2025.',
     projectSlug: LBL,
     projectTitle: 'Life Beyond Lens',
   },

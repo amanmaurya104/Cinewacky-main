@@ -17,6 +17,8 @@ import DocumentaryStandard from '@/components/documentary/DocumentaryStandard';
 import CraftDocumentary from '@/components/documentary/craft/CraftDocumentary';
 import DragonDocumentary from '@/components/documentary/dragon/DragonDocumentary';
 import PassageDocumentary from '@/components/documentary/passage/PassageDocumentary';
+import RisingDocumentary from '@/components/documentary/rising/RisingDocumentary';
+import RoadDocumentary from '@/components/documentary/road/RoadDocumentary';
 import {
   getAllDocumentaryParams,
   getDocumentaryForProject,
@@ -34,6 +36,8 @@ import '@/styles/documentary-archive.css';
 import '@/styles/documentary-craft.css';
 import '@/styles/documentary-dragon.css';
 import '@/styles/documentary-passage.css';
+import '@/styles/documentary-rising.css';
+import '@/styles/documentary-road.css';
 
 interface Props {
   params: Promise<{ slug: string; storySlug: string }>;
@@ -60,8 +64,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (documentary) {
     return {
-      title: `${documentary.title} | Cinewacky`,
-      description: documentary.tagline ?? documentary.synopsis?.[0],
+      title: documentary.seoTitle ?? `${documentary.title} | Cinewacky`,
+      description:
+        documentary.seoDescription ?? documentary.tagline ?? documentary.synopsis?.[0],
     };
   }
 
@@ -93,6 +98,14 @@ export default async function StoryPage({ params }: Props) {
 
     if (documentary.theme === 'passage') {
       return <PassageDocumentary documentary={documentary} />;
+    }
+
+    if (documentary.theme === 'rising') {
+      return <RisingDocumentary documentary={documentary} />;
+    }
+
+    if (documentary.theme === 'road') {
+      return <RoadDocumentary documentary={documentary} />;
     }
 
     return <DocumentaryStandard documentary={documentary} />;

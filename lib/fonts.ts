@@ -1,17 +1,23 @@
 import {
   Archivo,
+  Barlow,
+  Barlow_Condensed,
   Bodoni_Moda,
   Cinzel,
   Cormorant_Garamond,
   Courier_Prime,
+  Cutive_Mono,
   Eczar,
   Fraunces,
   IBM_Plex_Mono,
   IBM_Plex_Sans,
   Karla,
   Lora,
+  Marcellus,
   Newsreader,
   Noto_Serif_Bengali,
+  Oswald,
+  Source_Serif_4,
   Spectral,
 } from 'next/font/google';
 
@@ -221,6 +227,78 @@ export const passageUtility = Karla({
 export const passageBengali = Noto_Serif_Bengali({
   subsets: ['bengali'],
   variable: '--font-passage-bengali',
+  display: 'swap',
+  preload: false,
+});
+
+/**
+ * Dark Rising is set as a development dossier for a superhero series, so it
+ * gets the one voice none of the other bespoke pages have: industrial rather
+ * than literary. Marcellus is a flared inscriptional capital — the nearest
+ * Google face to the bevelled steel serif on the film's own title card — and
+ * it is used for the title and the section heads only.
+ */
+export const risingDisplay = Marcellus({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-rising-display',
+  display: 'swap',
+  preload: false,
+});
+
+/** Barlow carries the reading text: plain, slightly rounded, readable on black. */
+export const risingText = Barlow({
+  subsets: ['latin'],
+  weight: ['300', '400', '500'],
+  style: ['normal', 'italic'],
+  variable: '--font-rising-text',
+  display: 'swap',
+  preload: false,
+});
+
+/**
+ * Labels, file numbers, the record and the credits. The condensed cut of the
+ * same family reads like stencilling on corrugated tin, which is the surface the
+ * camera keeps returning to in Kibera.
+ */
+export const risingUtility = Barlow_Condensed({
+  subsets: ['latin'],
+  weight: ['500', '600'],
+  variable: '--font-rising-utility',
+  display: 'swap',
+  preload: false,
+});
+
+/**
+ * King of the Road is set in the tour's own poster language. Oswald is the
+ * nearest Google face to the condensed vermilion caps of "KING OF THE ROAD" on
+ * the poster. Variable, so one file covers every weight the page uses.
+ */
+export const roadDisplay = Oswald({
+  subsets: ['latin'],
+  variable: '--font-road-display',
+  display: 'swap',
+  preload: false,
+});
+
+/** Source Serif 4 carries the essays: an editorial text face, variable too. */
+export const roadText = Source_Serif_4({
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  variable: '--font-road-text',
+  display: 'swap',
+  preload: false,
+});
+
+/**
+ * The poster lists the eighteen films in typewriter type along its foot, so the
+ * filmography and the small labels are set the same way. Cutive Mono rather
+ * than the Courier Prime the archive page uses.
+ */
+export const roadUtility = Cutive_Mono({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-road-utility',
   display: 'swap',
   preload: false,
 });
