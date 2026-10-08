@@ -1,0 +1,1369 @@
+/* Dark Rising — the rising theme.
+ *
+ * The page is built from a research dossier for a superhero series still in
+ * development, so it is filed as a case record: numbered files, a record
+ * sheet, and the dossier's caveats printed as notes beside the facts they
+ * qualify.
+ *
+ * The palette is sampled off the proof-of-concept footage, which is all
+ * backlit dusk over Kibera's tin roofs: a low ember sun, a mauve sky, and
+ * shadows that are blue rather than black. The page opens in that dusk and the
+ * dark rises as it scrolls — `.rising-sky-glow` sits at the foot of the
+ * viewport and sinks out of it on a scroll timeline — so the title is done as
+ * the background. Two accents and no more: ember, from the sun, for anything
+ * live; steel, from the bevelled title card, for the title and the metal card.
+ *
+ * Every rule is scoped under `.rising` so it cannot reach the other bespoke
+ * documentary pages or the default template in base.css.
+ */
+
+.rising {
+  --night: #06080c;
+  --dusk: #10151e;
+  --shadow: #18212d;
+  --panel: rgba(20, 27, 37, 0.62);
+  --mauve: #8a6877;
+  --rose: #d49a88;
+  --ember: #ff8a3d;
+  --ember-deep: #d4561c;
+  --steel: #cdd2d9;
+  --steel-mid: #8d959f;
+  --steel-dark: #4a515b;
+
+  --ink: #ece8e2;
+  --ink-soft: rgba(236, 232, 226, 0.76);
+  --ink-mute: rgba(236, 232, 226, 0.54);
+  --ink-faint: rgba(236, 232, 226, 0.34);
+  --hair: rgba(236, 232, 226, 0.14);
+  --hair-soft: rgba(236, 232, 226, 0.07);
+
+  --display: var(--font-rising-display), "Marcellus", "Trajan Pro", Georgia, serif;
+  --text: var(--font-rising-text), "Barlow", system-ui, sans-serif;
+  --utility: var(--font-rising-utility), "Barlow Condensed", "Arial Narrow",
+    system-ui, sans-serif;
+
+  --step--2: clamp(0.7rem, 0.67rem + 0.14vw, 0.78rem);
+  --step--1: clamp(0.82rem, 0.78rem + 0.18vw, 0.92rem);
+  --step-0: clamp(1.02rem, 0.98rem + 0.2vw, 1.14rem);
+  --step-1: clamp(1.2rem, 1.08rem + 0.6vw, 1.5rem);
+  --step-2: clamp(1.6rem, 1.25rem + 1.6vw, 2.5rem);
+  --step-3: clamp(2rem, 1.4rem + 3vw, 3.6rem);
+  --step-4: clamp(2.8rem, 1rem + 8.4vw, 8.4rem);
+
+  --page: min(1240px, calc(100vw - 2 * clamp(16px, 5vw, 64px)));
+  --band: clamp(4.5rem, 11vw, 9rem);
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background: var(--night);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: var(--step-0);
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.rising > header,
+.rising > section,
+.rising > footer {
+  position: relative;
+  z-index: 1;
+}
+
+.rising ::selection {
+  background: var(--ember);
+  color: var(--night);
+}
+
+.rising-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- the sky: dusk at the top, night by the foot -------------------------- */
+
+.rising-sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--night) 0%, var(--dusk) 100%);
+}
+
+/* The sun is down past the bottom edge; this is what it leaves on the sky. */
+.rising-sky-glow {
+  position: absolute;
+  inset: 30% -20% -12%;
+  background:
+    radial-gradient(40% 44% at 50% 100%, rgba(255, 138, 61, 0.3), transparent 72%),
+    radial-gradient(72% 70% at 50% 100%, rgba(138, 104, 119, 0.34), transparent 76%);
+  opacity: 0.45;
+  transform-origin: 50% 100%;
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rising-sky-glow {
+      animation: rising-dusk linear both;
+      animation-timeline: scroll(root block);
+    }
+  }
+}
+
+@keyframes rising-dusk {
+  from {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+  to {
+    opacity: 0.12;
+    transform: translateY(38%) scaleY(0.8);
+  }
+}
+
+/* ---- shared type --------------------------------------------------------- */
+
+.rising-heading {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-3);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+.rising-subheading {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-1);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
+.rising-file-tab {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1rem;
+  margin: 0 0 clamp(1rem, 2.4vw, 1.6rem);
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.rising-file-number {
+  padding: 0.1rem 0.55rem;
+  border: 1px solid color-mix(in oklab, var(--ember), transparent 40%);
+  color: var(--ember);
+  font-weight: 600;
+}
+
+.rising-prose {
+  max-width: 64ch;
+  color: var(--ink-soft);
+}
+
+.rising-prose p {
+  margin: 0 0 1.1em;
+}
+
+.rising-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.rising-coda {
+  max-width: 40ch;
+  margin: clamp(1.8rem, 4vw, 2.6rem) 0 0;
+  padding-left: 1.1rem;
+  border-left: 2px solid var(--ember);
+  font-family: var(--display);
+  font-size: var(--step-1);
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+/* A caveat from the dossier, printed beside the fact it qualifies. */
+.rising-note {
+  max-width: 72ch;
+  margin: clamp(1.4rem, 3vw, 2rem) 0 0;
+  font-size: var(--step--1);
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--ink-mute);
+}
+
+.rising-note-label {
+  margin: 0 0 0.5rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+
+.rising-note--key {
+  max-width: none;
+  padding: clamp(1.1rem, 2.6vw, 1.6rem) clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid var(--hair);
+  border-left: 3px solid var(--ember);
+  background: var(--panel);
+  font-size: var(--step-0);
+  font-style: normal;
+  color: var(--ink-soft);
+}
+
+.rising-note--key p:last-child {
+  margin: 0;
+}
+
+.rising-index-number {
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--ember);
+}
+
+/* ---- hero ---------------------------------------------------------------- */
+
+.rising-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100svh;
+  padding: clamp(1.2rem, 3vw, 2rem) max(16px, calc((100vw - var(--page)) / 2))
+    clamp(2.5rem, 7vw, 5rem);
+  overflow: hidden;
+}
+
+/* A playing video gets its own compositing layer in Chromium and paints over
+ * anything without a stacking context of its own, so both layers and the
+ * type above them are explicit. */
+.rising-hero-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--night);
+}
+
+.rising-hero-loop,
+.rising-hero-veil {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.rising-hero-loop {
+  z-index: 0;
+  object-fit: cover;
+}
+
+.rising-hero-veil {
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(6, 8, 12, 0.72) 0%, rgba(6, 8, 12, 0) 26%),
+    linear-gradient(0deg, var(--night) 0%, rgba(6, 8, 12, 0.6) 34%, rgba(6, 8, 12, 0.1) 70%);
+}
+
+.rising-hero-top,
+.rising-hero-title {
+  position: relative;
+  z-index: 2;
+}
+
+.rising-hero-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem 1.4rem;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.rising-hero-studio {
+  margin: 0;
+  color: var(--ink);
+}
+
+.rising-hero-assoc {
+  color: var(--ink-mute);
+}
+
+.rising-hero-title {
+  max-width: 100%;
+}
+
+/* Bevelled steel, after the film's own title card: light catching the top of
+ * the letters, falling to gunmetal at the foot. */
+.rising-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-4);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--steel);
+  background: linear-gradient(
+    180deg,
+    #f4f6f9 0%,
+    var(--steel) 38%,
+    var(--steel-mid) 62%,
+    #b4bbc4 74%,
+    var(--steel-dark) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.55)) drop-shadow(0 18px 40px rgba(0, 0, 0, 0.6));
+}
+
+/* The horizon, with the sun on it. It sets as the hero scrolls away. */
+.rising-horizon {
+  position: relative;
+  display: block;
+  width: min(100%, 46rem);
+  height: 1px;
+  margin: clamp(1.2rem, 3vw, 2rem) 0;
+  background: linear-gradient(90deg, var(--ember), rgba(212, 154, 136, 0.4) 40%, transparent);
+  overflow: visible;
+}
+
+.rising-sun {
+  position: absolute;
+  left: 14%;
+  bottom: 0;
+  width: clamp(0.9rem, 1.6vw, 1.25rem);
+  aspect-ratio: 1;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  height: auto;
+  background: var(--ember);
+  box-shadow: 0 0 22px 6px rgba(255, 138, 61, 0.55), 0 0 60px 18px rgba(212, 86, 28, 0.25);
+  transform-origin: 50% 100%;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rising-sun {
+      animation: rising-set linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 80%;
+    }
+  }
+}
+
+@keyframes rising-set {
+  to {
+    transform: scaleY(0);
+    opacity: 0.3;
+  }
+}
+
+.rising-tagline {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-1);
+  color: var(--ink);
+}
+
+.rising-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.rising-facts li + li::before {
+  content: '';
+  display: inline-block;
+  width: 0.3rem;
+  height: 0.3rem;
+  /* Pulled back into the flex gap, so the dot sits between two facts. */
+  margin: 0 0.65rem 0 -0.95rem;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: var(--ember);
+}
+
+/* ---- sections ------------------------------------------------------------ */
+
+.rising-record,
+.rising-file,
+.rising-watch,
+.rising-frames,
+.rising-credits {
+  width: var(--page);
+  margin-inline: auto;
+}
+
+.rising-record {
+  padding-top: var(--band);
+}
+
+.rising-file {
+  padding-top: var(--band);
+}
+
+.rising-file-head {
+  margin-bottom: clamp(2rem, 5vw, 3.4rem);
+}
+
+.rising-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2.4rem, 6vw, 6rem);
+  align-items: start;
+}
+
+/* ---- the record ---------------------------------------------------------- */
+
+.rising-record-sheet {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 0 clamp(1.6rem, 3.6vw, 2.4rem);
+  border-top: 1px solid var(--hair);
+}
+
+.rising-record-sheet > div {
+  padding: clamp(1rem, 2.4vw, 1.4rem) clamp(0.6rem, 1.6vw, 1.2rem) clamp(1rem, 2.4vw, 1.4rem) 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.rising-record-sheet dt {
+  margin-bottom: 0.4rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.rising-record-sheet dd {
+  margin: 0;
+  font-size: var(--step--1);
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+/* ---- the question -------------------------------------------------------- */
+
+.rising-question {
+  display: grid;
+  align-items: end;
+  min-height: clamp(30rem, 82vh, 54rem);
+  margin-top: var(--band);
+  padding: var(--band) max(16px, calc((100vw - var(--page)) / 2));
+  overflow: hidden;
+}
+
+.rising-question-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.rising-question-frame img {
+  object-fit: cover;
+  object-position: 62% 40%;
+}
+
+.rising-question-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, var(--night) 0%, rgba(6, 8, 12, 0) 22%),
+    linear-gradient(0deg, var(--night) 0%, rgba(6, 8, 12, 0.5) 40%, rgba(6, 8, 12, 0) 72%),
+    linear-gradient(90deg, rgba(6, 8, 12, 0.85) 0%, rgba(6, 8, 12, 0) 70%);
+}
+
+.rising-question-text {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+}
+
+/* Measured on the paragraph, so `ch` is the display size and not the body's. */
+.rising-question-text p {
+  max-width: 24ch;
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-3);
+  line-height: 1.12;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.rising-question-text p::before {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 2px;
+  margin-bottom: 1.4rem;
+  background: var(--ember);
+}
+
+/* ---- 01 concept: the thematic index -------------------------------------- */
+
+.rising-index {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--hair);
+}
+
+.rising-index li {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 0.2rem 0.6rem;
+  padding: 1.05rem 0;
+  border-bottom: 1px solid var(--hair);
+  transition: background 0.3s ease;
+}
+
+.rising-index-title {
+  font-family: var(--display);
+  font-size: var(--step-1);
+  line-height: 1.25;
+  color: var(--ink);
+  transition: color 0.3s ease;
+}
+
+.rising-index-note {
+  grid-column: 2;
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--ink-mute);
+}
+
+@media (hover: hover) {
+  .rising-index li:hover {
+    background: linear-gradient(90deg, rgba(255, 138, 61, 0.08), transparent 70%);
+  }
+
+  .rising-index li:hover .rising-index-title {
+    color: var(--ember);
+  }
+}
+
+/* ---- 02 story: two scales ------------------------------------------------ */
+
+.rising-levels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 1.8rem);
+  margin: clamp(2.6rem, 6vw, 4rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rising-level {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hair);
+  background: var(--panel);
+}
+
+/* What is only proposed is drawn, not filled. */
+.rising-level--proposed {
+  border: 1px dashed color-mix(in oklab, var(--ink), transparent 62%);
+  background: transparent;
+}
+
+.rising-level-frame {
+  position: relative;
+  aspect-ratio: 2.37 / 1;
+  overflow: hidden;
+  background: var(--shadow);
+}
+
+.rising-level-frame img {
+  object-fit: cover;
+}
+
+.rising-level-frame--empty {
+  display: grid;
+  place-items: center;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0 14px,
+      var(--hair-soft) 14px 15px
+    );
+  border-bottom: 1px dashed color-mix(in oklab, var(--ink), transparent 70%);
+}
+
+.rising-level-frame--empty span {
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.rising-level-body {
+  padding: clamp(1.2rem, 3vw, 1.8rem);
+}
+
+.rising-level-body p:last-child {
+  margin: 0.6rem 0 0;
+  color: var(--ink-soft);
+}
+
+.rising-level-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 0.6rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.rising-level-status {
+  color: var(--ember);
+}
+
+.rising-level--proposed .rising-level-status {
+  color: var(--ink-faint);
+}
+
+/* ---- 03 Kibera ----------------------------------------------------------- */
+
+.rising-reasons {
+  display: grid;
+  gap: 1.4rem;
+  margin: clamp(2rem, 4vw, 2.6rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rising-reasons li {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 0.3rem 0.6rem;
+}
+
+.rising-reasons .rising-subheading,
+.rising-reasons p {
+  grid-column: 2;
+}
+
+.rising-reasons .rising-index-number {
+  grid-row: 1;
+  padding-top: 0.25rem;
+}
+
+.rising-reasons p {
+  margin: 0;
+  font-size: var(--step--1);
+  color: var(--ink-mute);
+}
+
+.rising-ground .rising-split > .rising-prose {
+  padding-top: clamp(0rem, 2vw, 1rem);
+}
+
+/* The set wall: phone photographs at their own shapes, in columns, like a
+ * corkboard in a production office. */
+.rising-set {
+  margin-top: clamp(3rem, 7vw, 5rem);
+}
+
+.rising-set-label {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  margin: 0 0 1.2rem;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.rising-set-label span {
+  font-weight: 500;
+  color: var(--ink-faint);
+}
+
+.rising-set-wall {
+  columns: 4 14rem;
+  column-gap: clamp(0.6rem, 1.4vw, 1rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rising-set-wall li {
+  break-inside: avoid;
+  margin-bottom: clamp(0.6rem, 1.4vw, 1rem);
+}
+
+.rising-set-wall figure {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: var(--shadow);
+}
+
+.rising-set-wall img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: saturate(0.82) contrast(1.02);
+  transition: filter 0.5s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.rising-set-wall figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 1.8rem 0.8rem 0.6rem;
+  background: linear-gradient(0deg, rgba(6, 8, 12, 0.86), transparent);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: translateY(0.4rem);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+@media (hover: hover) {
+  .rising-set-wall figure:hover img {
+    filter: saturate(1) contrast(1.04);
+    transform: scale(1.03);
+  }
+
+  .rising-set-wall figure:hover figcaption {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* No hover on touch, so the captions are simply there. */
+@media (hover: none) {
+  .rising-set-wall figcaption {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- 04 cast and powers -------------------------------------------------- */
+
+.rising-powers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 1.6rem);
+  margin-bottom: clamp(2.6rem, 6vw, 4rem);
+}
+
+.rising-powers-note {
+  grid-column: 1 / -1;
+  margin-top: 0;
+}
+
+.rising-power {
+  position: relative;
+  min-height: clamp(13rem, 24vw, 17rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(1.3rem, 3vw, 2rem);
+  overflow: hidden;
+  border: 1px solid var(--hair);
+}
+
+.rising-power > * {
+  position: relative;
+  z-index: 1;
+}
+
+.rising-power::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Brushed steel: fine horizontal grain over a cold sheen. */
+.rising-power--metal {
+  background: #1a1f26;
+}
+
+.rising-power--metal::before {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.035) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(
+      125deg,
+      rgba(205, 210, 217, 0.04) 0%,
+      rgba(205, 210, 217, 0.26) 38%,
+      rgba(205, 210, 217, 0.05) 52%,
+      rgba(205, 210, 217, 0.18) 78%,
+      rgba(205, 210, 217, 0.02) 100%
+    );
+}
+
+/* Ember: heat rising from the foot of the card. */
+.rising-power--fire {
+  background: #170f0c;
+}
+
+.rising-power--fire::before {
+  background:
+    radial-gradient(80% 70% at 30% 115%, rgba(255, 138, 61, 0.55), transparent 70%),
+    radial-gradient(60% 50% at 80% 120%, rgba(212, 86, 28, 0.5), transparent 72%);
+  transform-origin: 50% 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rising-power--fire::before {
+    animation: rising-flicker 3.6s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes rising-flicker {
+  0% {
+    opacity: 0.85;
+    transform: scaleY(1);
+  }
+  45% {
+    opacity: 1;
+    transform: scaleY(1.06);
+  }
+  100% {
+    opacity: 0.9;
+    transform: scaleY(0.98);
+  }
+}
+
+.rising-power-label {
+  margin: 0 0 auto;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.rising-power-ability {
+  margin: 2.4rem 0 0.6rem;
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.rising-power--metal .rising-power-ability {
+  background: linear-gradient(180deg, #f4f6f9, var(--steel-mid));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rising-power--fire .rising-power-ability {
+  color: #ffd2ad;
+  text-shadow: 0 0 24px rgba(255, 138, 61, 0.45);
+}
+
+.rising-power-who {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.8rem;
+  margin: 0;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.rising-power-who span {
+  font-weight: 500;
+  color: var(--ink-mute);
+}
+
+.rising-roster {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+}
+
+.rising-roster thead th {
+  padding: 0 0 0.8rem;
+  border-bottom: 1px solid var(--hair);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.rising-roster tbody th,
+.rising-roster tbody td {
+  padding: 0.85rem 1rem 0.85rem 0;
+  border-bottom: 1px solid var(--hair-soft);
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.rising-roster tbody th {
+  width: 50%;
+  font-family: var(--display);
+  font-size: var(--step-0);
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.rising-roster tbody td {
+  color: var(--ink-soft);
+}
+
+@media (hover: hover) {
+  .rising-roster tbody tr:hover th {
+    color: var(--ember);
+  }
+}
+
+/* ---- 05 approach --------------------------------------------------------- */
+
+.rising-intentions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2.2rem, 5vw, 3.6rem) clamp(1.2rem, 3vw, 2.4rem);
+  margin: clamp(2.6rem, 6vw, 4rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rising-intentions li > p:last-child {
+  margin: 0.5rem 0 0;
+  max-width: 52ch;
+  font-size: var(--step--1);
+  color: var(--ink-mute);
+}
+
+.rising-intentions .rising-index-number {
+  margin: 1.1rem 0 0.3rem;
+}
+
+.rising-intention-frame {
+  position: relative;
+  aspect-ratio: 2.37 / 1;
+  overflow: hidden;
+  background: var(--shadow);
+}
+
+.rising-intention-frame img {
+  object-fit: cover;
+  transition: transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (hover: hover) {
+  .rising-intentions li:hover .rising-intention-frame img {
+    transform: scale(1.04);
+  }
+}
+
+/* ---- 06 unveiling -------------------------------------------------------- */
+
+.rising-stamp {
+  padding: clamp(1.4rem, 3.4vw, 2.2rem);
+  border: 1px solid var(--hair);
+  background: var(--panel);
+}
+
+.rising-stamp-when {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-3);
+  line-height: 1;
+  color: var(--ember);
+}
+
+.rising-stamp-where {
+  margin: 0.8rem 0 0;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.rising-figures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: clamp(1.6rem, 4vw, 2.4rem) 0 0;
+  padding-top: clamp(1.2rem, 3vw, 1.8rem);
+  border-top: 1px solid var(--hair);
+}
+
+.rising-figures div {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.rising-figures dt {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.rising-figures dd {
+  margin: 0 0 0.2rem;
+  font-family: var(--display);
+  font-size: var(--step-3);
+  line-height: 1;
+  color: var(--ink);
+}
+
+.rising-stamp .rising-note {
+  margin-top: 1rem;
+}
+
+/* ---- the teaser ---------------------------------------------------------- */
+
+.rising-watch {
+  padding-top: var(--band);
+}
+
+.rising-watch .documentary-section-title {
+  margin: 0 0 clamp(1rem, 2.4vw, 1.6rem);
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+/* The proof of concept is cut at 2.37:1, so the player is too. */
+.rising-watch .documentary-player {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 2.37 / 1;
+  border: 1px solid var(--hair);
+  background: #000;
+}
+
+.rising-watch .documentary-player-media {
+  object-fit: contain;
+}
+
+.rising-watch .documentary-player-start {
+  background: linear-gradient(0deg, rgba(6, 8, 12, 0.5), rgba(6, 8, 12, 0) 60%);
+  color: var(--ink);
+}
+
+.rising-watch .documentary-player-ring {
+  display: grid;
+  place-items: center;
+  width: clamp(4rem, 8vw, 5.6rem);
+  height: clamp(4rem, 8vw, 5.6rem);
+  border: 1px solid rgba(236, 232, 226, 0.6);
+  border-radius: 50%;
+  background: rgba(6, 8, 12, 0.4);
+  backdrop-filter: blur(4px);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.rising-watch .documentary-player-start:hover .documentary-player-ring,
+.rising-watch .documentary-player-start:focus-visible .documentary-player-ring {
+  border-color: var(--ember);
+  background: color-mix(in oklab, var(--ember), transparent 25%);
+  color: var(--night);
+  transform: scale(1.06);
+}
+
+/* ---- frames -------------------------------------------------------------- */
+
+.rising-frames {
+  padding-top: var(--band);
+}
+
+.rising-frames-strip {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.6rem, 1.4vw, 1rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rising-frames-strip li {
+  position: relative;
+}
+
+/* The title card closes the strip at full width. */
+.rising-frames-strip li:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+.rising-frames-window {
+  position: relative;
+  aspect-ratio: 2.37 / 1;
+  overflow: hidden;
+  background: #000;
+}
+
+.rising-frames-window img {
+  object-fit: cover;
+}
+
+.rising-frames-number {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.7rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* ---- credits ------------------------------------------------------------- */
+
+.rising-credits {
+  padding: var(--band) 0 clamp(3rem, 7vw, 5rem);
+}
+
+.rising-companies {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.4rem;
+  margin: 0 0 clamp(2.6rem, 6vw, 4rem);
+  padding: clamp(1.6rem, 4vw, 2.6rem) 0;
+  border-block: 1px solid var(--hair);
+}
+
+.rising-companies dt,
+.rising-department-title,
+.rising-departments dt {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.rising-companies dd {
+  margin: 0.4rem 0 0;
+  font-family: var(--display);
+  font-size: var(--step-1);
+  color: var(--ink);
+}
+
+/* The association credit is this site's own; it is the one that glows. */
+.rising-companies div:last-child dd {
+  color: var(--ember);
+}
+
+.rising-departments {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.rising-department-title {
+  margin: 0 0 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--hair);
+  color: var(--ember);
+}
+
+.rising-departments dl {
+  margin: 0;
+}
+
+.rising-departments dl div {
+  margin-bottom: 0.9rem;
+}
+
+.rising-departments dd {
+  margin: 0.1rem 0 0;
+  color: var(--ink);
+}
+
+.rising-colophon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--hair);
+  font-size: var(--step--1);
+  color: var(--ink-mute);
+}
+
+.rising-colophon p {
+  margin: 0;
+}
+
+.rising-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.rising-back::before {
+  content: '←';
+  color: var(--ember);
+  transition: transform 0.3s ease;
+}
+
+.rising-back:hover::before,
+.rising-back:focus-visible::before {
+  transform: translateX(-0.3rem);
+}
+
+.rising a:focus-visible,
+.rising button:focus-visible {
+  outline: 2px solid var(--ember);
+  outline-offset: 4px;
+}
+
+/* ---- responsive ---------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .rising-record-sheet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rising-companies {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .rising-split,
+  .rising-levels,
+  .rising-intentions,
+  .rising-departments {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rising-question {
+    min-height: clamp(28rem, 76svh, 40rem);
+  }
+
+  .rising-question-frame img {
+    object-position: 70% 40%;
+  }
+
+  .rising-question-frame::after {
+    background:
+      linear-gradient(180deg, var(--night) 0%, rgba(6, 8, 12, 0) 22%),
+      linear-gradient(0deg, var(--night) 0%, rgba(6, 8, 12, 0.72) 50%, rgba(6, 8, 12, 0.1) 100%);
+  }
+}
+
+@media (max-width: 600px) {
+  .rising-powers,
+  .rising-frames-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rising-record-sheet {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rising-set-wall {
+    columns: 2;
+  }
+
+  .rising-hero-top {
+    letter-spacing: 0.16em;
+  }
+
+  .rising-hero-assoc {
+    display: block;
+  }
+
+  .rising-hero-studio > span[aria-hidden] {
+    display: none;
+  }
+
+  .rising-facts {
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .rising-facts li + li::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rising-index li,
+  .rising-index-title,
+  .rising-set-wall img,
+  .rising-set-wall figcaption,
+  .rising-intention-frame img,
+  .rising-watch .documentary-player-ring,
+  .rising-back::before {
+    transition: none;
+  }
+
+  .rising-set-wall figure:hover img,
+  .rising-intentions li:hover .rising-intention-frame img {
+    transform: none;
+  }
+}

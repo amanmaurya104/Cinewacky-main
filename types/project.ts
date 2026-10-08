@@ -30,4 +30,6 @@ export interface Project {
   layout?: 'stack' | 'mosaic';
   /** Mosaic tiles, in order. Videos and images may be mixed. */
   media?: ProjectMediaItem[];
+  /** Page is finished; links open it. Otherwise links go to /maintenance. */
+  ready?: boolean;
 }

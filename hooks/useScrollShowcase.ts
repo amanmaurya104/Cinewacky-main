@@ -5,19 +5,11 @@ import {
   INITIAL_ACTIVE_INDEX,
   SHOWCASE_SECTION_COUNT,
 } from '@/data/showcaseScroll';
-import {
-  fractionalScrollIndex,
-  type ScrollDirection,
-} from '@/lib/showcaseTitleAnimation';
+import { fractionalScrollIndex } from '@/lib/showcaseTitleAnimation';
 import {
   nearestSectionIndex,
   scrollTopForSection,
 } from '@/lib/showcaseScrollSnap';
-
-function toLogicalIndex(virtualIndex: number) {
-  const count = SHOWCASE_SECTION_COUNT;
-  return ((virtualIndex % count) + count) % count;
-}
 
 function toActiveIndex(logicalIndex: number) {
   const count = SHOWCASE_SECTION_COUNT;
@@ -28,14 +20,17 @@ function getInitialVirtualIndex() {
   return SHOWCASE_SECTION_COUNT + INITIAL_ACTIVE_INDEX;
 }
 
+/**
+ * Infinite, section-snapping scroll for the homepage showcase.
+ *
+ * Only `activeIndex` is React state, and it changes once per section, not per
+ * scroll frame: re-rendering the whole showcase on every scroll event made the
+ * page janky. Anything that needs the fractional position (the title spine)
+ * reads `scrollTop` from the scroll container itself.
+ */
 export function useScrollShowcase() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(INITIAL_ACTIVE_INDEX);
-  const [scrollIndex, setScrollIndex] = useState(INITIAL_ACTIVE_INDEX);
-  const [progress, setProgress] = useState(0);
-  const [direction, setDirection] = useState<ScrollDirection>('down');
-  const prevActiveRef = useRef(INITIAL_ACTIVE_INDEX);
-  const prevScrollTopRef = useRef(0);
   const initializedRef = useRef(false);
   /** Logical scroll position in "sections" — survives mobile viewport resizes */
   const virtualIndexRef = useRef(getInitialVirtualIndex());
@@ -89,40 +84,13 @@ export function useScrollShowcase() {
 
     virtualIndexRef.current = scrollTop / sectionHeight;
 
-    if (scrollTop !== prevScrollTopRef.current) {
-      setDirection(scrollTop > prevScrollTopRef.current ? 'down' : 'up');
-      prevScrollTopRef.current = scrollTop;
-    }
-
-    const virtualIndex = virtualIndexRef.current;
     const logicalIndex = fractionalScrollIndex(
       scrollTop,
       sectionHeight,
       SHOWCASE_SECTION_COUNT
     );
-    const index = toActiveIndex(logicalIndex);
-
-    const loopProgress =
-      SHOWCASE_SECTION_COUNT > 1
-        ? logicalIndex / (SHOWCASE_SECTION_COUNT - 1)
-        : 0;
-
-    setProgress(Math.min(1, Math.max(0, loopProgress)));
-    setScrollIndex(logicalIndex);
-
-    if (index !== prevActiveRef.current) {
-      const prevLogical = prevActiveRef.current;
-      const crossedWrap =
-        (prevLogical === SHOWCASE_SECTION_COUNT - 1 && index === 0) ||
-        (prevLogical === 0 && index === SHOWCASE_SECTION_COUNT - 1);
-
-      if (!crossedWrap) {
-        setDirection(index > prevActiveRef.current ? 'down' : 'up');
-      }
-      prevActiveRef.current = index;
-    }
-
-    setActiveIndex(index);
+    // React bails out when the index is unchanged, so this is cheap per frame.
+    setActiveIndex(toActiveIndex(logicalIndex));
   }, []);
 
   const initializeScroll = useCallback(() => {
@@ -131,7 +99,6 @@ export function useScrollShowcase() {
 
     if (!applyVirtualScroll(el)) return false;
 
-    prevScrollTopRef.current = el.scrollTop;
     initializedRef.current = true;
     updateFromScroll();
     return true;
@@ -141,7 +108,6 @@ export function useScrollShowcase() {
     const el = scrollRef.current;
     if (!el || !initializedRef.current) return;
     if (!applyVirtualScroll(el)) return;
-    prevScrollTopRef.current = el.scrollTop;
     updateFromScroll();
   }, [applyVirtualScroll, updateFromScroll]);
 
@@ -195,28 +161,5 @@ export function useScrollShowcase() {
     };
   }, [initializeScroll, resyncScrollPosition, updateFromScroll, snapToNearestSection]);
 
-  const scrollToIndex = useCallback((index: number) => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const sectionHeight = el.clientHeight;
-    if (sectionHeight <= 0) return;
-
-    const currentVirtual = el.scrollTop / sectionHeight;
-    const currentLoop = Math.floor(currentVirtual / SHOWCASE_SECTION_COUNT);
-    const targetVirtual = currentLoop * SHOWCASE_SECTION_COUNT + index;
-
-    virtualIndexRef.current = targetVirtual;
-    el.scrollTo({ top: targetVirtual * sectionHeight, behavior: 'smooth' });
-  }, []);
-
-  return {
-    scrollRef,
-    activeIndex,
-    scrollIndex,
-    progress,
-    direction,
-    scrollToIndex,
-    setActiveIndex,
-  };
+  return { scrollRef, activeIndex };
 }

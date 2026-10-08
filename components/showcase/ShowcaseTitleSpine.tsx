@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { getProjectHref } from '@/data/projects';
 import type { ShowcaseScrollItem } from '@/data/showcaseScroll';
 import {
   fractionalScrollIndex,
@@ -12,16 +13,17 @@ import ShowcaseSplitTitle from './ShowcaseSplitTitle';
 
 type Props = {
   items: ShowcaseScrollItem[];
-  scrollIndex: number;
 };
 
-export default function ShowcaseTitleSpine({ items, scrollIndex }: Props) {
+/**
+ * The spine follows the scroll container directly (scroll + rAF) rather than
+ * through React state, so scrolling never re-renders the showcase.
+ */
+export default function ShowcaseTitleSpine({ items }: Props) {
   const spineRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLElement | null)[]>([]);
-  const scrollIndexRef = useRef(scrollIndex);
+  const scrollIndexRef = useRef(0);
   const rafRef = useRef(0);
-
-  scrollIndexRef.current = scrollIndex;
 
   const applySpine = useCallback(() => {
     const spine = spineRef.current;
@@ -51,7 +53,7 @@ export default function ShowcaseTitleSpine({ items, scrollIndex }: Props) {
 
   useLayoutEffect(() => {
     syncFromScroll();
-  }, [scrollIndex, items.length, syncFromScroll]);
+  }, [syncFromScroll]);
 
   useLayoutEffect(() => {
     const scrollRoot = spineRef.current?.closest<HTMLElement>('.showcase-root');
@@ -78,9 +80,11 @@ export default function ShowcaseTitleSpine({ items, scrollIndex }: Props) {
   }, [syncFromScroll]);
 
   useLayoutEffect(() => {
+    const spine = spineRef.current;
+    const itemEls = itemRefs.current;
     return () => {
-      gsap.killTweensOf(spineRef.current);
-      itemRefs.current.forEach((el) => {
+      gsap.killTweensOf(spine);
+      itemEls.forEach((el) => {
         if (!el) return;
         gsap.killTweensOf(el);
         const visual = el.querySelector('.showcase-spine-item-visual');
@@ -88,7 +92,6 @@ export default function ShowcaseTitleSpine({ items, scrollIndex }: Props) {
       });
     };
   }, []);
-  const enabledProjects = ['reel-vibe-uncut']; //remove this when all projects are ready
 
   return (
     <div className="showcase-spine-viewport pointer-events-none absolute inset-0 overflow-hidden">
@@ -107,28 +110,17 @@ export default function ShowcaseTitleSpine({ items, scrollIndex }: Props) {
                 className="showcase-spine-item"
                 data-index={i}
               >
-                {/* <Link
-                  href={item.slug ? `/project/${item.slug}` : '/'}
+                <Link
+                  href={getProjectHref(item.slug)}
                   className="showcase-spine-item-link showcase-spine-item-visual showcase-spine-item-inner active-title-wrapper"
-                  aria-label={`View ${item.title}`}
+                  aria-label={
+                    getProjectHref(item.slug) === '/maintenance'
+                      ? `${item.title} — in production`
+                      : `View ${item.title}`
+                  }
                 >
                   <ShowcaseSplitTitle parts={item.titleParts} />
-                </Link> */}
-                <Link
-  href={
-    enabledProjects.includes(item.slug ?? '')
-      ? `/project/${item.slug}`
-      : '/maintenance'
-  }
-  className="showcase-spine-item-link showcase-spine-item-visual showcase-spine-item-inner active-title-wrapper"
-  aria-label={
-    enabledProjects.includes(item.slug ?? '')
-      ? `View ${item.title}`
-      : `${item.title} — in production`
-  }
->
-  <ShowcaseSplitTitle parts={item.titleParts} />
-</Link>
+                </Link>
               </article>
             ))}
           </div>

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import ShowcaseHeader from '@/components/showcase/ShowcaseHeader';
+import { notFound, redirect } from 'next/navigation';
+import SiteHeader from '@/components/layout/SiteHeader';
 import ProjectVideoStack from '@/components/project/ProjectVideoStack';
 import ProjectMosaic from '@/components/project/ProjectMosaic';
-import { getAllProjectSlugs, getProjectBySlug } from '@/data/projects';
+import projects, { getProjectBySlug } from '@/data/projects';
 import '@/styles/showcase.css';
 import '@/styles/project.css';
 import '@/styles/project-mosaic.css';
@@ -12,8 +12,9 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Only finished projects are prebuilt; the rest redirect to /maintenance below.
 export function generateStaticParams() {
-  return getAllProjectSlugs().map((slug) => ({ slug }));
+  return projects.filter((project) => project.ready).map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -34,11 +35,12 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return notFound();
+  if (!project.ready) redirect('/maintenance');
 
   if (project.layout === 'mosaic') {
     return (
       <main className="project-page">
-        <ShowcaseHeader />
+        <SiteHeader />
         <ProjectMosaic project={project} />
       </main>
     );
@@ -46,7 +48,7 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <main className="project-page">
-      <ShowcaseHeader />
+      <SiteHeader />
       <ProjectVideoStack project={project} />
     </main>
   );

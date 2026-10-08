@@ -1,0 +1,170 @@
+/* Menu button on pages without a header (stories, documentaries). The dark
+   backing keeps it legible over the light documentary themes. */
+.site-menu-float {
+  position: fixed;
+  top: 0.75rem;
+  right: 1rem;
+  z-index: 200;
+}
+
+.site-menu-float .hamburger {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+@media (min-width: 640px) {
+  .site-menu-float {
+    top: 1rem;
+    right: 1.5rem;
+  }
+}
+
+.site-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: rgba(0, 0, 0, 0.94);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  animation: site-menu-fade 0.3s ease both;
+}
+
+.site-menu-close {
+  position: fixed;
+  top: 0.75rem;
+  right: 1rem;
+  z-index: 1;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 0.5rem;
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.site-menu-close:hover,
+.site-menu-close:focus-visible {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+.site-menu-inner {
+  display: grid;
+  gap: 3rem;
+  min-height: 100%;
+  padding: 5rem 1.5rem 3rem;
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .site-menu-inner {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    padding: 6rem 3rem 4rem;
+  }
+
+  .site-menu-close {
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 1.5rem;
+  }
+}
+
+.site-menu-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.site-menu-main-link {
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  width: fit-content;
+  color: rgba(255, 255, 255, 0.85);
+  animation: site-menu-rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  transition: color 0.2s ease, transform 0.25s ease;
+}
+
+.site-menu-main-link:hover,
+.site-menu-main-link:focus-visible {
+  color: var(--accent);
+  transform: translateX(0.5rem);
+}
+
+.site-menu-heading {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+.site-menu-projects {
+  animation: site-menu-fade 0.5s 0.25s ease both;
+}
+
+.site-menu-project-link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: color 0.2s ease, padding-left 0.25s ease;
+}
+
+.site-menu-project-link:hover,
+.site-menu-project-link:focus-visible {
+  color: var(--accent);
+  padding-left: 0.5rem;
+}
+
+.site-menu-project-num {
+  font-size: 0.75rem;
+  opacity: 0.45;
+  font-variant-numeric: tabular-nums;
+}
+
+.site-menu-project-title {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.site-menu-project-cat {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+@keyframes site-menu-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes site-menu-rise {
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-menu,
+  .site-menu-main-link,
+  .site-menu-projects {
+    animation: none;
+  }
+}

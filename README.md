@@ -16,9 +16,41 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Set `NEXT_PUBLIC_SITE_URL` (e.g. `https://example.com`) in production; the sitemap, robots.txt and social metadata use it.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project structure
+
+```
+app/                  Routes. /project/[slug] is a project; /project/[slug]/[storySlug]
+                      is a story or documentary under it. sitemap.ts, robots.ts.
+components/
+  layout/             Site-wide chrome: SiteHeader, SiteMenu
+  showcase/           Homepage scroll showcase
+  project/            Project pages (video stack and mosaic layouts)
+  story/              Story pages
+  documentary/        Shared pieces at the root (DocumentaryVideo, SilentLoop);
+    archive/ craft/   one folder per documentary theme. standard/ is the
+    dragon/ ...       default theme.
+  maintenance/        The /maintenance screen
+  ui/                 Generic, reusable UI (galleries, cards, pixel image)
+data/                 Site content: projects, stories, documentaries, navigation
+lib/                  Logic over that content (lookups, hrefs, fonts, site URL)
+hooks/                Reusable React hooks
+types/                Shared TypeScript types
+styles/               Global CSS per area; styles/documentary/ holds one file per theme
+scripts/              Media build scripts (npm run media:*)
+public/               Served assets
+```
+
+### Publishing a page
+
+Unfinished pages link to `/maintenance` and redirect there if visited directly.
+
+- **Project:** set `ready: true` on it in `data/projects.ts`.
+- **Story or documentary under Reel Vibe Uncut:** add its slug to `LIVE_REEL_PAGES` in `lib/stories.ts`.
+- **Experience / Achievements / Contact:** set `ready: true` in `data/navigation.ts`.
+
+The menu, homepage, project pages and sitemap all follow these flags.
 
 ## Learn More
 

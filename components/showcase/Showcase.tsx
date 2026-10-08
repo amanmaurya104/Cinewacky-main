@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from 'react';
-import ShowcaseHeader from './ShowcaseHeader';
+import SiteHeader from '@/components/layout/SiteHeader';
 import ShowcaseCenterTitle from './ShowcaseCenterTitle';
 import ShowcaseScrollVideo from './ShowcaseScrollVideo';
 import { showcaseScrollItems, SHOWCASE_LOOP_COUNT } from '@/data/showcaseScroll';
@@ -11,7 +11,7 @@ import '@/styles/showcase.css';
 import '@/styles/showcase-responsive.css';
 
 export default function Showcase() {
-  const { scrollRef, activeIndex, scrollIndex } = useScrollShowcase();
+  const { scrollRef, activeIndex } = useScrollShowcase();
   const stageRef = useRef<HTMLDivElement>(null);
 
   useForwardOverlayScroll({ areaRef: stageRef, scrollRef });
@@ -22,7 +22,7 @@ export default function Showcase() {
       className="showcase-root showcase-scroll-track relative h-dvh w-full overflow-y-auto overscroll-contain bg-black text-white"
       aria-label="Showcase scroll"
     >
-      <ShowcaseHeader />
+      <SiteHeader />
 
       <div
         ref={stageRef}
@@ -41,11 +41,7 @@ export default function Showcase() {
             ))}
           </div>
         </div>
-        <ShowcaseCenterTitle
-          items={showcaseScrollItems}
-          activeIndex={activeIndex}
-          scrollIndex={scrollIndex}
-        />
+        <ShowcaseCenterTitle items={showcaseScrollItems} />
       </div>
 
       {Array.from({ length: SHOWCASE_LOOP_COUNT }, (_, loop) =>

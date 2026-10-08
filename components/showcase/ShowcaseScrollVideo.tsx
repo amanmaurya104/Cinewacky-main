@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
 import type { ShowcaseScrollItem } from '@/data/showcaseScroll';
 import { getShowcaseThumbSrc, isShowcaseVideoSlot } from '@/data/showcaseScroll';
 
@@ -11,11 +11,24 @@ const COMPACT_ACTIVE_SCALE = 1.1;
 const INACTIVE_SCALE = 0.75;
 
 function getActiveScale() {
-  if (typeof window === 'undefined') return DESKTOP_ACTIVE_SCALE;
   const w = window.innerWidth;
   if (w >= 1440) return DESKTOP_ACTIVE_SCALE;
   if (w >= 1025) return COMPACT_ACTIVE_SCALE;
   return w < 768 ? 1.08 : 1.12;
+}
+
+function subscribeToResize(onChange: () => void) {
+  window.addEventListener('resize', onChange);
+  return () => window.removeEventListener('resize', onChange);
+}
+
+/**
+ * The server has no viewport, so it and the hydrating render both use the
+ * desktop scale; React then re-renders with the real one. Reading the width
+ * during render instead made server and client HTML disagree.
+ */
+function useActiveScale() {
+  return useSyncExternalStore(subscribeToResize, getActiveScale, () => DESKTOP_ACTIVE_SCALE);
 }
 const ACTIVE_OPACITY = 1;
 const INACTIVE_OPACITY = 0.58;
@@ -31,6 +44,7 @@ type Props = {
 
 export default function ShowcaseScrollVideo({ item, active, slotIndex, activeIndex }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const activeScale = useActiveScale();
   const useVideo = isShowcaseVideoSlot(slotIndex, activeIndex);
   const thumbSrc = getShowcaseThumbSrc(item.id);
 
@@ -69,7 +83,7 @@ export default function ShowcaseScrollVideo({ item, active, slotIndex, activeInd
         className="showcase-video-tile-inner relative h-full w-full overflow-hidden rounded-sm bg-black"
         style={{ transformOrigin: 'center center' }}
         animate={{
-          scale: active ? getActiveScale() : INACTIVE_SCALE,
+          scale: active ? activeScale : INACTIVE_SCALE,
           opacity: active ? ACTIVE_OPACITY : INACTIVE_OPACITY,
           filter: `brightness(${active ? ACTIVE_BRIGHTNESS : INACTIVE_BRIGHTNESS})`,
         }}

@@ -1,8 +1,9 @@
+// Set `ready: true` once a page is built; until then links to it open /maintenance.
 export const mainNavigation = [
-  { title: 'Home', href: '/' },
-  { title: 'Experience', href: '/experience' },
-  { title: 'Achievements', href: '/achievements' },
-  { title: 'Contact', href: '/contact' },
+  { title: 'Home', href: '/', ready: true },
+  { title: 'Experience', href: '/experience', ready: false },
+  { title: 'Achievements', href: '/achievements', ready: false },
+  { title: 'Contact', href: '/contact', ready: false },
 ];
 
 export default mainNavigation;

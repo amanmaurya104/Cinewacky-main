@@ -1,5 +1,5 @@
 /* A row of tall feature tiles beside a stack of wide ones. The page keeps the
-   site's own fixed header (ShowcaseHeader) rather than carrying a nav rail. */
+   site's own fixed header (SiteHeader) rather than carrying a nav rail. */
 
 .project-mosaic {
   display: grid;

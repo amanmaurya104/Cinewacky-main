@@ -1,0 +1,890 @@
+/* King of the Road — the road theme.
+ *
+ * The page records the Kolkata stop of Wim Wenders' first India tour, and the
+ * only pictures delivered with it are the tour's own poster artwork and one
+ * frame of the film. So it is set in the poster's language: warm poster paper,
+ * condensed vermilion caps, black-and-white photography mounted as collage with
+ * a block of colour behind it and a strip of hazard tape, a typewritten film
+ * list, and the five city names run up the margin.
+ *
+ * What the page adds is the road: a dashed lane line down the margin, sections
+ * numbered on milestones, and the tour drawn as a road through five cities
+ * with the one this film was shot in lit.
+ *
+ * Warm paper and vermilion keep it apart from the cold stone of the passage
+ * page, the pale card of the craft page and the black of the others.
+ *
+ * Every rule is scoped under `.road`.
+ */
+
+.road {
+  --paper: #efebe2;
+  --paper-deep: #e4ded1;
+  --paper-light: #f7f4ee;
+  --ink: #161514;
+  --ink-soft: rgba(22, 21, 20, 0.78);
+  --ink-mute: rgba(22, 21, 20, 0.58);
+  --ink-faint: rgba(22, 21, 20, 0.38);
+  --hair: rgba(22, 21, 20, 0.16);
+  --vermilion: #ec5a2b;
+  --vermilion-deep: #c9431a;
+  --tape: #f2b632;
+
+  --display: var(--font-road-display), "Oswald", "Arial Narrow", Impact, sans-serif;
+  --text: var(--font-road-text), "Source Serif 4", Georgia, serif;
+  --utility: var(--font-road-utility), "Cutive Mono", "Courier New", monospace;
+
+  --step--2: clamp(0.7rem, 0.67rem + 0.14vw, 0.78rem);
+  --step--1: clamp(0.82rem, 0.78rem + 0.18vw, 0.92rem);
+  --step-0: clamp(1.04rem, 0.99rem + 0.22vw, 1.17rem);
+  --step-1: clamp(1.2rem, 1.08rem + 0.6vw, 1.5rem);
+  --step-2: clamp(1.6rem, 1.25rem + 1.6vw, 2.5rem);
+  --step-3: clamp(2.1rem, 1.4rem + 3.2vw, 3.9rem);
+  --step-4: clamp(3.2rem, 1rem + 9.6vw, 9.2rem);
+
+  --page: min(1240px, calc(100vw - 2 * clamp(16px, 5vw, 72px)));
+  --band: clamp(4.5rem, 10vw, 8.5rem);
+  --gutter: max(16px, calc((100vw - var(--page)) / 2));
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  background:
+    radial-gradient(90% 40% at 85% 0%, rgba(236, 90, 43, 0.05), transparent 70%),
+    var(--paper);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: var(--step-0);
+  line-height: 1.7;
+}
+
+.road > header,
+.road > section,
+.road > footer {
+  position: relative;
+  z-index: 1;
+}
+
+.road ::selection {
+  background: var(--vermilion);
+  color: var(--paper-light);
+}
+
+/* The lane line: a dashed vermilion rule down the left margin, the whole
+ * length of the page, like the thin red line through the poster. */
+.road-lane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--gutter) / 2);
+  z-index: 0;
+  width: 2px;
+  background: repeating-linear-gradient(
+    180deg,
+    var(--vermilion) 0 26px,
+    transparent 26px 50px
+  );
+  opacity: 0.55;
+}
+
+/* ---- shared type --------------------------------------------------------- */
+
+.road-heading {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-3);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.road-subheading {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-1);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.road-prose {
+  max-width: 64ch;
+  color: var(--ink-soft);
+}
+
+.road-prose p {
+  margin: 0 0 1.1em;
+}
+
+.road-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.road-prose--columns {
+  max-width: none;
+  columns: 2 22rem;
+  column-gap: clamp(2rem, 5vw, 4.5rem);
+}
+
+.road-prose--columns p {
+  break-inside: avoid;
+}
+
+/* ---- hero ---------------------------------------------------------------- */
+
+.road-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+  min-height: min(88svh, 60rem);
+  padding: clamp(3.5rem, 9vh, 6rem) var(--gutter) 0;
+}
+
+/* The city names run up the right edge, as on the poster. */
+.road-hero-cities {
+  position: absolute;
+  top: 50%;
+  right: max(6px, calc(var(--gutter) / 2 - 0.6em));
+  margin: 0;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.road-kicker {
+  margin: 0 0 0.4rem;
+  font-family: var(--display);
+  font-size: var(--step-1);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.road-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-4);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--vermilion);
+  text-wrap: balance;
+}
+
+.road-subtitle {
+  margin: clamp(1rem, 2.4vw, 1.6rem) 0 0;
+  font-family: var(--display);
+  font-size: var(--step-1);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.road-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.6rem;
+  margin: clamp(1.4rem, 3vw, 2rem) 0 0;
+  padding: clamp(0.8rem, 2vw, 1.1rem) 0 0;
+  border-top: 2px solid var(--ink);
+  list-style: none;
+  font-family: var(--display);
+  font-size: var(--step-0);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.road-span {
+  margin: 0.6rem 0 0;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+/* The frame, mounted like the poster's collage: a block of vermilion knocked
+ * out behind the top corner and a strip of hazard tape across the other. */
+.road-hero-collage {
+  position: relative;
+  margin: 0;
+  padding: clamp(1.4rem, 3vw, 2.4rem) 0 0 clamp(1.4rem, 3vw, 2.4rem);
+}
+
+.road-block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 46%;
+  height: 58%;
+  background: var(--vermilion);
+}
+
+.road-tape {
+  position: absolute;
+  top: calc(clamp(1.4rem, 3vw, 2.4rem) - 0.9rem);
+  right: clamp(1rem, 4vw, 3rem);
+  z-index: 2;
+  width: clamp(4.5rem, 9vw, 7rem);
+  height: 1.5rem;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--tape) 0 9px,
+    var(--ink) 9px 13px
+  );
+  transform: rotate(3deg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+}
+
+.road-hero-frame {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 2.39 / 1;
+  overflow: hidden;
+  background: var(--ink);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1), 0 22px 40px -22px rgba(22, 21, 20, 0.55);
+}
+
+.road-hero-frame img,
+.road-kolkata-frame img {
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.06);
+  transition: filter 0.9s ease;
+}
+
+@media (hover: hover) {
+  .road-hero-collage:hover .road-hero-frame img,
+  .road-kolkata-plate:hover .road-kolkata-frame img {
+    filter: grayscale(0) contrast(1);
+  }
+}
+
+.road-hero-collage figcaption,
+.road-kolkata-plate figcaption,
+.road-artwork-wall figcaption {
+  margin-top: 0.7rem;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+/* ---- opening ------------------------------------------------------------- */
+
+.road-opening,
+.road-route,
+.road-section,
+.road-credits {
+  width: var(--page);
+  margin-inline: auto;
+}
+
+.road-opening {
+  padding-top: var(--band);
+}
+
+.road-lede {
+  max-width: 30ch;
+  margin: 0 0 clamp(2.4rem, 5vw, 3.6rem);
+  font-family: var(--text);
+  font-size: var(--step-3);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.16;
+  text-wrap: balance;
+}
+
+/* ---- the route ----------------------------------------------------------- */
+
+.road-route {
+  padding-top: var(--band);
+}
+
+.road-route-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 2rem;
+  margin-bottom: clamp(2rem, 4vw, 2.8rem);
+}
+
+.road-route-title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.road-route-span {
+  margin: 0;
+  font-family: var(--utility);
+  font-size: var(--step-0);
+  color: var(--ink-soft);
+}
+
+/* The road itself: tarmac with a dashed centre line, the stops on it. */
+.road-route-line {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--stops, 5), minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.road-route-line::before {
+  content: '';
+  position: absolute;
+  top: 0.85rem;
+  left: 0;
+  right: 0;
+  height: 1.1rem;
+  transform: translateY(-50%);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--paper) 0 18px,
+      transparent 18px 34px
+    ) center / 100% 2px no-repeat,
+    var(--ink);
+}
+
+.road-stop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding-top: 2.4rem;
+  text-align: center;
+}
+
+.road-stop-pin {
+  position: absolute;
+  top: 0.85rem;
+  left: 50%;
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  transform: translate(-50%, -50%);
+}
+
+.road-stop-city {
+  font-family: var(--display);
+  font-size: var(--step-0);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  overflow-wrap: anywhere;
+}
+
+.road-stop-dates {
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  color: var(--ink);
+}
+
+.road-stop-flag {
+  padding: 0.15rem 0.5rem;
+  background: var(--vermilion);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  color: var(--paper-light);
+}
+
+.road-stop--here .road-stop-pin {
+  width: 1.6rem;
+  height: 1.6rem;
+  border-color: var(--vermilion);
+  background: var(--vermilion);
+  box-shadow: 0 0 0 5px var(--paper), 0 0 0 6px var(--vermilion);
+}
+
+.road-stop--here .road-stop-city {
+  font-size: var(--step-1);
+  font-weight: 600;
+  color: var(--vermilion);
+}
+
+/* ---- sections ------------------------------------------------------------ */
+
+.road-section {
+  padding-top: var(--band);
+}
+
+.road-head {
+  margin-bottom: clamp(2rem, 4.6vw, 3.2rem);
+}
+
+.road-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0 0 1rem;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+/* A kilometre stone: square at the foot, rounded at the head. */
+.road-stone {
+  display: inline-grid;
+  place-items: end center;
+  width: 2.4rem;
+  height: 2.9rem;
+  padding-bottom: 0.4rem;
+  border-radius: 1.2rem 1.2rem 0.2rem 0.2rem;
+  background: var(--vermilion);
+  font-family: var(--display);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--paper-light);
+}
+
+.road-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2.4rem, 6vw, 5.5rem);
+  align-items: start;
+}
+
+/* ---- 01 life ------------------------------------------------------------- */
+
+.road-pull {
+  margin: clamp(2rem, 4vw, 2.8rem) 0 0;
+  padding-left: 1.2rem;
+  border-left: 3px solid var(--vermilion);
+}
+
+.road-pull p {
+  margin: 0;
+  font-size: var(--step-1);
+  font-style: italic;
+  line-height: 1.45;
+}
+
+/* The typewritten list, on a paper slip, like the foot of the poster. */
+.road-slip {
+  padding: clamp(1.4rem, 3.4vw, 2.2rem);
+  background: var(--paper-light);
+  box-shadow: 0 1px 0 var(--hair), 0 18px 30px -24px rgba(22, 21, 20, 0.5);
+  transform: rotate(-0.6deg);
+}
+
+.road-slip-label {
+  margin: 0 0 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px dashed var(--ink-faint);
+  font-family: var(--display);
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--vermilion);
+}
+
+.road-films {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.road-films li {
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr) auto;
+  gap: 0.6rem;
+  padding: 0.38rem 0;
+}
+
+.road-films-number {
+  color: var(--ink-faint);
+}
+
+.road-films-year {
+  color: var(--ink-mute);
+}
+
+.road-slip-note {
+  margin: 1.1rem 0 0;
+  font-size: var(--step--1);
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--ink-mute);
+}
+
+/* ---- 02 tour: two tickets ------------------------------------------------ */
+
+.road-tickets {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 1.6rem);
+  margin: clamp(2.4rem, 5vw, 3.4rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.road-ticket {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  background: var(--paper-light);
+  box-shadow: 0 1px 0 var(--hair);
+}
+
+/* The stub is torn off along a perforation. */
+.road-ticket-stub {
+  display: grid;
+  place-items: center;
+  padding: 0 clamp(1rem, 2.4vw, 1.5rem);
+  border-right: 2px dashed var(--paper);
+  background: var(--vermilion);
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 600;
+  color: var(--paper-light);
+}
+
+.road-ticket-body {
+  padding: clamp(1.1rem, 2.6vw, 1.6rem);
+}
+
+.road-ticket-body p {
+  margin: 0.4rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+/* ---- 03 Kolkata: a black band, like a B&W print -------------------------- */
+
+.road-kolkata {
+  width: auto;
+  margin-top: var(--band);
+  padding: var(--band) var(--gutter);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.road-kolkata .road-heading {
+  color: var(--paper-light);
+}
+
+.road-kolkata .road-mark {
+  color: rgba(239, 235, 226, 0.78);
+}
+
+.road-kolkata .road-prose {
+  color: rgba(239, 235, 226, 0.8);
+}
+
+.road-kolkata > * {
+  max-width: 1240px;
+  margin-inline: auto;
+}
+
+/* Set like a screening schedule. */
+.road-schedule {
+  margin: 0;
+  border-top: 2px solid var(--vermilion);
+}
+
+.road-schedule > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.4fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(239, 235, 226, 0.16);
+}
+
+.road-schedule dt {
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  color: var(--vermilion);
+}
+
+.road-schedule dd {
+  margin: 0;
+  font-family: var(--display);
+  font-size: var(--step-1);
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: var(--paper-light);
+}
+
+.road-kolkata-plate {
+  margin: clamp(2.4rem, 5vw, 3.6rem) auto 0;
+}
+
+.road-kolkata-frame {
+  position: relative;
+  aspect-ratio: 2.39 / 1;
+  overflow: hidden;
+}
+
+.road-kolkata-plate figcaption {
+  color: rgba(239, 235, 226, 0.78);
+}
+
+/* ---- 04 perspective ------------------------------------------------------ */
+
+.road-ideas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.6rem, 4vw, 3rem);
+  margin: clamp(2.4rem, 5vw, 3.4rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.road-ideas li {
+  padding-top: 1rem;
+  border-top: 2px solid var(--ink);
+}
+
+.road-ideas-number {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-family: var(--display);
+  font-size: var(--step-3);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--vermilion);
+}
+
+.road-ideas p {
+  margin: 0.5rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+/* ---- the tour artwork ---------------------------------------------------- */
+
+.road-artwork-wall {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  gap: clamp(1.6rem, 4vw, 3.4rem);
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.road-artwork-wall figure {
+  margin: 0;
+}
+
+.road-artwork-wall img {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 1px 0 var(--hair), 0 26px 44px -26px rgba(22, 21, 20, 0.55);
+}
+
+.road-artwork-wall li:first-child figure {
+  transform: rotate(-1.2deg);
+}
+
+.road-artwork-wall li:last-child figure {
+  max-width: 700px;
+  transform: rotate(0.8deg);
+}
+
+/* ---- closing statement and credits --------------------------------------- */
+
+.road-credits {
+  padding: var(--band) 0 clamp(3rem, 7vw, 5rem);
+}
+
+.road-card {
+  max-width: 34ch;
+  margin: 0 0 clamp(3rem, 7vw, 5rem);
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 500;
+  line-height: 1.22;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.road-credits-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  padding-top: clamp(1.4rem, 3vw, 2rem);
+  border-top: 2px solid var(--ink);
+}
+
+.road-credits-list {
+  margin: 0;
+}
+
+.road-credits-list div {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.8fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.road-credits-list dt {
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.road-credits-list dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Cinewacky's own credit is the one in vermilion. */
+.road-credits-list dd[data-house] {
+  color: var(--vermilion);
+}
+
+.road-colophon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--hair);
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.road-colophon p {
+  margin: 0;
+}
+
+.road-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--display);
+  font-size: var(--step-0);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.road-back::before {
+  content: '←';
+  color: var(--vermilion);
+  transition: transform 0.3s ease;
+}
+
+.road-back:hover::before,
+.road-back:focus-visible::before {
+  transform: translateX(-0.3rem);
+}
+
+.road a:focus-visible {
+  outline: 2px solid var(--vermilion);
+  outline-offset: 4px;
+}
+
+/* ---- responsive ---------------------------------------------------------- */
+
+@media (max-width: 960px) {
+  .road-hero {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: auto;
+  }
+
+  .road-split,
+  .road-ideas,
+  .road-tickets,
+  .road-credits-grid,
+  .road-artwork-wall {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .road-artwork-wall li:first-child figure {
+    max-width: 30rem;
+  }
+
+  .road-lane {
+    display: none;
+  }
+}
+
+/* On a phone the road turns and runs down the page. */
+@media (max-width: 720px) {
+  .road-hero-cities {
+    display: none;
+  }
+
+  .road-route-line {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.4rem;
+    padding-left: 2.6rem;
+  }
+
+  .road-route-line::before {
+    top: 0;
+    bottom: 0;
+    left: 0.85rem;
+    right: auto;
+    width: 1.1rem;
+    height: auto;
+    transform: translateX(-50%);
+    background:
+      repeating-linear-gradient(
+        180deg,
+        var(--paper) 0 14px,
+        transparent 14px 26px
+      ) center / 2px 100% no-repeat,
+      var(--ink);
+  }
+
+  .road-stop {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.3rem 0.8rem;
+    padding-top: 0;
+    text-align: left;
+  }
+
+  .road-stop-pin {
+    top: 0.75rem;
+    left: -1.75rem;
+  }
+
+  .road-schedule > div,
+  .road-credits-list div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .road-hero-frame img,
+  .road-kolkata-frame img,
+  .road-back::before {
+    transition: none;
+  }
+}

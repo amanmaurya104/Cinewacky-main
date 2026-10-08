@@ -1,7 +1,18 @@
-import documentaries from '@/data/documentaries';
+import documentaries, { getAllDocumentaryParams } from '@/data/documentaries';
+import { getProjectBySlug } from '@/data/projects';
 import stories from '@/data/stories';
 import { showcaseVideoSrc } from '@/lib/projectVideos';
 import type { Story } from '@/types/story';
+
+// On Reel Vibe Uncut only the finished pages open; the rest park on
+// /maintenance until they have one. Add a slug here to publish its page.
+const LIVE_REEL_PAGES = new Set(['kali', 'dark-rising', 'mistimukh', 'moonlight-dream']);
+
+/** Whether a story or documentary page under a project is published. */
+export function isPiecePublished(projectSlug: string, pieceSlug: string): boolean {
+  if (projectSlug === 'reel-vibe-uncut') return LIVE_REEL_PAGES.has(pieceSlug);
+  return true;
+}
 
 export function getStoriesForProject(projectSlug: string): Story[] {
   return stories.filter((story) => story.projectSlug === projectSlug);
@@ -36,6 +47,14 @@ export function getAllStoryParams(): { slug: string; storySlug: string }[] {
     slug: story.projectSlug,
     storySlug: story.slug,
   }));
+}
+
+/** Every live story or documentary page, as { project slug, piece slug }. */
+export function getPublishedPieceParams(): { slug: string; storySlug: string }[] {
+  return [...getAllStoryParams(), ...getAllDocumentaryParams()].filter(
+    ({ slug, storySlug }) =>
+      getProjectBySlug(slug)?.ready && isPiecePublished(slug, storySlug)
+  );
 }
 
 export function getStorySlugForVideo(

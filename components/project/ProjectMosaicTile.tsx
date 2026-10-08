@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useHoverPreview } from '@/hooks/useHoverPreview';
 import type { ProjectMediaTile } from '@/lib/projectVideos';
 
 type Props = {
@@ -74,84 +74,16 @@ function VideoTile({
   feature: boolean;
   className: string;
 }) {
-  const figureRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const hoveredRef = useRef(false);
-  // The loop is withheld until the tile nears the viewport, so opening the page
-  // does not start every preview download at once.
-  const [armed, setArmed] = useState(false);
-
-  const safePlay = useCallback((video: HTMLVideoElement) => {
-    void video.play().catch(() => {
-      // Autoplay policy or navigation can interrupt a pending play request.
-    });
-  }, []);
-
-  const handleEnter = useCallback(() => {
-    hoveredRef.current = true;
-    setArmed(true);
-
-    const video = videoRef.current;
-    if (video) safePlay(video);
-  }, [safePlay]);
-
-  const handleLeave = useCallback(() => {
-    hoveredRef.current = false;
-
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.pause();
-    video.currentTime = 0;
-  }, []);
-
-  useEffect(() => {
-    if (armed) return;
-
-    const figure = figureRef.current;
-    if (!figure) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) setArmed(true);
-      },
-      { rootMargin: '300px 0px' },
-    );
-
-    observer.observe(figure);
-    return () => observer.disconnect();
-  }, [armed]);
-
-  // Show the opening frame rather than black once the loop's data lands.
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video || !armed) return;
-
-    const settle = () => {
-      if (hoveredRef.current) {
-        safePlay(video);
-        return;
-      }
-
-      video.pause();
-      video.currentTime = 0;
-    };
-
-    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-      settle();
-    } else {
-      video.addEventListener('loadeddata', settle, { once: true });
-    }
-
-    return () => video.removeEventListener('loadeddata', settle);
-  }, [armed, safePlay]);
+  const { containerRef, videoRef, armed, play, stop } = useHoverPreview<HTMLElement>(
+    tile.preview,
+  );
 
   return (
     <figure
-      ref={figureRef}
+      ref={containerRef}
       className={className}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
+      onMouseEnter={() => play()}
+      onMouseLeave={stop}
     >
       <video
         ref={videoRef}

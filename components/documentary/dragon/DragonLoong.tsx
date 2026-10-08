@@ -439,6 +439,13 @@ export default function DragonLoong() {
       running = false;
     }
 
+    // three rebuilds its GPU state itself on restore; the loop just resumes.
+    function onContextRestored() {
+      running = !document.hidden;
+      last = performance.now();
+      if (still) drawOnce();
+    }
+
     if (still) {
       drawOnce();
     } else {
@@ -451,6 +458,7 @@ export default function DragonLoong() {
     document.addEventListener('visibilitychange', onVisibility);
     motionQuery.addEventListener('change', onMotionChange);
     canvas.addEventListener('webglcontextlost', onContextLost);
+    canvas.addEventListener('webglcontextrestored', onContextRestored);
 
     return () => {
       disposed = true;
@@ -461,20 +469,33 @@ export default function DragonLoong() {
       document.removeEventListener('visibilitychange', onVisibility);
       motionQuery.removeEventListener('change', onMotionChange);
       canvas.removeEventListener('webglcontextlost', onContextLost);
+      canvas.removeEventListener('webglcontextrestored', onContextRestored);
 
       mixer?.stopAllAction();
+
+      // material.dispose() does not free the textures it holds (the model's
+      // maps), so release those explicitly.
+      const disposeMaterial = (material: THREE.Material) => {
+        for (const value of Object.values(material)) {
+          if (value instanceof THREE.Texture) value.dispose();
+        }
+        material.dispose();
+      };
 
       scene.traverse((object) => {
         if (object instanceof THREE.Mesh || object instanceof THREE.Points) {
           object.geometry.dispose();
           const material = object.material;
-          if (Array.isArray(material)) material.forEach((m) => m.dispose());
-          else material.dispose();
+          if (Array.isArray(material)) material.forEach(disposeMaterial);
+          else disposeMaterial(material);
         }
       });
 
       environment.dispose();
       renderer.dispose();
+      // Hand the GL context back now rather than at GC: browsers cap live
+      // contexts, and client-side navigation can revisit this page many times.
+      renderer.forceContextLoss();
       canvas.remove();
     };
   }, []);

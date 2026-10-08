@@ -57,6 +57,9 @@ export default function AlternatingSideGifs() {
   const leftVisible = started && phase % 2 === 0;
   const rightVisible = started && phase % 2 === 1;
 
+  // Plain <img>: these are animated WebP, which next/image serves unoptimized
+  // anyway, and they deliberately load at low priority.
+  /* eslint-disable @next/next/no-img-element */
   return (
     <div className="story-side-gifs" aria-hidden="true">
       <div className={`story-side-gif story-left-gif ${leftVisible ? 'is-visible' : ''}`}>
@@ -72,4 +75,5 @@ export default function AlternatingSideGifs() {
       </div>
     </div>
   );
+  /* eslint-enable @next/next/no-img-element */
 }

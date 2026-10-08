@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { PixelImage } from "@/registry/magicui/pixel-image";
+import { PixelImage } from "@/components/ui/pixel-image";
 import "@/styles/maintenance.css";
 
-function useTimecode() {
+// Ticks at 24fps, so it lives in its own component: only this text re-renders,
+// not the whole screen and its pixel-image grid.
+function Timecode() {
   const [timecode, setTimecode] = useState("00:00:00:00");
 
   useEffect(() => {
@@ -27,7 +29,7 @@ function useTimecode() {
     return () => clearInterval(id);
   }, []);
 
-  return timecode;
+  return <>TC {timecode}</>;
 }
 
 const stagger = {
@@ -56,8 +58,6 @@ const letterbox = {
 };
 
 export default function MaintenanceScreen() {
-  const timecode = useTimecode();
-
   return (
     <div className="maintenance-root">
       <div className="maintenance-bg" aria-hidden>
@@ -123,7 +123,7 @@ export default function MaintenanceScreen() {
         </motion.div>
 
         <motion.p className="maintenance-timecode" variants={fadeUp}>
-          TC {timecode}
+          <Timecode />
         </motion.p>
 
         <motion.p className="maintenance-lead" variants={fadeUp}>

@@ -1,8 +1,8 @@
 import { Project } from '@/types/project';
 
-// Every life-beyond-lens tile opens the same documentary for now; give a tile
-// its own slug here once there is a second entry in data/documentaries.ts.
-const DOC = 'life-beyond-lens';
+// The life-beyond-lens trailer tile (commented out in its media list below)
+// opens this documentary. Uncomment both together to bring the tile back.
+// const DOC = 'life-beyond-lens';
 
 const projects: Project[] = [
   {
@@ -21,6 +21,7 @@ const projects: Project[] = [
     duration: '12:34',
     client: 'Independent',
     layout: 'mosaic',
+    ready: true,
     // Files under public/showcase/life-beyond-lens/. `title` is what the tile
     // shows — rename freely, the filename is only the asset lookup.
     // `feature: true` puts a tile in the tall left column; the rest fill the
@@ -45,7 +46,7 @@ const projects: Project[] = [
         title: 'MARGARET TO NIVEDITA',
         documentary: 'margaret-to-nivedita',
       },
-      { file: 'DOCU TRAILER .mp4', title: 'OUR DOCUMENTARY TRAILER', documentary: DOC },
+      // { file: 'DOCU TRAILER .mp4', title: 'OUR DOCUMENTARY TRAILER', documentary: DOC },
       {
         file: 'OPENING 5.jpg',
         title: 'KING OF THE ROAD: Wim Wenders',
@@ -95,6 +96,7 @@ const projects: Project[] = [
     heroImage: '/projects/reel-vibe-uncut/hero.jpg',
     gallery: ['/projects/reel-vibe-uncut/1.jpg', '/projects/reel-vibe-uncut/2.jpg'],
     year: '',
+    ready: true,
     videos: [
       'trailer for fiction.mp4',
       'KALI .mp4',
@@ -222,8 +224,10 @@ export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);
 }
 
-export function getAllProjectSlugs(): string[] {
-  return projects.map((project) => project.slug);
+/** Where a link to this project should go: its page once `ready`, else /maintenance. */
+export function getProjectHref(slug: string | undefined): string {
+  const project = slug ? getProjectBySlug(slug) : undefined;
+  return project?.ready ? `/project/${project.slug}` : '/maintenance';
 }
 
 export default projects;

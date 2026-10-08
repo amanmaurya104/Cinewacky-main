@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import AlternatingSideGifs from '@/components/story/AlternatingSideGifs';
 import StoryAchievements from '@/components/story/StoryAchievements';
 import StoryBackLink from '@/components/story/StoryBackLink';
@@ -7,37 +7,29 @@ import StoryCast from '@/components/story/StoryCast';
 import StoryCrew from '@/components/story/StoryCrew';
 import StoryGallery from '@/components/story/StoryGallery';
 import StoryHero from '@/components/story/StoryHero';
-import StoryNav from '@/components/story/StoryNav';
 import StoryProducerNote from '@/components/story/StoryProducerNote';
 import StoryTrailer from '@/components/story/StoryTrailer';
 import StoryVisualNarrative from '@/components/story/StoryVisualNarrative';
 import TypedText from '@/components/story/TypedText';
-import ArchiveDocumentary from '@/components/documentary/ArchiveDocumentary';
-import DocumentaryStandard from '@/components/documentary/DocumentaryStandard';
+import ArchiveDocumentary from '@/components/documentary/archive/ArchiveDocumentary';
+import DocumentaryStandard from '@/components/documentary/standard/DocumentaryStandard';
 import CraftDocumentary from '@/components/documentary/craft/CraftDocumentary';
 import DragonDocumentary from '@/components/documentary/dragon/DragonDocumentary';
 import PassageDocumentary from '@/components/documentary/passage/PassageDocumentary';
 import RisingDocumentary from '@/components/documentary/rising/RisingDocumentary';
 import RoadDocumentary from '@/components/documentary/road/RoadDocumentary';
-import {
-  getAllDocumentaryParams,
-  getDocumentaryForProject,
-} from '@/data/documentaries';
+import { getDocumentaryForProject } from '@/data/documentaries';
 import { getProjectBySlug } from '@/data/projects';
 import { moonlightDisplay } from '@/lib/fonts';
-import {
-  getAdjacentStories,
-  getAllStoryParams,
-  getStoryBySlug,
-} from '@/lib/stories';
+import { getPublishedPieceParams, getStoryBySlug, isPiecePublished } from '@/lib/stories';
 import '@/styles/story.css';
-import '@/styles/documentary.css';
-import '@/styles/documentary-archive.css';
-import '@/styles/documentary-craft.css';
-import '@/styles/documentary-dragon.css';
-import '@/styles/documentary-passage.css';
-import '@/styles/documentary-rising.css';
-import '@/styles/documentary-road.css';
+import '@/styles/documentary/base.css';
+import '@/styles/documentary/archive.css';
+import '@/styles/documentary/craft.css';
+import '@/styles/documentary/dragon.css';
+import '@/styles/documentary/passage.css';
+import '@/styles/documentary/rising.css';
+import '@/styles/documentary/road.css';
 
 interface Props {
   params: Promise<{ slug: string; storySlug: string }>;
@@ -45,8 +37,9 @@ interface Props {
 
 // Stories and documentaries share this segment: both are pieces of work that
 // belong to a project, so both live at /project/<project>/<piece>.
+// Only published pieces are prebuilt; the rest redirect to /maintenance below.
 export function generateStaticParams() {
-  return [...getAllStoryParams(), ...getAllDocumentaryParams()];
+  return getPublishedPieceParams();
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -77,6 +70,7 @@ export default async function StoryPage({ params }: Props) {
   const { slug, storySlug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return notFound();
+  if (!project.ready || !isPiecePublished(slug, storySlug)) redirect('/maintenance');
 
   const story = getStoryBySlug(slug, storySlug);
 
@@ -111,8 +105,6 @@ export default async function StoryPage({ params }: Props) {
     return <DocumentaryStandard documentary={documentary} />;
   }
 
-  const { prev, next } = getAdjacentStories(slug, storySlug);
-
   // Moonlight is the one story with its own structure, not just its own
   // palette: a display serif, an unboxed narrative hung off a tide gauge, a
   // still cast row, and no side loops competing with the night sky.
@@ -129,13 +121,6 @@ export default async function StoryPage({ params }: Props) {
         .join(' ')}
     >
       {isMoonlight ? null : <AlternatingSideGifs />}
-
-      {/* <StoryNav
-        projectSlug={slug}
-        projectTitle={project.title}
-        prev={prev}
-        next={next}
-      /> */}
 
       <StoryHero
         title={story.title}

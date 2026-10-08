@@ -1,5 +1,6 @@
 "use client";
 
+import { useReducedMotion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 type Props = {
@@ -11,20 +12,19 @@ type Props = {
 export default function StoryTrailer({ trailer, poster, title }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
-  // Shown when autoplay is refused (browser policy, reduced motion) or on end.
+  // Shown when autoplay is refused (browser policy) or on end.
   const [needsTap, setNeedsTap] = useState(false);
+  // Reduced motion never autoplays: the play button shows until it is tapped.
+  const reduceMotion = useReducedMotion();
+  const [tapped, setTapped] = useState(false);
+  const showPlay = needsTap || (Boolean(reduceMotion) && !tapped);
 
   // Autoplay muted once the trailer is on screen; pause when it leaves.
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || reduceMotion) return;
 
     video.muted = true;
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setNeedsTap(true);
-      return;
-    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -42,7 +42,7 @@ export default function StoryTrailer({ trailer, poster, title }: Props) {
 
     observer.observe(video);
     return () => observer.disconnect();
-  }, []);
+  }, [reduceMotion]);
 
   // A tap is a user gesture, so the trailer can start with sound.
   const playWithSound = useCallback(() => {
@@ -51,8 +51,9 @@ export default function StoryTrailer({ trailer, poster, title }: Props) {
 
     video.muted = false;
     setMuted(false);
-    void video.play();
+    setTapped(true);
     setNeedsTap(false);
+    void video.play().catch(() => setNeedsTap(true));
   }, []);
 
   const toggleSound = useCallback(() => {
@@ -62,7 +63,7 @@ export default function StoryTrailer({ trailer, poster, title }: Props) {
     const next = !video.muted;
     video.muted = next;
     setMuted(next);
-    if (!next && video.paused) void video.play();
+    if (!next && video.paused) void video.play().catch(() => setNeedsTap(true));
   }, []);
 
   return (
@@ -83,7 +84,7 @@ export default function StoryTrailer({ trailer, poster, title }: Props) {
           onEnded={() => setNeedsTap(true)}
         />
 
-        {needsTap ? (
+        {showPlay ? (
           <button
             type="button"
             className="story-trailer-play"
