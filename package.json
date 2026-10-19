@@ -2,11 +2,18 @@
   "name": "cinewacky",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "check:media": "node scripts/check-media.mjs",
+    "check": "npm run lint && npm run typecheck && npm run check:media",
+    "media:clips": "node scripts/optimize-showcase-clips.mjs",
     "media:side-gifs": "node scripts/optimize-side-gifs.mjs",
     "media:thumbs": "node scripts/optimize-showcase-thumbs.mjs",
     "media:faststart": "node scripts/faststart-mp4.mjs",

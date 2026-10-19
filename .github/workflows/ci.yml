@@ -1,0 +1,45 @@
+# Lint, check every media path, and build, on each push to master and on
+# every pull request. `next build` type-checks the whole project, so there is
+# no separate `npm run typecheck` step here.
+#
+# The checkout includes public/ (about 1GB), because check:media has to see
+# the real files.
+
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check media paths
+        run: npm run check:media
+
+      - name: Build
+        run: npm run build
