@@ -35,7 +35,6 @@ const SOURCES = [
   { file: 'public/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer.mp4', start: 3 },
   // Tiles on the life-beyond-lens mosaic, which plays loops rather than films.
   { file: `${LIFE_BEYOND_LENS}/DOCU TRAILER .mp4`, start: 3 },
-  { file: `${LIFE_BEYOND_LENS}/DOCU.mp4`, start: 3 },
   { file: `${LIFE_BEYOND_LENS}/OPENING 1.mp4`, start: 1 },
 ];
 

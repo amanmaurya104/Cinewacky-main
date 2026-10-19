@@ -9,7 +9,6 @@ export type ShowcaseTitleParts = {
 export type ShowcaseScrollItem = {
   id: number;
   video: string;
-  fallbackVideo?: string;
   category: string;
   title: string;
   titleParts: ShowcaseTitleParts;
@@ -96,8 +95,9 @@ export const showcaseScrollItems: ShowcaseScrollItem[] = SHOWCASE_SLUG_ORDER.map
     return {
       ...slot,
       id: i + 1,
-      video: `/showcase/${i + 1}.mp4`,
-      fallbackVideo: project.previewVideo,
+      // Web encodes built by scripts/optimize-showcase-clips.mjs (86MB -> 7MB);
+      // the masters stay at /showcase/<n>.mp4.
+      video: `/showcase/clips/${i + 1}.mp4`,
       category: project.category,
       title: project.title,
       titleParts,

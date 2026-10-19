@@ -167,9 +167,10 @@ export interface Documentary {
    * 'craft' for the material record, filed by what the work is made of;
    * 'passage' for the memorial, filed by the places on a crossing;
    * 'rising' for the development dossier, filed as a case record;
-   * 'road' for the tour record, laid out like the tour's own poster.
+   * 'road' for the tour record, laid out like the tour's own poster;
+   * 'tuning' for the music series, laid out on a radio dial.
    */
-  theme?: 'archive' | 'dragon' | 'craft' | 'passage' | 'rising' | 'road';
+  theme?: 'archive' | 'dragon' | 'craft' | 'passage' | 'rising' | 'road' | 'tuning';
   tagline?: string;
   /** One paragraph per entry. */
   synopsis?: string[];
@@ -266,6 +267,9 @@ export interface Documentary {
 
   /* ---- road theme ---- */
   road?: DocumentaryRoad;
+
+  /* ---- tuning theme ---- */
+  tuning?: DocumentaryTuning;
 }
 
 /* ---- rising theme ------------------------------------------------------- */
@@ -426,4 +430,96 @@ export interface DocumentaryRoad {
 
   /** The one-paragraph summary, set as the closing statement. */
   card: string;
+}
+
+/* ---- tuning theme ------------------------------------------------------- */
+
+/**
+ * One episode, printed as a station on the dial. The brief gives each episode
+ * a state and a paragraph and nothing else, so `plate` and `trailer` are only
+ * set where a delivered photograph or a published teaser is known to belong to
+ * that episode; the panel draws the episode's signal in their place.
+ */
+export interface DocumentaryEpisode {
+  /** The state or city the episode is filed under, e.g. 'Bengal'. */
+  place: string;
+  /** Set under it in the serif italic, e.g. 'Kolkata and the Baul villages'. */
+  locale?: string;
+  text: string;
+  plate?: DocumentaryPlate;
+  /** `id` of the broadcast that is this episode's own teaser. */
+  trailer?: string;
+}
+
+/** One published trailer. Nothing is fetched from the host until it is played. */
+export interface DocumentaryBroadcast {
+  /** Also the anchor the dial links to, as #broadcast-<id>. */
+  id: string;
+  kind: 'youtube' | 'facebook';
+  title: string;
+  /** Whose channel published it, as the host names it. */
+  channel: string;
+  /** The watch page, for the "open on" link. */
+  href: string;
+  /** YouTube: the video id. Facebook: the canonical video URL for the plugin. */
+  source: string;
+  /** Poster frame. YouTube thumbnails come from i.ytimg.com. */
+  poster: string;
+}
+
+/** A broadcaster or client. `logo` replaces the wordmark once it is delivered. */
+export interface DocumentaryNetwork {
+  name: string;
+  logo?: string;
+}
+
+/**
+ * Tuning 2 You is a music series, and its own title is a radio pun, so the page
+ * is laid out on a tuning dial: the six episodes are stations on one band, the
+ * trailers are broadcasts, the kit list is a band's tech rider.
+ *
+ * Photographs are placed in named slots (`heroPlate`, `liner`, `backstage`,
+ * `sleeves`, ...) and the complete delivered set is listed again in `gallery`.
+ * That is deliberate: when the next batch of stills arrives, the slots are
+ * repointed at the new files and the gallery keeps every frame.
+ */
+export interface DocumentaryTuning {
+  /** Set under the title, e.g. 'Lost Musicians of India'. */
+  subtitle: string;
+  epigraph: string;
+  /** Short facts in the hero, e.g. '6 × 30′'. */
+  format: string[];
+  heroPlate: DocumentaryPlate;
+
+  overture: string[];
+  record: DocumentaryFact[];
+  roles: DocumentaryEntry[];
+  liner: DocumentaryPlate[];
+
+  overview: DocumentaryPassage;
+  overviewPlate: DocumentaryPlate;
+
+  episodes: DocumentaryEpisode[];
+
+  /** The closing figures, e.g. { value: '6', label: 'states' }. */
+  mosaic: DocumentaryFact[];
+  mosaicLine: string;
+  mosaicPlate: DocumentaryPlate;
+
+  craft: DocumentaryPassage;
+  rider: { quantity: string; item: string; note?: string }[];
+  backstage: DocumentaryPlate[];
+
+  standout: DocumentaryPassage;
+  /** Portraits of the musicians, mounted as record sleeves. */
+  sleeves: DocumentaryPlate[];
+
+  broadcasts: DocumentaryBroadcast[];
+  streaming: string;
+  networks: DocumentaryNetwork[];
+
+  gallery: DocumentaryPlate[];
+
+  visionaries: DocumentaryCredit[];
+  visionariesNote: string;
 }

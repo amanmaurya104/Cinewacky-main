@@ -1,6 +1,6 @@
 "use client";
 
-import Image from 'next/image';
+import Image, { getImageProps } from 'next/image';
 import Link from 'next/link';
 import { useHoverPreview } from '@/hooks/useHoverPreview';
 import type { ProjectMediaTile } from '@/lib/projectVideos';
@@ -12,21 +12,17 @@ type Props = {
   sizes: string;
 };
 
+// Where a tile's portrait cut takes over. project-mosaic.css gives the
+// full-height row under the same query; change both together.
+const PORTRAIT_MEDIA = '(max-width: 1024px) and (orientation: portrait)';
+
 export default function ProjectMosaicTile({ tile, feature = false, sizes }: Props) {
   const className = `project-mosaic-tile${feature ? ' project-mosaic-tile--feature' : ''}`;
 
   if (tile.kind === 'image') {
     return (
       <figure className={className}>
-        <Image
-          className="project-mosaic-media"
-          src={tile.src}
-          alt={tile.title}
-          fill
-          sizes={sizes}
-          quality={75}
-          loading={feature ? 'eager' : 'lazy'}
-        />
+        <TileImage tile={tile} feature={feature} sizes={sizes} />
         <TileLink href={tile.href} title={tile.title} />
         <TileCaption title={tile.title} caption={tile.caption} feature={feature} />
       </figure>
@@ -34,6 +30,42 @@ export default function ProjectMosaicTile({ tile, feature = false, sizes }: Prop
   }
 
   return <VideoTile tile={tile} feature={feature} className={className} />;
+}
+
+// With a portrait cut this is a <picture>, so the browser downloads only the
+// file for the screen it is on (Next's art-direction pattern, getImageProps).
+function TileImage({
+  tile,
+  feature,
+  sizes,
+}: {
+  tile: Extract<ProjectMediaTile, { kind: 'image' }>;
+  feature: boolean;
+  sizes: string;
+}) {
+  const alt = tile.title;
+  const common = {
+    fill: true,
+    sizes,
+    quality: 75,
+    loading: feature ? 'eager' : 'lazy',
+  } as const;
+
+  if (!tile.portraitSrc) {
+    return <Image className="project-mosaic-media" src={tile.src} alt={alt} {...common} />;
+  }
+
+  const {
+    props: { srcSet: portrait },
+  } = getImageProps({ ...common, alt, src: tile.portraitSrc });
+  const { props } = getImageProps({ ...common, alt, src: tile.src });
+
+  return (
+    <picture>
+      <source media={PORTRAIT_MEDIA} srcSet={portrait} sizes={sizes} />
+      <img className="project-mosaic-media" {...props} alt={alt} />
+    </picture>
+  );
 }
 
 function TileCaption({

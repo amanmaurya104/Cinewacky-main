@@ -5,6 +5,12 @@ export interface ProjectMediaItem {
   caption?: string;
   /** Renders in the tall left column instead of the right stack. */
   feature?: boolean;
+  /**
+   * Images only: a portrait cut, also under public/showcase/{slug}/, shown on
+   * portrait phones and tablets. A lone feature tile that has one fills the
+   * screen there instead of sitting in a short landscape row.
+   */
+  portraitFile?: string;
   /** Slug in data/documentaries.ts; clicking the tile opens that page. */
   documentary?: string;
 }
@@ -16,11 +22,6 @@ export interface Project {
   category: string;
   tagline: string;
   description: string;
-  thumbnail: string;
-  poster: string;
-  previewVideo: string;
-  heroImage: string;
-  gallery: string[];
   year: string;
   duration?: string;
   client?: string;

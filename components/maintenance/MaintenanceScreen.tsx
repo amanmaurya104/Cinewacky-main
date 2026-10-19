@@ -62,7 +62,7 @@ export default function MaintenanceScreen() {
     <div className="maintenance-root">
       <div className="maintenance-bg" aria-hidden>
         <PixelImage
-          src="/logo/maintenance.png"
+          src="/logo/maintenance.webp"
           customGrid={{ rows: 8, cols: 12 }}
           grayscaleAnimation
           fill
@@ -89,8 +89,6 @@ export default function MaintenanceScreen() {
         style={{ transformOrigin: "bottom center" }}
       />
 
-      <div className="maintenance-grain" aria-hidden />
-      <div className="maintenance-noise" aria-hidden />
       <div className="maintenance-vignette" aria-hidden />
       <div
         className="maintenance-film-edge maintenance-film-edge--left"

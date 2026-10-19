@@ -3,6 +3,7 @@ import {
   Barlow,
   Barlow_Condensed,
   Bodoni_Moda,
+  Bricolage_Grotesque,
   Cinzel,
   Cormorant_Garamond,
   Courier_Prime,
@@ -11,6 +12,7 @@ import {
   Fraunces,
   IBM_Plex_Mono,
   IBM_Plex_Sans,
+  Instrument_Serif,
   Karla,
   Lora,
   Marcellus,
@@ -18,6 +20,7 @@ import {
   Noto_Serif_Bengali,
   Oswald,
   Source_Serif_4,
+  Space_Mono,
   Spectral,
 } from 'next/font/google';
 
@@ -299,6 +302,45 @@ export const roadUtility = Cutive_Mono({
   subsets: ['latin'],
   weight: '400',
   variable: '--font-road-utility',
+  display: 'swap',
+  preload: false,
+});
+
+/**
+ * Tuning 2 You is the one music page on the site, so it is set like a record
+ * sleeve rather than a book: Bricolage Grotesque has the ink-trap, gig-poster
+ * grotesque the other bespoke pages all avoid, and its optical-size axis lets
+ * one family carry both the 9rem title and the running text.
+ */
+export const tuningDisplay = Bricolage_Grotesque({
+  subsets: ['latin'],
+  axes: ['opsz', 'wdth'],
+  variable: '--font-tuning-display',
+  display: 'swap',
+  preload: false,
+});
+
+/**
+ * The lyric voice: the epigraph, the episode localities and the "2" in the
+ * title. One weight, mostly italic, never below display size.
+ */
+export const tuningLyric = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-tuning-lyric',
+  display: 'swap',
+  preload: false,
+});
+
+/**
+ * The readouts: dial numbers, channel labels, the tech rider. A geometric
+ * mono, not the typewriter faces the archive and road pages use.
+ */
+export const tuningUtility = Space_Mono({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--font-tuning-utility',
   display: 'swap',
   preload: false,
 });

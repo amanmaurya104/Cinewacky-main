@@ -169,3 +169,21 @@
     background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0) 62%);
   }
 }
+
+/* A project with feature tiles only (Web Stream Tales, for now) has nothing to
+   put in the right stack, so the feature column takes the whole width instead
+   of leaving half the screen black. ProjectMosaic sets the class and leaves the
+   empty stack out. */
+.project-mosaic--lone {
+  grid-template-columns: 1fr;
+}
+
+/* On portrait screens its tiles switch to their portrait cuts
+   (ProjectMosaicTile, same query), so the row can take the whole screen
+   instead of a short landscape strip over black. */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .project-mosaic--fill .project-mosaic-feature-column {
+    height: 100vh;
+    height: 100dvh;
+  }
+}

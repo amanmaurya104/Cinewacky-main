@@ -1,0 +1,2221 @@
+/*
+ * Tuning 2 You — the music series, laid out on a radio dial.
+ *
+ * The client's palette: warm ivory paper (#F3EFE6) and deep teal ink
+ * (#087E8B). The page is paper; the dial, the figures and the broadcast band
+ * are deep-teal panels lit from inside. Every colour below is a role, not a
+ * value, so a panel only swaps the roles (see "teal panels") and every rule
+ * inside it follows.
+ *
+ * Every rule is scoped under `.tuning` so nothing here reaches another page.
+ */
+
+.tuning {
+  /* the client's two colours, and what is derived from them */
+  --ivory: #f3efe6;
+  --ivory-deep: #ebe5d8;
+  --teal: #087e8b;
+  --teal-text: #066a75; /* the teal a step darker, for small type: 5.5:1 on ivory */
+  --teal-deep: #05545c;
+  --teal-night: #043c42;
+  --teal-light: #a6dbe0; /* the "lighting" inside the deep panels */
+  --vinyl: #1b2223;
+
+  /* roles, as set on paper */
+  --surface: var(--ivory-deep);
+  --ink: #123b40;
+  --ink-soft: rgba(18, 59, 64, 0.86);
+  --ink-mute: rgba(18, 59, 64, 0.74);
+  --ink-faint: rgba(18, 59, 64, 0.42);
+  --hair: rgba(18, 59, 64, 0.14);
+  --hair-strong: rgba(18, 59, 64, 0.26);
+  --accent: var(--teal);
+  --accent-text: var(--teal-text);
+  --accent-fill: var(--teal-text);
+  --accent-on: var(--ivory);
+  --glow: rgba(8, 126, 139, 0.4);
+
+  --display: var(--font-tuning-display), "Bricolage Grotesque", "Arial Narrow", sans-serif;
+  --lyric: var(--font-tuning-lyric), "Instrument Serif", Georgia, serif;
+  --utility: var(--font-tuning-utility), "Space Mono", ui-monospace, monospace;
+
+  --step--2: clamp(0.72rem, 0.7rem + 0.1vw, 0.78rem);
+  --step--1: clamp(0.8rem, 0.77rem + 0.16vw, 0.9rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.12rem);
+  --step-1: clamp(1.2rem, 1.08rem + 0.6vw, 1.5rem);
+  --step-2: clamp(1.55rem, 1.25rem + 1.5vw, 2.4rem);
+  --step-3: clamp(2.1rem, 1.4rem + 3.4vw, 4.1rem);
+  --step-4: clamp(3.2rem, 1rem + 8.4vw, 9rem);
+
+  --page: min(1240px, calc(100vw - 2 * clamp(16px, 5vw, 72px)));
+  --band: clamp(4.5rem, 10vw, 8.5rem);
+  --gutter: max(16px, calc((100vw - var(--page)) / 2));
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: clip;
+  /* Paper grain, so the ivory reads as the artwork's paper and not a flat fill. */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.07 0 0 0 0 0.23 0 0 0 0 0.25 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    var(--ivory);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: var(--step-0);
+  font-optical-sizing: auto;
+  line-height: 1.65;
+}
+
+/* ---------- teal panels: the same rules, the roles turned over ---------- */
+
+.tuning-dial,
+.tuning-overview,
+.tuning-mosaic,
+.tuning-streaming {
+  --surface: var(--teal-night);
+  --ink: var(--ivory);
+  --ink-soft: rgba(243, 239, 230, 0.88);
+  --ink-mute: rgba(243, 239, 230, 0.7);
+  --ink-faint: rgba(243, 239, 230, 0.4);
+  --hair: rgba(243, 239, 230, 0.16);
+  --hair-strong: rgba(243, 239, 230, 0.3);
+  --accent: var(--teal-light);
+  --accent-text: var(--teal-light);
+  --accent-fill: var(--teal-light);
+  --accent-on: var(--teal-night);
+  --glow: rgba(166, 219, 224, 0.55);
+  color: var(--ink);
+}
+
+.tuning *,
+.tuning *::before,
+.tuning *::after {
+  box-sizing: border-box;
+}
+
+.tuning ::selection {
+  background: var(--teal);
+  color: var(--ivory);
+}
+
+.tuning :focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.tuning img {
+  object-fit: cover;
+}
+
+/* Link targets for #ep-N and #broadcast-<id>. Pinned to the top of their
+   block so the browser scrolls there itself, leaving room for the heading
+   above the dial and for the floating menu button. */
+.tuning-dial,
+.tuning-broadcasts {
+  position: relative;
+}
+
+.tuning-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  scroll-margin-top: clamp(1rem, 3vw, 2rem);
+}
+
+.tuning-dial > .tuning-anchor {
+  scroll-margin-top: clamp(7rem, 14vw, 11rem);
+}
+
+.tuning-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- shared: section, head, prose ---------- */
+
+.tuning-section {
+  width: var(--page);
+  margin: 0 auto;
+  padding: var(--band) 0 0;
+}
+
+.tuning-head {
+  margin-bottom: clamp(1.75rem, 4vw, 3rem);
+}
+
+.tuning-channel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.9rem;
+  margin: 0 0 1rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.tuning-channel-number {
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.tuning-bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 0.85rem;
+}
+
+.tuning-bars i {
+  display: block;
+  width: 3px;
+  background: var(--accent);
+  border-radius: 1px;
+}
+
+.tuning-bars i:nth-child(1) { height: 25%; }
+.tuning-bars i:nth-child(2) { height: 50%; }
+.tuning-bars i:nth-child(3) { height: 75%; }
+.tuning-bars i:nth-child(4) { height: 100%; background: var(--ink-faint); }
+
+.tuning-heading {
+  max-width: 18ch;
+  margin: 0;
+  font-size: var(--step-3);
+  font-weight: 700;
+  font-stretch: 82%;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.tuning-subheading {
+  margin: 0 0 0.35rem;
+  font-size: var(--step-1);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.tuning-prose {
+  max-width: 64ch;
+  color: var(--ink-soft);
+}
+
+.tuning-prose p {
+  margin: 0 0 1.1em;
+}
+
+.tuning-prose p:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 900px) {
+  .tuning-prose--columns {
+    max-width: none;
+    columns: 2;
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+  }
+
+  .tuning-prose--columns p {
+    break-inside: avoid;
+  }
+}
+
+.tuning-split {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+
+@media (min-width: 900px) {
+  .tuning-split {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: start;
+  }
+}
+
+/* ---------- the band: ticks shared by the hero and the dial ---------- */
+
+.tuning-band-scale {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to right,
+      var(--hair-strong) 0 1px,
+      transparent 1px calc(100% / (var(--stations) * 10))
+    )
+    left top / 100% 28% no-repeat,
+    repeating-linear-gradient(
+      to right,
+      transparent 0 calc(100% / (var(--stations) * 2) - 1px),
+      var(--ink-faint) calc(100% / (var(--stations) * 2) - 1px) calc(100% / (var(--stations) * 2)),
+      transparent calc(100% / (var(--stations) * 2)) calc(100% / var(--stations))
+    )
+    left top / 100% 46% no-repeat;
+}
+
+.tuning-station-number {
+  display: block;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  color: var(--ink-mute);
+}
+
+.tuning-station-place {
+  display: block;
+  font-size: var(--step--1);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+}
+
+.tuning-station-code {
+  display: none;
+}
+
+/* Six full state names do not fit across a phone. The band shows the first
+   three letters, set like the call letters on a radio dial; the full name
+   stays in the markup for screen readers and heads the episode panel. */
+@media (max-width: 640px) {
+  .tuning-station-place {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .tuning-station-code {
+    display: block;
+    margin-top: 0.1rem;
+    font-family: var(--utility);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .tuning-station[aria-selected="true"] .tuning-station-code {
+    color: var(--teal-light);
+  }
+}
+
+/* ---------- hero: the drawn orchestra ---------- */
+
+.tuning-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100svh;
+  padding: clamp(5rem, 9vw, 7rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  overflow: hidden;
+}
+
+.tuning-hero-type {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(62vw, 900px);
+  margin: auto 0;
+  text-align: center;
+}
+
+.tuning-onair {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 1.4rem;
+  padding: 0.35rem 0.8rem 0.35rem 0.65rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.tuning-onair-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: tuning-pulse 2.4s ease-out infinite;
+}
+
+@keyframes tuning-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(8, 126, 139, 0.5); }
+  70%, 100% { box-shadow: 0 0 0 0.6rem rgba(8, 126, 139, 0); }
+}
+
+.tuning-title {
+  margin: 0;
+  font-size: var(--step-4);
+  font-weight: 800;
+  font-stretch: 76%;
+  line-height: 0.86;
+  letter-spacing: -0.012em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.tuning-title-two {
+  display: inline-block;
+  margin: 0 0.06em;
+  font-family: var(--lyric);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.12em;
+  line-height: 0.7;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--teal);
+  transform: translateY(0.06em) rotate(-6deg);
+}
+
+.tuning-subtitle {
+  margin: 1.1rem 0 0;
+  font-size: var(--step-2);
+  font-weight: 600;
+  font-stretch: 88%;
+  line-height: 1.1;
+}
+
+.tuning-epigraph {
+  max-width: 30ch;
+  margin: 0.8rem 0 0;
+  font-family: var(--lyric);
+  font-style: italic;
+  font-size: var(--step-1);
+  line-height: 1.3;
+  color: var(--accent-text);
+}
+
+.tuning-format {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1.6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tuning-format li {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--hair-strong);
+  border-radius: 999px;
+  background: rgba(243, 239, 230, 0.7);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+.tuning-hero-band {
+  position: relative;
+  z-index: 2;
+  width: min(var(--page), 56vw);
+  margin-top: clamp(2rem, 5vh, 3.5rem);
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--hair-strong);
+}
+
+.tuning-hero-band .tuning-band-scale {
+  height: 1.4rem;
+}
+
+/* Tablets: the instruments end above the band, so it can take more width
+   and the six names stop crowding each other. */
+@media (min-width: 761px) and (max-width: 1100px) {
+  .tuning-hero-band {
+    width: min(var(--page), 76vw);
+  }
+}
+
+.tuning-hero-needle {
+  position: absolute;
+  top: -0.5rem;
+  left: 0;
+  width: 2px;
+  height: 2.6rem;
+  background: var(--teal);
+  box-shadow: 0 0 12px 2px var(--glow);
+  animation: tuning-scan 16s ease-in-out infinite alternate;
+}
+
+@keyframes tuning-scan {
+  0%, 6% { left: calc(100% / (var(--stations) * 2)); }
+  94%, 100% { left: calc(100% - 100% / (var(--stations) * 2)); }
+}
+
+.tuning-hero-stations {
+  display: grid;
+  grid-template-columns: repeat(var(--stations), minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.tuning-hero-stations a {
+  display: block;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.15rem;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.tuning-hero-stations a:hover .tuning-station-place,
+.tuning-hero-stations a:focus-visible .tuning-station-place {
+  color: var(--accent-text);
+}
+
+/* the instruments, the staves and the notes */
+
+.tuning-orchestra {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tuning-staves {
+  position: absolute;
+  top: 0;
+  width: 25%;
+  height: 100%;
+  overflow: visible;
+}
+
+.tuning-staves--left { left: 0; }
+.tuning-staves--right { right: 0; }
+
+/* The staff lines are solid, with one gap travelling along each, so the
+   sound reads as moving down the line. */
+.tuning-staves path {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.55;
+  stroke-dasharray: 0.86 0.14;
+  animation: tuning-flow 12s linear infinite;
+}
+
+@keyframes tuning-flow {
+  to { stroke-dashoffset: -1; }
+}
+
+.tuning-instrument {
+  position: absolute;
+  display: block;
+  will-change: transform;
+}
+
+.tuning-instrument img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Placed where the client's artwork puts them, as hero percentages. */
+.tuning-instrument--sitar { left: 3.6%; top: 3%; width: clamp(130px, 15vw, 260px); transform-origin: 18% 82%; animation: tuning-sway 5.2s ease-in-out infinite; }
+.tuning-instrument--tabla { left: 1.6%; top: 31%; width: clamp(64px, 7.3vw, 128px); transform-origin: 50% 100%; animation: tuning-thump 2.4s ease-in-out infinite; }
+.tuning-instrument--harmonica { left: 1.2%; top: 53%; width: clamp(80px, 9.4vw, 165px); transform-origin: 50% 50%; animation: tuning-breathe 3.6s ease-in-out infinite; }
+.tuning-instrument--flute { left: 2.2%; top: 67.5%; width: clamp(120px, 14vw, 245px); transform-origin: 50% 50%; animation: tuning-float 6.4s ease-in-out infinite; }
+.tuning-instrument--lute { right: 2.6%; top: 8%; width: clamp(86px, 9.8vw, 172px); transform-origin: 45% 92%; animation: tuning-sway 5.8s ease-in-out -2.1s infinite; }
+.tuning-instrument--cymbals { right: 2.4%; top: 32%; width: clamp(84px, 9.7vw, 170px); transform-origin: 50% 20%; animation: tuning-jingle 3.2s ease-in-out infinite; }
+.tuning-instrument--violin { right: 0.8%; top: 47.5%; width: clamp(88px, 10.3vw, 180px); transform-origin: 40% 90%; animation: tuning-rock 4.6s ease-in-out -1s infinite; }
+.tuning-instrument--djembe { right: 2.2%; top: 79.5%; width: clamp(60px, 7vw, 122px); transform-origin: 50% 100%; animation: tuning-thump 2.4s ease-in-out -1.2s infinite; }
+
+/* strings: a slow sway from the body */
+@keyframes tuning-sway {
+  0%, 100% { transform: rotate(-2.5deg); }
+  50% { transform: rotate(2.5deg); }
+}
+
+/* bowed: a rock, as if under the bow */
+@keyframes tuning-rock {
+  0%, 100% { transform: rotate(3deg) translateY(0); }
+  50% { transform: rotate(-3deg) translateY(-4px); }
+}
+
+/* drums: two strokes and a rest, the tabla and djembe answering each other */
+@keyframes tuning-thump {
+  0%, 30%, 60%, 100% { transform: translateY(0) scale(1, 1); }
+  6% { transform: translateY(2px) scale(1.04, 0.93); }
+  14% { transform: translateY(-5px) scale(0.98, 1.03); }
+  36% { transform: translateY(2px) scale(1.03, 0.95); }
+  44% { transform: translateY(-3px) scale(0.99, 1.02); }
+}
+
+/* cymbals: a quick jingle, then still */
+@keyframes tuning-jingle {
+  0%, 40%, 100% { transform: rotate(0); }
+  4% { transform: rotate(-7deg); }
+  10% { transform: rotate(6deg); }
+  16% { transform: rotate(-4deg); }
+  22% { transform: rotate(3deg); }
+  28% { transform: rotate(-1deg); }
+}
+
+/* reeds: breath in, breath out */
+@keyframes tuning-breathe {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  50% { transform: translateX(6px) rotate(-2deg); }
+}
+
+/* the flute floats */
+@keyframes tuning-float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-9px) rotate(3deg); }
+}
+
+.tuning-note {
+  position: absolute;
+  color: var(--teal);
+  opacity: 0;
+  animation: tuning-rise 6s ease-in-out infinite;
+}
+
+.tuning-note svg {
+  display: block;
+  width: clamp(16px, 1.7vw, 26px);
+  height: auto;
+}
+
+@keyframes tuning-rise {
+  0% { opacity: 0; transform: translate(0, 10px) rotate(-8deg) scale(0.85); }
+  20% { opacity: 1; }
+  70% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(14px, -46px) rotate(10deg) scale(1.05); }
+}
+
+/* On a phone the instruments cannot frame the type from the sides, so the
+   strings take the top of the screen and the rest step aside. */
+@media (max-width: 760px) {
+  .tuning-hero {
+    min-height: 0;
+    padding-top: calc(36vw + 4rem);
+  }
+
+  .tuning-hero-type {
+    margin: 0;
+  }
+
+  .tuning-hero-type,
+  .tuning-hero-band {
+    width: var(--page);
+  }
+
+  .tuning-staves {
+    width: 50%;
+    height: calc(36vw + 4rem);
+  }
+
+  .tuning-instrument--sitar { left: 3%; top: 3.4rem; width: 30vw; }
+  .tuning-instrument--lute { right: 5%; top: 3.8rem; width: 17vw; }
+  .tuning-instrument--cymbals { right: 25%; top: calc(3.4rem + 17vw); width: 15vw; }
+
+  .tuning-instrument--tabla,
+  .tuning-instrument--harmonica,
+  .tuning-instrument--flute,
+  .tuning-instrument--violin,
+  .tuning-instrument--djembe,
+  .tuning-note:not(.tuning-note--top) {
+    display: none;
+  }
+}
+
+/* ---------- the opening photograph ---------- */
+
+.tuning-opening {
+  width: var(--page);
+  margin: 0 auto;
+}
+
+.tuning-opening-frame {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 30px 60px -34px rgba(18, 59, 64, 0.55);
+}
+
+@media (max-width: 640px) {
+  .tuning-opening-frame {
+    aspect-ratio: 3 / 2;
+  }
+}
+
+.tuning-opening figcaption,
+.tuning-liner-plates figcaption,
+.tuning-backstage figcaption,
+.tuning-episode-visual figcaption {
+  margin-top: 0.6rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.06em;
+  color: var(--ink-mute);
+}
+
+/* ---------- 01 liner notes ---------- */
+
+.tuning-liner-grid {
+  display: grid;
+  gap: clamp(2.5rem, 6vw, 5rem);
+}
+
+@media (min-width: 900px) {
+  .tuning-liner-grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+}
+
+.tuning-lede {
+  max-width: 36ch;
+  margin: 0;
+  font-size: clamp(1.3rem, 1.1rem + 0.9vw, 1.85rem);
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.tuning-liner-coda {
+  max-width: 52ch;
+  margin: 1.5rem 0 0;
+  font-family: var(--lyric);
+  font-style: italic;
+  font-size: var(--step-1);
+  line-height: 1.4;
+  color: var(--accent-text);
+}
+
+.tuning-roles {
+  display: grid;
+  gap: 1.5rem;
+  margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .tuning-roles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.tuning-roles li {
+  padding-top: 1rem;
+  border-top: 2px solid var(--teal);
+}
+
+.tuning-roles-number {
+  display: block;
+  margin-bottom: 0.6rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 700;
+  color: var(--accent-text);
+}
+
+.tuning-roles p {
+  margin: 0;
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--ink-mute);
+}
+
+.tuning-record {
+  display: grid;
+  margin: 0 0 2rem;
+  border: 1px solid var(--hair-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.tuning-record > div {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+}
+
+.tuning-record > div + div {
+  border-top: 1px solid var(--hair);
+}
+
+.tuning-record dt {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding-top: 0.2em;
+}
+
+.tuning-record dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+@media (max-width: 420px) {
+  .tuning-record > div {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+}
+
+.tuning-liner-plates {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.tuning-liner-plates figure {
+  margin: 0;
+}
+
+.tuning-liner-plates figure:nth-child(1) {
+  grid-column: 1 / span 10;
+  grid-row: 1;
+}
+
+.tuning-liner-plates figure:nth-child(2) {
+  grid-column: 4 / span 9;
+  grid-row: 2;
+  margin-top: -18%;
+  position: relative;
+}
+
+.tuning-liner-frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 24px 50px -26px rgba(18, 59, 64, 0.55);
+}
+
+.tuning-liner-plates figure:nth-child(2) .tuning-liner-frame {
+  outline: 6px solid var(--ivory);
+}
+
+.tuning-liner-plates figure:nth-child(2) figcaption {
+  text-align: right;
+}
+
+/* ---------- 02 overview: the photograph, lit teal ---------- */
+
+.tuning-overview {
+  position: relative;
+  margin-top: var(--band);
+  padding: clamp(5rem, 12vw, 10rem) 0;
+  overflow: hidden;
+  background: var(--teal-deep);
+}
+
+.tuning-overview-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* A duotone: the photograph's light and shade, in the client's teal. */
+.tuning-overview-media img {
+  mix-blend-mode: luminosity;
+  opacity: 0.42;
+}
+
+.tuning-overview-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(4, 60, 66, 0.85) 0%, rgba(5, 84, 92, 0.35) 70%);
+}
+
+.tuning-overview-inner {
+  position: relative;
+  z-index: 1;
+  width: var(--page);
+  margin: 0 auto;
+}
+
+.tuning-overview .tuning-heading {
+  max-width: 12ch;
+  font-size: clamp(2.8rem, 1rem + 7vw, 7.5rem);
+  line-height: 0.9;
+}
+
+.tuning-prose--statement {
+  max-width: 44ch;
+  margin-left: auto;
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* ---------- 03 the dial ---------- */
+
+.tuning-band {
+  position: relative;
+  padding: 1.75rem clamp(0.5rem, 2vw, 1.25rem) 0.4rem;
+  border-radius: 10px 10px 0 0;
+  background:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent),
+    var(--teal-night);
+}
+
+.tuning-band .tuning-band-scale {
+  inset: 0.6rem clamp(0.5rem, 2vw, 1.25rem) auto;
+  height: 1.5rem;
+}
+
+.tuning-needle {
+  position: absolute;
+  top: 0.3rem;
+  height: 2.4rem;
+  left: calc(clamp(0.5rem, 2vw, 1.25rem) + (100% - 2 * clamp(0.5rem, 2vw, 1.25rem)) * var(--at));
+  width: 2px;
+  margin-left: -1px;
+  background: var(--teal-light);
+  box-shadow: 0 0 14px 3px var(--glow);
+  pointer-events: none;
+  transition: left 0.7s var(--ease);
+}
+
+.tuning-stations {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--stations), minmax(0, 1fr));
+}
+
+.tuning-station {
+  position: relative;
+  margin-top: 0.9rem;
+  padding: 0.55rem 0.2rem 0.7rem;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.tuning-station:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.tuning-station[aria-selected="true"] .tuning-station-number,
+.tuning-station[aria-selected="true"] .tuning-station-place {
+  color: var(--teal-light);
+}
+
+.tuning-episode {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border-radius: 0 0 10px 10px;
+  background: var(--teal-deep);
+  animation: tuning-come-through 0.6s var(--ease);
+}
+
+.tuning-episode[hidden] {
+  display: none;
+}
+
+@keyframes tuning-come-through {
+  from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+
+@media (min-width: 900px) {
+  .tuning-episode {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+.tuning-episode-number {
+  margin: 0 0 0.5rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.tuning-episode-number span {
+  color: var(--ink-mute);
+}
+
+.tuning-episode-place {
+  margin: 0;
+  font-size: var(--step-3);
+  font-weight: 800;
+  font-stretch: 78%;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.tuning-episode-locale {
+  margin: 0.5rem 0 0;
+  font-family: var(--lyric);
+  font-style: italic;
+  font-size: var(--step-1);
+  color: var(--accent-text);
+}
+
+.tuning-episode-text {
+  max-width: 58ch;
+  margin: 1.25rem 0 0;
+  color: var(--ink-soft);
+}
+
+.tuning-episode-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.tuning-episode-trailer {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  gap: 0.6rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: 999px;
+  background: var(--accent-fill);
+  color: var(--accent-on);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tuning-episode-trailer:hover {
+  background: var(--ivory);
+  transform: translateY(-1px);
+}
+
+.tuning-episode-step {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.tuning-episode-step button {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--hair-strong);
+  border-radius: 50%;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.tuning-episode-step button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.tuning-episode-visual {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--teal-night);
+}
+
+.tuning-episode-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(4, 60, 66, 0.85), transparent 55%);
+  pointer-events: none;
+}
+
+.tuning-episode-visual figcaption {
+  position: absolute;
+  z-index: 2;
+  top: 0.9rem;
+  left: 1rem;
+  margin: 0;
+  padding: 0.2rem 0.55rem;
+  border-radius: 3px;
+  background: rgba(4, 60, 66, 0.78);
+  color: var(--ivory);
+}
+
+/* No delivered still for the episode yet: an oscilloscope screen instead. */
+.tuning-episode-visual--signal {
+  background:
+    linear-gradient(var(--hair) 1px, transparent 1px) 0 0 / 100% 12.5%,
+    linear-gradient(90deg, var(--hair) 1px, transparent 1px) 0 0 / 8.333% 100%,
+    radial-gradient(80% 80% at 50% 50%, rgba(166, 219, 224, 0.12), transparent 70%),
+    var(--teal-night);
+}
+
+.tuning-episode-visual--signal::after {
+  display: none;
+}
+
+.tuning-episode-ghost {
+  position: absolute;
+  top: 0.04em;
+  right: 0.12em;
+  font-size: clamp(6rem, 18vw, 14rem);
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--hair-strong);
+}
+
+.tuning-signal {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 6%;
+  width: 100%;
+  height: 34%;
+  overflow: visible;
+}
+
+.tuning-episode-visual--signal .tuning-signal {
+  bottom: 28%;
+  height: 44%;
+}
+
+.tuning-signal path {
+  fill: none;
+  stroke: var(--teal-light);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  filter: drop-shadow(0 0 6px var(--glow));
+  animation: tuning-draw 1.6s var(--ease) both;
+}
+
+@keyframes tuning-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* ---------- the mosaic, as a crescendo ---------- */
+
+.tuning-mosaic {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: var(--band);
+  background: var(--teal-deep);
+}
+
+@media (min-width: 900px) {
+  .tuning-mosaic {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-height: min(90vh, 52rem);
+  }
+}
+
+.tuning-mosaic-plate {
+  position: relative;
+  min-height: 18rem;
+  margin: 0;
+}
+
+.tuning-mosaic-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 60%, var(--teal-deep));
+}
+
+@media (max-width: 899px) {
+  /* With a min-height as well, the ratio would widen the plate past the screen. */
+  .tuning-mosaic-plate {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  .tuning-mosaic-plate::after {
+    background: linear-gradient(to bottom, transparent 55%, var(--teal-deep));
+  }
+}
+
+.tuning-mosaic-copy {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2.5rem, 6vw, 5rem) var(--gutter) clamp(3rem, 6vw, 5rem) clamp(16px, 5vw, 4.5rem);
+}
+
+.tuning-crescendo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.4rem clamp(1rem, 3vw, 2.25rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tuning-crescendo li {
+  display: flex;
+  flex-direction: column;
+}
+
+/* On a phone the four figures stay on one line, so they still read as a
+   crescendo; the labels wrap under them instead. */
+@media (max-width: 520px) {
+  .tuning-crescendo {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    justify-content: space-between;
+    gap: 0 0.6rem;
+  }
+
+  .tuning-crescendo-label {
+    letter-spacing: 0.03em;
+    line-height: 1.3;
+  }
+}
+
+.tuning-crescendo-value {
+  font-size: calc(clamp(1.7rem, 1.2rem + 2vw, 2.2rem) + var(--v) * clamp(1.9rem, 0.4rem + 7vw, 6.8rem));
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 0.85;
+  letter-spacing: -0.03em;
+  color: color-mix(in srgb, var(--teal-light) calc(var(--v) * 100%), var(--ivory));
+}
+
+.tuning-crescendo-label {
+  margin-top: 0.5rem;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.tuning-mosaic-line {
+  max-width: 22ch;
+  overflow-wrap: break-word;
+  margin: clamp(1.75rem, 4vw, 2.75rem) 0 0;
+  font-family: var(--lyric);
+  font-style: italic;
+  font-size: var(--step-3);
+  line-height: 1.05;
+}
+
+.tuning-mosaic-signal {
+  width: 100%;
+  height: 4.5rem;
+  margin-top: 2rem;
+  overflow: visible;
+}
+
+.tuning-mosaic-signal path {
+  fill: none;
+  stroke: var(--teal-light);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.85;
+}
+
+/* ---------- 04 production: the rider and backstage ---------- */
+
+.tuning-rider {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--utility);
+  font-size: var(--step--1);
+  border: 1px solid var(--hair-strong);
+  background: var(--surface);
+}
+
+.tuning-rider caption {
+  padding: 0 0 0.75rem;
+  text-align: left;
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+.tuning-rider th,
+.tuning-rider td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: baseline;
+  border-top: 1px solid var(--hair);
+}
+
+.tuning-rider thead th {
+  border-top: 0;
+  font-size: var(--step--2);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.tuning-rider tbody th {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.tuning-rider tbody th span {
+  display: block;
+  font-weight: 400;
+  font-size: var(--step--2);
+  color: var(--ink-mute);
+}
+
+.tuning-rider-channel {
+  width: 4.5rem;
+  white-space: nowrap;
+  color: var(--ink-mute);
+}
+
+.tuning-rider-led {
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-right: 0.55rem;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 8px var(--glow);
+  vertical-align: 0.05em;
+}
+
+.tuning-rider tbody tr:nth-child(even) .tuning-rider-led {
+  background: var(--teal-deep);
+}
+
+.tuning-rider-quantity {
+  width: 4rem;
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 1;
+  color: var(--teal);
+}
+
+.tuning-backstage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.75rem, 1.6vw, 1.25rem);
+  margin: clamp(3rem, 6vw, 4.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1100px) {
+  .tuning-backstage {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tuning-backstage li:nth-child(3n + 2) {
+    transform: translateY(2.5rem);
+  }
+}
+
+.tuning-backstage figure {
+  margin: 0;
+}
+
+.tuning-backstage-frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.tuning-backstage-frame img {
+  transition: transform 0.8s var(--ease);
+}
+
+.tuning-backstage li:hover .tuning-backstage-frame img {
+  transform: scale(1.04);
+}
+
+/* ---------- 05 the musicians, as record sleeves ---------- */
+
+.tuning-sleeves {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
+  margin: clamp(3rem, 6vw, 4.5rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1100px) {
+  .tuning-sleeves {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.tuning-sleeve {
+  position: relative;
+  padding-right: 18%;
+}
+
+.tuning-sleeve-cover {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 1px rgba(18, 59, 64, 0.08),
+    14px 0 28px -12px rgba(18, 59, 64, 0.45);
+}
+
+.tuning-sleeve-disc {
+  position: absolute;
+  top: 3%;
+  right: 16%;
+  width: calc(84% * 0.94);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--ivory) 0 2.2%, transparent 2.4%),
+    radial-gradient(circle, var(--teal) 0 17%, transparent 17.4%),
+    repeating-radial-gradient(circle, #283233 0 1px, var(--vinyl) 1px 3px),
+    var(--vinyl);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 18px 40px -18px rgba(18, 59, 64, 0.6);
+  transform: translateX(22%) rotate(0deg);
+  transition: transform 0.9s var(--ease);
+}
+
+.tuning-sleeve:nth-child(even) .tuning-sleeve-disc {
+  background:
+    radial-gradient(circle, var(--vinyl) 0 2.2%, transparent 2.4%),
+    radial-gradient(circle, var(--ivory) 0 17%, transparent 17.4%),
+    repeating-radial-gradient(circle, #283233 0 1px, var(--vinyl) 1px 3px),
+    var(--vinyl);
+}
+
+/* Grooves catch the light as the record slides out. */
+.tuning-sleeve-disc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 30deg,
+    transparent 0 10%,
+    rgba(255, 255, 255, 0.1) 14%,
+    transparent 20% 60%,
+    rgba(255, 255, 255, 0.08) 64%,
+    transparent 70%
+  );
+}
+
+.tuning-sleeve:hover .tuning-sleeve-disc,
+.tuning-sleeve:focus-within .tuning-sleeve-disc {
+  transform: translateX(40%) rotate(140deg);
+}
+
+.tuning-sleeve-label {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0.9rem 0 0;
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.tuning-sleeve-label span {
+  font-family: var(--utility);
+  font-weight: 700;
+  color: var(--accent-text);
+}
+
+/* ---------- 06 broadcasts ---------- */
+
+.tuning-broadcasts {
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+@media (min-width: 1000px) {
+  .tuning-broadcasts {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    align-items: start;
+  }
+}
+
+.tuning-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--teal-night);
+  box-shadow: 0 40px 80px -36px rgba(18, 59, 64, 0.6);
+}
+
+.tuning-stage iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.tuning-stage-start {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.tuning-stage-start::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(4, 60, 66, 0.05), rgba(4, 60, 66, 0.5));
+}
+
+.tuning-stage-start:focus-visible {
+  /* The stage crops its contents, which would cut an outside ring off. */
+  outline: 3px solid var(--ivory);
+  outline-offset: -7px;
+}
+
+.tuning-stage-ring {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: clamp(4rem, 8vw, 5.5rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--ivory);
+  color: var(--teal);
+  box-shadow: 0 0 0 10px rgba(243, 239, 230, 0.22);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s ease;
+}
+
+.tuning-stage-ring svg {
+  margin-left: 4px;
+}
+
+.tuning-stage-start:hover .tuning-stage-ring,
+.tuning-stage-start:focus-visible .tuning-stage-ring {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 16px rgba(243, 239, 230, 0.18);
+}
+
+.tuning-stage-meta {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.15rem 1rem;
+  align-items: end;
+  margin-top: 1.1rem;
+}
+
+.tuning-stage-label {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.tuning-stage-label span {
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.tuning-stage-title {
+  margin: 0;
+  font-size: var(--step-2);
+  font-weight: 700;
+  font-stretch: 85%;
+  line-height: 1.1;
+}
+
+.tuning-stage-channel {
+  margin: 0;
+  color: var(--ink-mute);
+}
+
+.tuning-stage-open {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  grid-column: 2;
+  grid-row: 2 / span 2;
+  align-self: center;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid var(--hair-strong);
+  border-radius: 999px;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.tuning-stage-open:hover {
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+@media (max-width: 520px) {
+  .tuning-stage-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .tuning-stage-open {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+    margin-top: 0.6rem;
+  }
+}
+
+.tuning-playlist {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--hair);
+}
+
+.tuning-playlist li {
+  scroll-margin-top: 6rem;
+  border-bottom: 1px solid var(--hair);
+}
+
+.tuning-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.8rem 5.5rem minmax(0, 1fr) 1.1rem;
+  gap: 0.85rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 0.6rem 0.75rem 0.8rem;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.tuning-track::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 3px;
+  border-radius: 2px;
+  background: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.tuning-track:hover {
+  background: rgba(8, 126, 139, 0.06);
+}
+
+.tuning-track[aria-current="true"] {
+  background: rgba(8, 126, 139, 0.1);
+}
+
+.tuning-track[aria-current="true"]::before {
+  background: var(--teal);
+}
+
+.tuning-track-number {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  color: var(--ink-mute);
+}
+
+.tuning-track[aria-current="true"] .tuning-track-number {
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.tuning-track-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--surface);
+}
+
+.tuning-track-text {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.tuning-track-title {
+  font-size: var(--step--1);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.tuning-track-channel {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  line-height: 1.4;
+  color: var(--ink-mute);
+}
+
+.tuning-eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.tuning-eq i {
+  display: block;
+  width: 3px;
+  height: 30%;
+  border-radius: 1px;
+  background: var(--teal);
+}
+
+.tuning-eq--live {
+  opacity: 1;
+}
+
+.tuning-eq--live i {
+  animation: tuning-eq 0.9s ease-in-out infinite alternate;
+}
+
+.tuning-eq--live i:nth-child(2) { animation-delay: -0.3s; }
+.tuning-eq--live i:nth-child(3) { animation-delay: -0.6s; }
+.tuning-eq--live i:nth-child(4) { animation-delay: -0.15s; }
+
+@keyframes tuning-eq {
+  from { height: 20%; }
+  to { height: 100%; }
+}
+
+/* Small phones: a smaller thumbnail, and the playing bars move into the
+   corner, so the titles get the width. */
+@media (max-width: 480px) {
+  .tuning-track {
+    grid-template-columns: 1.4rem 4.25rem minmax(0, 1fr);
+    gap: 0.7rem;
+    padding-right: 1.6rem;
+  }
+
+  .tuning-eq {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.5rem;
+  }
+}
+
+/* ---------- streaming: the quote and the networks ---------- */
+
+.tuning-streaming {
+  margin-top: var(--band);
+  padding: clamp(3rem, 7vw, 5.5rem) 0 0;
+  background: var(--teal-deep);
+}
+
+.tuning-streaming-quote {
+  width: var(--page);
+  max-width: 34ch;
+  margin: 0 auto;
+  font-family: var(--lyric);
+  font-style: italic;
+  font-size: var(--step-3);
+  line-height: 1.1;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.tuning-marquee {
+  display: flex;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  padding: 1.4rem 0;
+  overflow: hidden;
+  border-top: 1px solid var(--hair);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+
+.tuning-marquee-track {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  /* At least one screen wide, or on wide monitors the loop shows a gap
+     before the second copy arrives. */
+  min-width: 100%;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: tuning-marquee 38s linear infinite;
+}
+
+.tuning-marquee-track li {
+  display: flex;
+  align-items: center;
+  font-size: var(--step-2);
+  font-weight: 700;
+  font-stretch: 80%;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink-soft);
+}
+
+.tuning-marquee-track li::after {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  margin: 0 clamp(1.5rem, 4vw, 3rem);
+  border-radius: 50%;
+  background: var(--teal-light);
+}
+
+.tuning-marquee-track img {
+  height: 2.2rem;
+  width: auto;
+  object-fit: contain;
+}
+
+@keyframes tuning-marquee {
+  to { transform: translateX(-100%); }
+}
+
+/* ---------- 07 gallery ---------- */
+
+.tuning-sheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tuning-sheet-count {
+  margin: 0 0 clamp(1.75rem, 4vw, 3rem);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.tuning-gallery {
+  columns: 2;
+  column-gap: clamp(0.5rem, 1.2vw, 1rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .tuning-gallery {
+    columns: 3;
+  }
+}
+
+@media (min-width: 1100px) {
+  .tuning-gallery {
+    columns: 4;
+  }
+}
+
+.tuning-gallery li {
+  break-inside: avoid;
+  margin-bottom: clamp(0.5rem, 1.2vw, 1rem);
+}
+
+.tuning-gallery-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--surface);
+  cursor: zoom-in;
+}
+
+.tuning-gallery-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.7s var(--ease);
+}
+
+.tuning-gallery-frame:hover img,
+.tuning-gallery-frame:focus-visible img {
+  transform: scale(1.035);
+}
+
+.tuning-gallery-number {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  background: rgba(4, 60, 66, 0.78);
+  font-family: var(--utility);
+  font-size: 0.72rem;
+  color: var(--ivory);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.tuning-gallery-frame:hover .tuning-gallery-number,
+.tuning-gallery-frame:focus-visible .tuning-gallery-number {
+  opacity: 1;
+}
+
+.tuning-gallery-more {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.tuning-gallery-more button {
+  padding: 0.85rem 1.6rem;
+  border: 1px solid var(--teal-text);
+  border-radius: 999px;
+  background: none;
+  color: var(--teal-text);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tuning-gallery-more button:hover {
+  background: var(--teal-text);
+  color: var(--ivory);
+}
+
+.tuning-lightbox {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  padding: clamp(3.5rem, 6vw, 4.5rem) clamp(16px, 5vw, 5rem);
+  border: 0;
+  background: rgba(4, 44, 48, 0.96);
+  color: var(--ivory);
+  font-family: var(--display);
+}
+
+/* The page behind the open lightbox does not scroll; the gutter keeps the
+   layout from shifting when the scrollbar goes. */
+html:has(.tuning-lightbox[open]) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+.tuning-lightbox::backdrop {
+  background: rgba(4, 44, 48, 0.6);
+}
+
+.tuning-lightbox[open] {
+  display: grid;
+  place-items: center;
+}
+
+.tuning-lightbox-figure {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: center;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+}
+
+.tuning-lightbox-frame img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(100%, 1400px);
+  max-height: calc(100dvh - 10rem);
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.tuning-lightbox figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1rem;
+  font-size: var(--step--1);
+  text-align: center;
+  color: rgba(243, 239, 230, 0.86);
+}
+
+.tuning-lightbox-count {
+  font-family: var(--utility);
+  color: var(--teal-light);
+}
+
+.tuning-lightbox-close,
+.tuning-lightbox-step {
+  position: fixed;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid rgba(243, 239, 230, 0.3);
+  border-radius: 50%;
+  background: rgba(4, 60, 66, 0.7);
+  color: var(--ivory);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.tuning-lightbox-close:hover,
+.tuning-lightbox-step:hover {
+  border-color: var(--teal-light);
+  color: var(--teal-light);
+}
+
+.tuning-lightbox-close {
+  top: 1rem;
+  right: 1rem;
+}
+
+.tuning-lightbox-step {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tuning-lightbox-step--prev {
+  left: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.tuning-lightbox-step--next {
+  right: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+@media (max-width: 640px) {
+  .tuning-lightbox-step {
+    top: auto;
+    bottom: 1rem;
+    transform: none;
+  }
+}
+
+/* ---------- 08 credits ---------- */
+
+.tuning-credits {
+  padding-bottom: clamp(3rem, 7vw, 5rem);
+}
+
+.tuning-credits-list {
+  display: grid;
+  margin: 0;
+  border-top: 2px solid var(--teal);
+}
+
+@media (min-width: 760px) {
+  .tuning-credits-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+  }
+}
+
+.tuning-credits-list > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid var(--hair);
+}
+
+.tuning-credits-list dt {
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding-top: 0.25em;
+}
+
+.tuning-credits-list dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.tuning-credits-list dd[data-house] {
+  color: var(--teal-text);
+}
+
+.tuning-credits-note {
+  max-width: 34ch;
+  margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+  font-family: var(--lyric);
+  font-style: italic;
+  font-size: var(--step-2);
+  line-height: 1.2;
+  color: var(--teal-text);
+}
+
+.tuning-colophon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--hair);
+}
+
+.tuning-colophon p {
+  max-width: 60ch;
+  margin: 0;
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+}
+
+.tuning-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.3rem;
+  border-radius: 999px;
+  background: var(--teal-text);
+  color: var(--ivory);
+  font-family: var(--utility);
+  font-size: var(--step--2);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.tuning-back:hover {
+  background: var(--teal-deep);
+}
+
+/* ---------- motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .tuning-onair-dot,
+  .tuning-hero-needle,
+  .tuning-staves path,
+  .tuning-instrument,
+  .tuning-note,
+  .tuning-eq--live i,
+  .tuning-marquee-track,
+  .tuning-signal path,
+  .tuning-episode {
+    animation: none;
+  }
+
+  .tuning-note {
+    opacity: 0.85;
+  }
+
+  .tuning-hero-needle {
+    left: calc(100% / (var(--stations) * 2));
+  }
+
+  .tuning-needle,
+  .tuning-sleeve-disc,
+  .tuning-backstage-frame img,
+  .tuning-gallery-frame img {
+    transition: none;
+  }
+
+  .tuning-marquee {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .tuning-marquee-track {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.75rem;
+    width: 100%;
+  }
+
+  .tuning-marquee-track[aria-hidden] {
+    display: none;
+  }
+}

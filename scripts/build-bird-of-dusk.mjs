@@ -24,7 +24,8 @@ const run = promisify(execFile);
 const SOURCE = 'public/projects/life-beyond-lens/bird-of-duck';
 const OUT = 'public/documentaries/bird-of-dusk';
 const PLATES = path.join(OUT, 'plates');
-const TRAILER = path.join(SOURCE, '2k BOD TRAILER.mp4');
+// The faststart remux of the delivered file: same stream, index at the front.
+const TRAILER = path.join(SOURCE, '2k BOD TRAILER-faststart.mp4');
 
 const PLATE_WIDTH = 1920;
 const PLATE_QUALITY = 4; // ffmpeg -q:v, 2 = best, 5 = visibly soft

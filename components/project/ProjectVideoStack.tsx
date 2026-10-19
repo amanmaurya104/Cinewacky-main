@@ -33,7 +33,7 @@ export default function ProjectVideoStack({ project }: Props) {
             title={video.title}
             category={category}
             meta={meta}
-            poster={video.poster ?? project.poster}
+            poster={video.poster}
             index={index}
             hideTitle={index === 0}
             storyHref={storyHref}

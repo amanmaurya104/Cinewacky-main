@@ -1,5 +1,6 @@
 "use client";
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -80,6 +81,16 @@ export default function SiteMenu() {
             aria-label="Site menu"
             className="site-menu"
           >
+            <Link href="/" onClick={close} className="site-menu-logo" aria-label="Cinewacky home">
+              <Image
+                src="/logo/cinewacky-logo-white.png"
+                alt="Cinewacky"
+                width={733}
+                height={284}
+                priority
+              />
+            </Link>
+
             <button
               ref={closeRef}
               type="button"

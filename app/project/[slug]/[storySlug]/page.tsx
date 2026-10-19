@@ -18,6 +18,7 @@ import DragonDocumentary from '@/components/documentary/dragon/DragonDocumentary
 import PassageDocumentary from '@/components/documentary/passage/PassageDocumentary';
 import RisingDocumentary from '@/components/documentary/rising/RisingDocumentary';
 import RoadDocumentary from '@/components/documentary/road/RoadDocumentary';
+import TuningDocumentary from '@/components/documentary/tuning/TuningDocumentary';
 import { getDocumentaryForProject } from '@/data/documentaries';
 import { getProjectBySlug } from '@/data/projects';
 import { moonlightDisplay } from '@/lib/fonts';
@@ -30,6 +31,7 @@ import '@/styles/documentary/dragon.css';
 import '@/styles/documentary/passage.css';
 import '@/styles/documentary/rising.css';
 import '@/styles/documentary/road.css';
+import '@/styles/documentary/tuning.css';
 
 interface Props {
   params: Promise<{ slug: string; storySlug: string }>;
@@ -100,6 +102,10 @@ export default async function StoryPage({ params }: Props) {
 
     if (documentary.theme === 'road') {
       return <RoadDocumentary documentary={documentary} />;
+    }
+
+    if (documentary.theme === 'tuning') {
+      return <TuningDocumentary documentary={documentary} />;
     }
 
     return <DocumentaryStandard documentary={documentary} />;

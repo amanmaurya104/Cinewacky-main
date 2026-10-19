@@ -50,6 +50,28 @@
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
+.site-menu-logo {
+  position: fixed;
+  top: 0.75rem;
+  left: 1rem;
+  z-index: 1;
+  display: block;
+  width: 6.5rem;
+  animation: site-menu-fade 0.4s 0.1s ease both;
+  transition: opacity 0.2s ease;
+}
+
+.site-menu-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.site-menu-logo:hover,
+.site-menu-logo:focus-visible {
+  opacity: 0.8;
+}
+
 .site-menu-close:hover,
 .site-menu-close:focus-visible {
   opacity: 1;
@@ -76,6 +98,12 @@
     top: 1rem;
     right: 1.5rem;
     font-size: 1.5rem;
+  }
+
+  .site-menu-logo {
+    top: 1rem;
+    left: 1.5rem;
+    width: 8.5rem;
   }
 }
 
@@ -163,6 +191,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .site-menu,
+  .site-menu-logo,
   .site-menu-main-link,
   .site-menu-projects {
     animation: none;

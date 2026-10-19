@@ -55,29 +55,6 @@
   bottom: 0;
 }
 
-.maintenance-grain {
-  position: fixed;
-  inset: -50%;
-  width: 200%;
-  height: 200%;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0.12;
-  background-image: url("/textures/grain.png");
-  background-repeat: repeat;
-  animation: maintenance-grain-drift 8s steps(10) infinite;
-}
-
-.maintenance-noise {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.04;
-  background-image: url("/textures/noise.png");
-  background-size: 200px 200px;
-}
-
 .maintenance-vignette {
   position: fixed;
   inset: 0;
@@ -262,14 +239,6 @@
   text-decoration: underline;
 }
 
-@keyframes maintenance-grain-drift {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(-5%, -5%);
-  }
-}
 
 @media (max-width: 768px) {
   .maintenance-letterbox {

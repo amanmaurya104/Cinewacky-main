@@ -47,18 +47,7 @@ export function getProjectShowcaseVideos(project: Project): ProjectVideoItem[] {
 }
 
 export function getProjectPlaybackVideos(project: Project): ProjectVideoItem[] {
-  const showcaseVideos = getProjectShowcaseVideos(project);
-  if (showcaseVideos.length) return showcaseVideos;
-
-  if (!project.previewVideo) return [];
-
-  return [
-    {
-      src: project.previewVideo,
-      title: project.title.toUpperCase(),
-      filename: 'preview',
-    },
-  ];
+  return getProjectShowcaseVideos(project);
 }
 
 export function getProjectVideoMeta(project: Project): string | undefined {
@@ -84,6 +73,8 @@ export type ProjectMediaTile =
   | (ProjectMediaTileBase & {
       kind: 'image';
       src: string;
+      /** Shown instead of `src` on portrait screens. */
+      portraitSrc?: string;
     });
 
 // The documentary pages are published, so tiles open them directly. Flip this
@@ -114,6 +105,9 @@ export function getProjectMediaTiles(project: Project): ProjectMediaTile[] {
         ...base,
         kind: 'image' as const,
         src: showcaseVideoSrc(project.slug, item.file),
+        portraitSrc: item.portraitFile
+          ? showcaseVideoSrc(project.slug, item.portraitFile)
+          : undefined,
       };
     }
 

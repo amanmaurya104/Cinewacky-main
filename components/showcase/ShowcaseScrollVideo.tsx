@@ -100,9 +100,6 @@ export default function ShowcaseScrollVideo({ item, active, slotIndex, activeInd
             poster={thumbSrc}
           >
             <source src={item.video} type="video/mp4" />
-            {item.fallbackVideo ? (
-              <source src={item.fallbackVideo} type="video/mp4" />
-            ) : null}
           </video>
         ) : (
           <Image

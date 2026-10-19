@@ -24,6 +24,8 @@ const nextConfig: NextConfig = {
     // Optimized derivatives are safe to hold for a year — the cache key already
     // includes the source path, width and quality.
     minimumCacheTTL: 31536000,
+    // Trailer posters on the Tuning 2 You page are YouTube's own thumbnails.
+    remotePatterns: [new URL("https://i.ytimg.com/vi/**")],
   },
 
   async headers() {
