@@ -44,13 +44,13 @@ public/               Served assets
 
 ### Publishing a page
 
-Unfinished pages link to `/maintenance` and redirect there if visited directly.
+Every project, story, documentary and menu item has a `status` of `'live'` or `'draft'`. Draft pages link to `/maintenance`, redirect there if visited directly, and are left out of the sitemap.
 
-- **Project:** set `ready: true` on it in `data/projects.ts`.
-- **Story or documentary under Reel Vibe Uncut:** add its slug to `LIVE_REEL_PAGES` in `lib/stories.ts`.
-- **Experience / Achievements / Contact:** set `ready: true` in `data/navigation.ts`.
+- **Project:** set `status: 'live'` on it in `data/projects.ts`.
+- **Story or documentary:** set `status: 'live'` on it in `data/stories.ts` or `data/documentaries.ts`. It is only live while its project is live too.
+- **Experience / Achievements / Contact:** set `status: 'live'` in `data/navigation.ts`.
 
-The menu, homepage, project pages and sitemap all follow these flags.
+The rule lives in `lib/publishing.ts`, with the story and documentary checks in `lib/stories.ts`. The menu, homepage, project pages and sitemap all follow it.
 
 ## Learn More
 

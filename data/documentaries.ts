@@ -71,7 +71,8 @@ export const documentaries: Documentary[] = [
   {
     id: 'life-beyond-lens',
     slug: LBL,
-    status: 'live',
+    // Draft until the placeholder copy below is replaced.
+    status: 'draft',
     title: 'Life Beyond Lens',
     // Placeholder copy, carried over from data/projects.ts. Replace the text
     // fields below — synopsis, credits, awards, language, location — with the
