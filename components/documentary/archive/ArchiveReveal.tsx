@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import type { ReactNode } from 'react';
+import { respectReducedMotion } from '@/lib/motion';
 
 type Props = {
   children: ReactNode;
@@ -20,10 +21,13 @@ export default function ArchiveReveal({ children, className, delay = 0 }: Props)
   return (
     <motion.div
       className={className}
-      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
+      initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
+      transition={respectReducedMotion(
+        { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay },
+        reduceMotion,
+      )}
     >
       {children}
     </motion.div>

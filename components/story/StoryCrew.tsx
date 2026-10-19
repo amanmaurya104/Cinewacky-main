@@ -2,6 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useRef } from 'react';
+import { respectReducedMotion } from '@/lib/motion';
 import type { StoryCrewMember } from '@/types/story';
 
 type Props = {
@@ -43,19 +44,12 @@ export default function StoryCrew({ crew, layout = 'credits' }: Props) {
             <motion.li
               key={`${member.role}-${member.name}`}
               className="story-crew-card"
-              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
-              animate={
-                inView
-                  ? { opacity: 1, y: 0 }
-                  : reduceMotion
-                    ? { opacity: 0 }
-                    : { opacity: 0, y: 24 }
-              }
-              transition={{
-                duration: 0.7,
-                ease: [0.22, 1, 0.36, 1],
-                delay: index * 0.06,
-              }}
+              initial={{ opacity: 0, y: 24 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+              transition={respectReducedMotion(
+                { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: index * 0.06 },
+                reduceMotion,
+              )}
             >
               <span className="story-crew-card-index" aria-hidden="true">
                 {String(index + 1).padStart(2, '0')}
@@ -81,15 +75,12 @@ export default function StoryCrew({ crew, layout = 'credits' }: Props) {
             <motion.li
               key={`${member.role}-${member.name}`}
               className="story-crew-credit"
-              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 18 }}
-              animate={
-                inView
-                  ? { opacity: 1, y: 0 }
-                  : reduceMotion
-                    ? { opacity: 0 }
-                    : { opacity: 0, y: 18 }
-              }
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
+              initial={{ opacity: 0, y: 18 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }}
+              transition={respectReducedMotion(
+                { duration: 0.7, ease: [0.22, 1, 0.36, 1], delay },
+                reduceMotion,
+              )}
             >
               <span className="story-crew-index" aria-hidden="true">
                 {String(index + 1).padStart(2, '0')}

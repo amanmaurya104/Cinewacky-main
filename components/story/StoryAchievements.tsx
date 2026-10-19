@@ -14,6 +14,7 @@ import {
   useState,
   type CSSProperties,
 } from 'react';
+import { respectReducedMotion } from '@/lib/motion';
 import type { StoryAchievement } from '@/types/story';
 
 type Props = {
@@ -80,15 +81,12 @@ function TimelineItem({
     >
       <motion.article
         className="story-timeline-card"
-        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: offset }}
-        animate={
-          inView
-            ? { opacity: 1, x: 0 }
-            : reduceMotion
-              ? { opacity: 0 }
-              : { opacity: 0, x: offset }
-        }
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ opacity: 0, x: offset }}
+        animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: offset }}
+        transition={respectReducedMotion(
+          { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+          reduceMotion,
+        )}
       >
         {item.year ? <p className="story-achievement-year">{item.year}</p> : null}
         <h3 className="story-achievement-title">{item.title}</h3>

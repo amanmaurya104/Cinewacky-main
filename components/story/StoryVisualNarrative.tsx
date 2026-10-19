@@ -10,6 +10,8 @@ import {
 import Image from 'next/image';
 import { useRef } from 'react';
 import TypedText from '@/components/story/TypedText';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { respectReducedMotion } from '@/lib/motion';
 import type { StoryNarrativeBlock } from '@/types/story';
 
 type Props = {
@@ -43,35 +45,22 @@ function NarrativeBlock({
   const inView = useInView(ref, { once: true, margin: '-10% 0px' });
   const reduceMotion = useReducedMotion();
 
-  const sectionVariants = reduceMotion
-    ? {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 },
-      }
-    : {
-        hidden: { opacity: 0, y: 44 },
-        visible: { opacity: 1, y: 0 },
-      };
+  // The same variants for everyone: `hidden` is rendered on the server.
+  // Reduced motion is applied through each transition instead.
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 44 },
+    visible: { opacity: 1, y: 0 },
+  };
 
-  const textVariants = reduceMotion
-    ? {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 },
-      }
-    : {
-        hidden: { opacity: 0, x: reverse ? 26 : -26 },
-        visible: { opacity: 1, x: 0 },
-      };
+  const textVariants = {
+    hidden: { opacity: 0, x: reverse ? 26 : -26 },
+    visible: { opacity: 1, x: 0 },
+  };
 
-  const imageVariants = reduceMotion
-    ? {
-        hidden: { opacity: 0 },
-        visible: { opacity: 1 },
-      }
-    : {
-        hidden: { opacity: 0, scale: 0.94, y: 26 },
-        visible: { opacity: 1, scale: 1, y: 0 },
-      };
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.94, y: 26 },
+    visible: { opacity: 1, scale: 1, y: 0 },
+  };
 
   return (
     <motion.article
@@ -80,7 +69,10 @@ function NarrativeBlock({
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
       variants={sectionVariants}
-      transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1], delay: index * 0.04 }}
+      transition={respectReducedMotion(
+        { duration: 0.95, ease: [0.22, 1, 0.36, 1], delay: index * 0.04 },
+        reduceMotion,
+      )}
     >
       {tide && block.time ? (
         <span className="story-tide-mark" data-time={block.time}>
@@ -94,7 +86,10 @@ function NarrativeBlock({
         initial="hidden"
         animate={inView ? 'visible' : 'hidden'}
         variants={textVariants}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+        transition={respectReducedMotion(
+          { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 },
+          reduceMotion,
+        )}
       >
         <p className="story-narrative-index">{String(index + 1).padStart(2, '0')}</p>
         <TypedText
@@ -108,7 +103,10 @@ function NarrativeBlock({
         initial="hidden"
         animate={inView ? 'visible' : 'hidden'}
         variants={imageVariants}
-        transition={{ duration: 1.05, ease: [0.22, 1, 0.36, 1], delay: 0.18 }}
+        transition={respectReducedMotion(
+          { duration: 1.05, ease: [0.22, 1, 0.36, 1], delay: 0.18 },
+          reduceMotion,
+        )}
       >
         <Image
           src={block.image}
@@ -131,7 +129,8 @@ export default function StoryVisualNarrative({
   variant = 'cards',
 }: Props) {
   const trackRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
+  // The gauge's scale is rendered on the server, so it waits for hydration.
+  const reduceMotion = usePrefersReducedMotion();
 
   // The gauge fills as the passages go by — the year closing in on the morning.
   const { scrollYProgress } = useScroll({

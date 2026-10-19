@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { useRef } from 'react';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import type { DocumentaryPlate } from '@/types/documentary';
 import ArchivePlate from './ArchivePlate';
 
@@ -20,31 +21,30 @@ const SIZES = '(max-width: 640px) 45vw, (max-width: 1100px) 30vw, 22vw';
  * transforms change, so the page height never shifts.
  */
 export default function ArchiveContactSheet({ plates }: Props) {
-  const reduceMotion = useReducedMotion();
+  // Still frames render different markup, so the preference waits for
+  // hydration: the sheet hydrates loose, then files itself at once.
+  const reduceMotion = usePrefersReducedMotion();
 
   return (
     <div className="archive-sheet-grid">
-      {plates.map((plate, index) => (
-        <SheetFrame
-          key={plate.src}
-          plate={plate}
-          index={index}
-          still={Boolean(reduceMotion)}
-        />
-      ))}
+      {plates.map((plate, index) =>
+        reduceMotion ? (
+          <ArchivePlate
+            key={plate.src}
+            plate={plate}
+            sizes={SIZES}
+            className="archive-plate--sheet"
+          />
+        ) : (
+          <SheetFrame key={plate.src} plate={plate} index={index} />
+        ),
+      )}
     </div>
   );
 }
 
-function SheetFrame({
-  plate,
-  index,
-  still,
-}: {
-  plate: DocumentaryPlate;
-  index: number;
-  still: boolean;
-}) {
+/** One loose frame. Its scroll tracking only exists while frames move. */
+function SheetFrame({ plate, index }: { plate: DocumentaryPlate; index: number }) {
   // Each frame tracks its own passage through the viewport, so one deep in the
   // sheet is still loose while the ones above it have already filed themselves.
   // A single progress shared across the sheet would settle all 29 within one
@@ -73,10 +73,6 @@ function SheetFrame({
   const ty = useTransform(progress, [0, settleAt], [`${y}%`, '0%']);
   const rz = useTransform(progress, [0, settleAt], [rotate, 0]);
   const scale = useTransform(progress, [0, settleAt], [0.86, 1]);
-
-  if (still) {
-    return <ArchivePlate plate={plate} sizes={SIZES} className="archive-plate--sheet" />;
-  }
 
   return (
     <div ref={ref}>

@@ -1,9 +1,10 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import { useMemo, useRef, type CSSProperties } from 'react';
 import { CometCard } from '@/components/ui/comet-card';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import type { StoryCastMember } from '@/types/story';
 
 type Props = {
@@ -24,7 +25,8 @@ const SECONDS_PER_CARD = 5;
 export default function StoryCast({ cast, layout = 'marquee' }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
   const inView = useInView(sectionRef, { once: true, margin: '-12% 0px' });
-  const reduceMotion = useReducedMotion();
+  // `data-static` is markup, so the preference waits for hydration.
+  const reduceMotion = usePrefersReducedMotion();
 
   // One pass of the loop; the track renders this twice so the seam is invisible.
   const pass = useMemo(() => {

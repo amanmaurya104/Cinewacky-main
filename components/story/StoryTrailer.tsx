@@ -2,6 +2,7 @@
 
 import { useReducedMotion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 type Props = {
   trailer: string;
@@ -15,9 +16,13 @@ export default function StoryTrailer({ trailer, poster, title }: Props) {
   // Shown when autoplay is refused (browser policy) or on end.
   const [needsTap, setNeedsTap] = useState(false);
   // Reduced motion never autoplays: the play button shows until it is tapped.
+  // The button is markup, so it waits for hydration; the autoplay effect uses
+  // framer-motion's value, which is right from the first frame, so the trailer
+  // cannot start in the moment before the button appears.
   const reduceMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [tapped, setTapped] = useState(false);
-  const showPlay = needsTap || (Boolean(reduceMotion) && !tapped);
+  const showPlay = needsTap || (prefersReducedMotion && !tapped);
 
   // Autoplay muted once the trailer is on screen; pause when it leaves.
   useEffect(() => {

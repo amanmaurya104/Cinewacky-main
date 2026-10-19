@@ -2,6 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { useMemo, useRef } from 'react';
+import { respectReducedMotion } from '@/lib/motion';
 
 type Props = {
   note: string;
@@ -56,17 +57,12 @@ export default function StoryProducerNote({ note }: Props) {
   if (!note.trim()) return null;
 
   const rise = (index: number) => ({
-    initial: reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 },
-    animate: inView
-      ? { opacity: 1, y: 0 }
-      : reduceMotion
-        ? { opacity: 0 }
-        : { opacity: 0, y: 20 },
-    transition: {
-      duration: 0.75,
-      ease: [0.22, 1, 0.36, 1] as const,
-      delay: index * 0.08,
-    },
+    initial: { opacity: 0, y: 20 },
+    animate: inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
+    transition: respectReducedMotion(
+      { duration: 0.75, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 },
+      reduceMotion,
+    ),
   });
 
   return (
@@ -77,15 +73,12 @@ export default function StoryProducerNote({ note }: Props) {
     >
       <motion.div
         className="story-note-panel"
-        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 24 }}
-        animate={
-          inView
-            ? { opacity: 1, y: 0 }
-            : reduceMotion
-              ? { opacity: 0 }
-              : { opacity: 0, y: 24 }
-        }
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        initial={{ opacity: 0, y: 24 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+        transition={respectReducedMotion(
+          { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+          reduceMotion,
+        )}
       >
         <span className="story-note-mark" aria-hidden="true">
           &ldquo;

@@ -1,7 +1,8 @@
 "use client";
 
-import { useInView, useReducedMotion } from 'framer-motion';
+import { useInView } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 /** Total time a passage takes to type, whatever its length. */
 const TYPING_DURATION = 3200;
@@ -45,8 +46,9 @@ type Props = {
 export default function TypedText({ text, className, active }: Props) {
   const ref = useRef<HTMLParagraphElement>(null);
   const selfInView = useInView(ref, { once: true, margin: '-10% 0px' });
-  const reduceMotion = useReducedMotion();
-  const typed = useTypewriter(text, active ?? selfInView, Boolean(reduceMotion));
+  // How much text shows is markup, so the preference waits for hydration.
+  const reduceMotion = usePrefersReducedMotion();
+  const typed = useTypewriter(text, active ?? selfInView, reduceMotion);
 
   return (
     <p ref={ref} className={className}>
