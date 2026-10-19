@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { dragonDisplay, dragonText, dragonUtility } from '@/lib/fonts';
 import type { Documentary } from '@/types/documentary';
 import DragonHeroLoop from './DragonHeroLoop';
 import DragonLoongMount from './DragonLoongMount';
@@ -32,10 +31,8 @@ export default function DragonDocumentary({ documentary }: Props) {
     ? `/project/${documentary.projectSlug}`
     : '/';
 
-  const fonts = `${dragonDisplay.variable} ${dragonText.variable} ${dragonUtility.variable}`;
-
   return (
-    <main className={`dragon ${fonts}`}>
+    <main className="dragon">
       <div className="dragon-ground" aria-hidden />
 
       {/* The opening frame sits outside the hero section and under the canvas,

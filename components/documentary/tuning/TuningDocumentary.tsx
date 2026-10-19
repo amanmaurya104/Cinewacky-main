@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
-import { tuningDisplay, tuningLyric, tuningUtility } from '@/lib/fonts';
 import type { Documentary, DocumentaryPassage } from '@/types/documentary';
 import TuningBroadcasts from './TuningBroadcasts';
 import TuningDial from './TuningDial';
@@ -112,15 +111,13 @@ export default function TuningDocumentary({ documentary }: Props) {
     ? `/project/${documentary.projectSlug}`
     : '/';
 
-  const fonts = [tuningDisplay.variable, tuningLyric.variable, tuningUtility.variable].join(' ');
-
   if (!tuning) return null;
 
   const episodeCount = tuning.episodes.length;
   const loudest = Math.max(...tuning.mosaic.map((fact) => Number(fact.value) || 0), 1);
 
   return (
-    <main className={`tuning ${fonts}`}>
+    <main className="tuning">
       {/* ---- hero ---- */}
 
       <header className="tuning-hero">

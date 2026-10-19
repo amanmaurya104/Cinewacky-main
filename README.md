@@ -28,16 +28,16 @@ components/
   showcase/           Homepage scroll showcase
   project/            Project pages (video stack and mosaic layouts)
   story/              Story pages
-  documentary/        Shared pieces at the root (DocumentaryVideo, SilentLoop);
-    archive/ craft/   one folder per documentary theme. standard/ is the
-    dragon/ ...       default theme.
+  documentary/        Shared pieces at the root (DocumentaryVideo, SilentLoop, base.css);
+    archive/ craft/   one folder per documentary theme, holding its component,
+    dragon/ ...       stylesheet, fonts.ts and styles.tsx. standard/ is the default theme.
   maintenance/        The /maintenance screen
   ui/                 Generic, reusable UI (galleries, cards, pixel image)
 data/                 Site content: projects, stories, documentaries, navigation
-lib/                  Logic over that content (lookups, hrefs, fonts, site URL)
+lib/                  Logic over that content (lookups, hrefs, publishing, site URL)
 hooks/                Reusable React hooks
 types/                Shared TypeScript types
-styles/               Global CSS per area; styles/documentary/ holds one file per theme
+styles/               CSS per area (showcase, project, story, menu, maintenance)
 scripts/              Media build scripts (npm run media:*)
 public/               Served assets
 ```

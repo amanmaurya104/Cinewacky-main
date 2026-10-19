@@ -1,38 +1,12 @@
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
-import AlternatingSideGifs from '@/components/story/AlternatingSideGifs';
-import StoryAchievements from '@/components/story/StoryAchievements';
-import StoryBackLink from '@/components/story/StoryBackLink';
-import StoryCast from '@/components/story/StoryCast';
-import StoryCrew from '@/components/story/StoryCrew';
-import StoryGallery from '@/components/story/StoryGallery';
-import StoryHero from '@/components/story/StoryHero';
-import StoryProducerNote from '@/components/story/StoryProducerNote';
-import StoryTrailer from '@/components/story/StoryTrailer';
-import StoryVisualNarrative from '@/components/story/StoryVisualNarrative';
-import TypedText from '@/components/story/TypedText';
-import ArchiveDocumentary from '@/components/documentary/archive/ArchiveDocumentary';
-import DocumentaryStandard from '@/components/documentary/standard/DocumentaryStandard';
-import CraftDocumentary from '@/components/documentary/craft/CraftDocumentary';
-import DragonDocumentary from '@/components/documentary/dragon/DragonDocumentary';
-import PassageDocumentary from '@/components/documentary/passage/PassageDocumentary';
-import RisingDocumentary from '@/components/documentary/rising/RisingDocumentary';
-import RoadDocumentary from '@/components/documentary/road/RoadDocumentary';
-import TuningDocumentary from '@/components/documentary/tuning/TuningDocumentary';
+import DocumentaryView from '@/components/documentary/DocumentaryView';
+import StoryView from '@/components/story/StoryView';
 import { getDocumentaryForProject } from '@/data/documentaries';
 import { getProjectBySlug } from '@/data/projects';
-import { moonlightDisplay } from '@/lib/fonts';
 import { MAINTENANCE_PATH } from '@/lib/publishing';
 import { getPublishedPieceParams, getStoryBySlug, isPiecePublished } from '@/lib/stories';
-import '@/styles/story.css';
-import '@/styles/documentary/base.css';
-import '@/styles/documentary/archive.css';
-import '@/styles/documentary/craft.css';
-import '@/styles/documentary/dragon.css';
-import '@/styles/documentary/passage.css';
-import '@/styles/documentary/rising.css';
-import '@/styles/documentary/road.css';
-import '@/styles/documentary/tuning.css';
+import PieceStyles from './PieceStyles';
 
 interface Props {
   params: Promise<{ slug: string; storySlug: string }>;
@@ -80,94 +54,18 @@ export default async function StoryPage({ params }: Props) {
   if (!story && !documentary) return notFound();
   if (!isPiecePublished(slug, storySlug)) redirect(MAINTENANCE_PATH);
 
-  if (!story) {
-    if (!documentary) return notFound();
-
-    if (documentary.theme === 'archive') {
-      return <ArchiveDocumentary documentary={documentary} />;
-    }
-
-    if (documentary.theme === 'dragon') {
-      return <DragonDocumentary documentary={documentary} />;
-    }
-
-    if (documentary.theme === 'craft') {
-      return <CraftDocumentary documentary={documentary} />;
-    }
-
-    if (documentary.theme === 'passage') {
-      return <PassageDocumentary documentary={documentary} />;
-    }
-
-    if (documentary.theme === 'rising') {
-      return <RisingDocumentary documentary={documentary} />;
-    }
-
-    if (documentary.theme === 'road') {
-      return <RoadDocumentary documentary={documentary} />;
-    }
-
-    if (documentary.theme === 'tuning') {
-      return <TuningDocumentary documentary={documentary} />;
-    }
-
-    return <DocumentaryStandard documentary={documentary} />;
+  if (story) {
+    return (
+      <PieceStyles name="story">
+        <StoryView story={story} project={project} />
+      </PieceStyles>
+    );
   }
 
-  // Moonlight is the one story with its own structure, not just its own
-  // palette: a display serif, an unboxed narrative hung off a tide gauge, a
-  // still cast row, and no side loops competing with the night sky.
-  const isMoonlight = story.theme === 'moonlight';
-
+  if (!documentary) return notFound();
   return (
-    <main
-      className={[
-        'story-page',
-        story.theme ? `story-page--${story.theme}` : '',
-        isMoonlight ? moonlightDisplay.variable : '',
-      ]
-        .filter(Boolean)
-        .join(' ')}
-    >
-      {isMoonlight ? null : <AlternatingSideGifs />}
-
-      <StoryHero
-        title={story.title}
-        tagline={story.tagline}
-        heroVideo={story.heroVideo}
-        poster={story.poster}
-      />
-
-      <section className="story-section" aria-labelledby="synopsis-heading">
-        <p className="story-section-eyebrow">Story</p>
-        <h2 id="synopsis-heading" className="story-section-title">
-          Synopsis
-        </h2>
-        <TypedText text={story.synopsis} className="story-synopsis" />
-      </section>
-
-      <StoryVisualNarrative
-        blocks={story.visualNarrative}
-        eyebrow={isMoonlight ? 'One year, two weddings' : undefined}
-        title={isMoonlight ? 'The Tide' : undefined}
-        variant={isMoonlight ? 'tide' : undefined}
-      />
-
-      <StoryCrew crew={story.crew} layout={isMoonlight ? 'cards' : undefined} />
-      <StoryCast cast={story.cast} layout={isMoonlight ? 'comet' : undefined} />
-      <StoryGallery
-        images={story.gallery}
-        title={story.title}
-        layout={story.galleryLayout}
-      />
-      <StoryTrailer trailer={story.trailer} poster={story.poster} title={story.title} />
-      <StoryAchievements achievements={story.achievements} />
-
-      {story.producerNote ? (
-        <StoryProducerNote note={story.producerNote} />
-      ) : null}
-
-      <StoryBackLink projectSlug={slug} projectTitle={project.title} />
-    </main>
+    <PieceStyles name={documentary.theme ?? 'standard'}>
+      <DocumentaryView documentary={documentary} />
+    </PieceStyles>
   );
 }

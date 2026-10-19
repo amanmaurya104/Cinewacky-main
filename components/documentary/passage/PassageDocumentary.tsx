@@ -2,12 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import DocumentaryVideo from '@/components/documentary/DocumentaryVideo';
 import SilentLoop from '@/components/documentary/SilentLoop';
-import {
-  passageBengali,
-  passageDisplay,
-  passageText,
-  passageUtility,
-} from '@/lib/fonts';
 import type { Documentary } from '@/types/documentary';
 
 type Props = {
@@ -55,13 +49,6 @@ export default function PassageDocumentary({ documentary }: Props) {
     ? `/project/${documentary.projectSlug}`
     : '/';
 
-  const fonts = [
-    passageDisplay.variable,
-    passageText.variable,
-    passageUtility.variable,
-    passageBengali.variable,
-  ].join(' ');
-
   const stations = documentary.stations ?? [];
 
   // 0 at the first station, 1 at the last. A single station sits at 0 rather
@@ -70,7 +57,7 @@ export default function PassageDocumentary({ documentary }: Props) {
     stations.length > 1 ? index / (stations.length - 1) : 0;
 
   return (
-    <main className={`passage ${fonts}`}>
+    <main className="passage">
       <div className="passage-ground" aria-hidden />
 
       {/* ---- hero ---- */}

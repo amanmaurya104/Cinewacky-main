@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { roadDisplay, roadText, roadUtility } from '@/lib/fonts';
 import type { Documentary, DocumentaryPassage } from '@/types/documentary';
 
 type Props = {
@@ -75,14 +74,12 @@ export default function RoadDocumentary({ documentary }: Props) {
     ? `/project/${documentary.projectSlug}`
     : '/';
 
-  const fonts = [roadDisplay.variable, roadText.variable, roadUtility.variable].join(' ');
-
   if (!road) return null;
 
   const cities = road.stops.map((stop) => stop.city).join(' — ');
 
   return (
-    <main className={`road ${fonts}`}>
+    <main className="road">
       <div className="road-lane" aria-hidden />
 
       {/* ---- hero ---- */}

@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import DocumentaryVideo from '@/components/documentary/DocumentaryVideo';
 import SilentLoop from '@/components/documentary/SilentLoop';
-import { risingDisplay, risingText, risingUtility } from '@/lib/fonts';
 import type { Documentary, DocumentaryPassage } from '@/types/documentary';
 
 type Props = {
@@ -75,16 +74,10 @@ export default function RisingDocumentary({ documentary }: Props) {
     ? `/project/${documentary.projectSlug}`
     : '/';
 
-  const fonts = [
-    risingDisplay.variable,
-    risingText.variable,
-    risingUtility.variable,
-  ].join(' ');
-
   if (!dossier) return null;
 
   return (
-    <main className={`rising ${fonts}`}>
+    <main className="rising">
       <div className="rising-sky" aria-hidden>
         <div className="rising-sky-glow" />
       </div>

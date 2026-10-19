@@ -1,12 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import DocumentaryVideo from '@/components/documentary/DocumentaryVideo';
-import {
-  craftBengali,
-  craftDisplay,
-  craftText,
-  craftUtility,
-} from '@/lib/fonts';
 import type { Documentary } from '@/types/documentary';
 import SilentLoop from '@/components/documentary/SilentLoop';
 
@@ -41,17 +35,10 @@ export default function CraftDocumentary({ documentary }: Props) {
     ? `/project/${documentary.projectSlug}`
     : '/';
 
-  const fonts = [
-    craftDisplay.variable,
-    craftText.variable,
-    craftUtility.variable,
-    craftBengali.variable,
-  ].join(' ');
-
   const materials = documentary.materials ?? [];
 
   return (
-    <main className={`craft ${fonts}`}>
+    <main className="craft">
       <div className="craft-ground" aria-hidden />
 
       {/* ---- hero ---- */}

@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { archiveDisplay, archiveText, archiveUtility } from '@/lib/fonts';
 import type { Documentary } from '@/types/documentary';
 import ArchiveContactSheet from './ArchiveContactSheet';
 import ArchivePlate, { plateNumber } from './ArchivePlate';
@@ -25,10 +24,8 @@ export default function ArchiveDocumentary({ documentary }: Props) {
     ? `/project/${documentary.projectSlug}`
     : '/';
 
-  const fonts = `${archiveDisplay.variable} ${archiveText.variable} ${archiveUtility.variable}`;
-
   return (
-    <main className={`archive ${fonts}`}>
+    <main className="archive">
       <header className="archive-hero">
         {documentary.heroPlate ? (
           <div className="archive-hero-window">
