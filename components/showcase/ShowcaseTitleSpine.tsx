@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCallback, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { getProjectHref } from '@/data/projects';
+import { getProjectHref, MAINTENANCE_PATH } from '@/lib/publishing';
 import type { ShowcaseScrollItem } from '@/data/showcaseScroll';
 import {
   fractionalScrollIndex,
@@ -114,7 +114,7 @@ export default function ShowcaseTitleSpine({ items }: Props) {
                   href={getProjectHref(item.slug)}
                   className="showcase-spine-item-link showcase-spine-item-visual showcase-spine-item-inner active-title-wrapper"
                   aria-label={
-                    getProjectHref(item.slug) === '/maintenance'
+                    getProjectHref(item.slug) === MAINTENANCE_PATH
                       ? `${item.title} — in production`
                       : `View ${item.title}`
                   }

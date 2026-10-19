@@ -1,3 +1,5 @@
+import type { PublishStatus } from '@/types/publishing';
+
 /** One tile on a mosaic project page. `file` lives under public/showcase/{slug}/. */
 export interface ProjectMediaItem {
   file: string;
@@ -31,6 +33,6 @@ export interface Project {
   layout?: 'stack' | 'mosaic';
   /** Mosaic tiles, in order. Videos and images may be mixed. */
   media?: ProjectMediaItem[];
-  /** Page is finished; links open it. Otherwise links go to /maintenance. */
-  ready?: boolean;
+  /** `live` opens the project page, and lets its stories and documentaries go live. */
+  status: PublishStatus;
 }

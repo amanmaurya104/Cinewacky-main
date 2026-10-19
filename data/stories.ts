@@ -1,4 +1,4 @@
-import { showcaseVideoSrc } from '@/lib/projectVideos';
+import { showcaseVideoSrc } from '@/lib/mediaPaths';
 import type { Story } from '@/types/story';
 
 const PROJECT = 'reel-vibe-uncut';
@@ -136,6 +136,7 @@ const kaliAchievements = [
 const stories: Story[] = [
   {
     slug: 'moonlight-dream',
+    status: 'live',
     projectSlug: PROJECT,
     theme: 'moonlight',
     galleryLayout: 'arc',
@@ -207,6 +208,7 @@ const stories: Story[] = [
   },
   {
     slug: 'kali',
+    status: 'live',
     projectSlug: PROJECT,
     projectVideoFilename: 'KALI .mp4',
     title: 'Kali',
@@ -244,6 +246,7 @@ const stories: Story[] = [
   },
   {
     slug: 'mistimukh',
+    status: 'live',
     projectSlug: PROJECT,
     title: 'Mistimukh',
     tagline: 'Faces behind the veil.',
@@ -271,6 +274,7 @@ const stories: Story[] = [
   },
   {
     slug: 'trailer-for-fiction',
+    status: 'draft',
     projectSlug: PROJECT,
     title: 'Trailer For Fiction',
     tagline: 'Stories that never were — until now.',
@@ -297,6 +301,7 @@ const stories: Story[] = [
   },
   {
     slug: 'the-cat',
+    status: 'draft',
     projectSlug: PROJECT,
     title: 'The Cat',
     tagline: 'Nine lives. One frame.',

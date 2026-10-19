@@ -1,9 +1,17 @@
-// Set `ready: true` once a page is built; until then links to it open /maintenance.
-export const mainNavigation = [
-  { title: 'Home', href: '/', ready: true },
-  { title: 'Experience', href: '/experience', ready: false },
-  { title: 'Achievements', href: '/achievements', ready: false },
-  { title: 'Contact', href: '/contact', ready: false },
+import type { PublishStatus } from '@/types/publishing';
+
+export type NavigationItem = {
+  title: string;
+  href: string;
+  /** Set to `live` once the page is built; until then the link opens /maintenance. */
+  status: PublishStatus;
+};
+
+export const mainNavigation: NavigationItem[] = [
+  { title: 'Home', href: '/', status: 'live' },
+  { title: 'Experience', href: '/experience', status: 'draft' },
+  { title: 'Achievements', href: '/achievements', status: 'draft' },
+  { title: 'Contact', href: '/contact', status: 'draft' },
 ];
 
 export default mainNavigation;

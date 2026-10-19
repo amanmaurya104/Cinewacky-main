@@ -1,3 +1,5 @@
+import type { PublishStatus } from '@/types/publishing';
+
 export interface StoryCrewMember {
   role: string;
   name: string;
@@ -36,6 +38,8 @@ export type StoryGalleryLayout = 'ring' | 'arc';
 
 export interface Story {
   slug: string;
+  /** Live only while its project is live too. */
+  status: PublishStatus;
   projectSlug: string;
   projectVideoFilename?: string;
   theme?: StoryTheme;

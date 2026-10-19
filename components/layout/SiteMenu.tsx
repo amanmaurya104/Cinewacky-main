@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { mainNavigation } from '@/data/navigation';
-import projects, { getProjectHref } from '@/data/projects';
+import projects from '@/data/projects';
+import { getProjectHref, isLive, MAINTENANCE_PATH } from '@/lib/publishing';
 import '@/styles/menu.css';
 
 /**
@@ -106,7 +107,7 @@ export default function SiteMenu() {
                 {mainNavigation.map((item, i) => (
                   <Link
                     key={item.href}
-                    href={item.ready ? item.href : '/maintenance'}
+                    href={isLive(item) ? item.href : MAINTENANCE_PATH}
                     onClick={close}
                     className="site-menu-main-link"
                     style={{ animationDelay: `${80 + i * 60}ms` }}
@@ -126,14 +127,14 @@ export default function SiteMenu() {
                         onClick={close}
                         className="site-menu-project-link"
                         aria-label={
-                          project.ready ? undefined : `${project.title} — in production`
+                          isLive(project) ? undefined : `${project.title} — in production`
                         }
                       >
                         <span className="site-menu-project-num">
                           {String(i + 1).padStart(2, '0')}
                         </span>
                         <span className="site-menu-project-title">{project.title}</span>
-                        {project.ready ? (
+                        {isLive(project) ? (
                           project.category && (
                             <span className="site-menu-project-cat">{project.category}</span>
                           )

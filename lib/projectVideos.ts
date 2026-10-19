@@ -1,3 +1,5 @@
+import { showcaseLoopSrc, showcasePosterSrc, showcaseVideoSrc } from '@/lib/mediaPaths';
+import { getPieceHref } from '@/lib/stories';
 import type { Project } from '@/types/project';
 
 export type ProjectVideoItem = {
@@ -12,27 +14,6 @@ export function videoTitleFromFilename(filename: string): string {
     .replace(/\.[^.]+$/, '')
     .trim()
     .toUpperCase();
-}
-
-export function showcaseVideoSrc(slug: string, filename: string): string {
-  const encodedFilename = filename
-    .split('/')
-    .map((segment) => encodeURIComponent(segment))
-    .join('/');
-
-  return `/showcase/${slug}/${encodedFilename}`;
-}
-
-// The project page shows these as hover-preview banners and clicking one
-// navigates to the story, so they play the short loop rather than the film —
-// otherwise browsing the page streams 340MB of full-length features.
-// Built by scripts/build-hero-loops.mjs.
-export function showcaseLoopSrc(slug: string, filename: string): string {
-  return showcaseVideoSrc(slug, filename.replace(/\.mp4$/, '-loop.mp4'));
-}
-
-export function showcasePosterSrc(slug: string, filename: string): string {
-  return showcaseVideoSrc(slug, filename.replace(/\.mp4$/, '-poster.jpg'));
 }
 
 export function getProjectShowcaseVideos(project: Project): ProjectVideoItem[] {
@@ -77,11 +58,6 @@ export type ProjectMediaTile =
       portraitSrc?: string;
     });
 
-// The documentary pages are published, so tiles open them directly. Flip this
-// back to true to park every tile that names a documentary on the maintenance
-// screen again; the route and its data stay in place either way.
-const PARK_TILES_ON_MAINTENANCE: boolean = false;
-
 // Mosaic tiles never point at the full film: the documentary cuts here are
 // 43MB and 25MB. Hover plays the ~1MB loop built by scripts/build-hero-loops.mjs,
 // and clicking opens the documentary page rather than an inline player.
@@ -93,11 +69,8 @@ export function getProjectMediaTiles(project: Project): ProjectMediaTile[] {
       title: item.title,
       caption: item.caption,
       feature: item.feature ?? false,
-      href: item.documentary
-        ? PARK_TILES_ON_MAINTENANCE
-          ? '/maintenance'
-          : `/project/${project.slug}/${item.documentary}`
-        : undefined,
+      // A draft documentary's tile opens /maintenance.
+      href: item.documentary ? getPieceHref(project.slug, item.documentary) : undefined,
     };
 
     if (!/\.mp4$/i.test(item.file)) {

@@ -1,4 +1,4 @@
-import { showcaseVideoSrc } from '@/lib/projectVideos';
+import { showcaseVideoSrc } from '@/lib/mediaPaths';
 import type { Documentary } from '@/types/documentary';
 
 const LBL = 'life-beyond-lens';
@@ -71,6 +71,7 @@ export const documentaries: Documentary[] = [
   {
     id: 'life-beyond-lens',
     slug: LBL,
+    status: 'live',
     title: 'Life Beyond Lens',
     // Placeholder copy, carried over from data/projects.ts. Replace the text
     // fields below — synopsis, credits, awards, language, location — with the
@@ -100,6 +101,7 @@ export const documentaries: Documentary[] = [
   {
     id: 'bird-of-dusk',
     slug: 'bird-of-dusk',
+    status: 'live',
     theme: 'archive',
     title: 'Bird of Dusk',
     tagline: 'A homage to Rituparno Ghosh',
@@ -194,6 +196,7 @@ export const documentaries: Documentary[] = [
   {
     id: 'test-of-china',
     slug: 'test-of-china',
+    status: 'live',
     theme: 'dragon',
     title: 'Test of China',
     han: '唐人街',
@@ -321,6 +324,7 @@ export const documentaries: Documentary[] = [
   {
     id: 'craft-council-of-india',
     slug: 'craft-council-of-india',
+    status: 'live',
     theme: 'craft',
     title: 'Craft Council of India',
     tagline:
@@ -508,6 +512,7 @@ export const documentaries: Documentary[] = [
   {
     id: 'margaret-to-nivedita',
     slug: 'margaret-to-nivedita',
+    status: 'live',
     theme: 'passage',
     title: 'Margaret to Nivedita',
     tagline: 'The Irish half of an Indian life',
@@ -736,6 +741,7 @@ export const documentaries: Documentary[] = [
   {
     id: 'dark-rising',
     slug: 'dark-rising',
+    status: 'live',
     theme: 'rising',
     title: 'Dark Rising',
     // Every fact here comes from Dark_Rising_Research_Dossier.docx, and the
@@ -1013,6 +1019,7 @@ export const documentaries: Documentary[] = [
   {
     id: 'king-of-the-road',
     slug: 'king-of-the-road',
+    status: 'live',
     theme: 'road',
     title: 'King of the Road',
     // Every fact here comes from King_of_the_Road_Profile.docx. Its accuracy
@@ -1172,6 +1179,7 @@ export const documentaries: Documentary[] = [
   {
     id: 'tuning-2-you',
     slug: 'tuning-2-you',
+    status: 'live',
     theme: 'tuning',
     title: 'Tuning 2 You',
     // Every fact here comes from web-stream-tales.md / (wave stream Tales).docx.

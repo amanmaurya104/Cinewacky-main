@@ -22,6 +22,7 @@ import TuningDocumentary from '@/components/documentary/tuning/TuningDocumentary
 import { getDocumentaryForProject } from '@/data/documentaries';
 import { getProjectBySlug } from '@/data/projects';
 import { moonlightDisplay } from '@/lib/fonts';
+import { MAINTENANCE_PATH } from '@/lib/publishing';
 import { getPublishedPieceParams, getStoryBySlug, isPiecePublished } from '@/lib/stories';
 import '@/styles/story.css';
 import '@/styles/documentary/base.css';
@@ -72,12 +73,14 @@ export default async function StoryPage({ params }: Props) {
   const { slug, storySlug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return notFound();
-  if (!project.ready || !isPiecePublished(slug, storySlug)) redirect('/maintenance');
 
+  // A slug that names nothing is a 404; one that names a draft is parked.
   const story = getStoryBySlug(slug, storySlug);
+  const documentary = story ? undefined : getDocumentaryForProject(slug, storySlug);
+  if (!story && !documentary) return notFound();
+  if (!isPiecePublished(slug, storySlug)) redirect(MAINTENANCE_PATH);
 
   if (!story) {
-    const documentary = getDocumentaryForProject(slug, storySlug);
     if (!documentary) return notFound();
 
     if (documentary.theme === 'archive') {

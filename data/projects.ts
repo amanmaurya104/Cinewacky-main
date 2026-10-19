@@ -9,6 +9,7 @@ const projects: Project[] = [
     id: 1,
     title: 'Life Beyond Lens',
     slug: 'life-beyond-lens',
+    status: 'live',
     category: 'Documentary',
     tagline: 'Exploring life through the lens',
     description: 'A cinematic exploration of the lives shaped by their cameras.',
@@ -16,7 +17,6 @@ const projects: Project[] = [
     duration: '12:34',
     client: 'Independent',
     layout: 'mosaic',
-    ready: true,
     // Files under public/showcase/life-beyond-lens/. `title` is what the tile
     // shows — rename freely, the filename is only the asset lookup.
     // `feature: true` puts a tile in the tall left column; the rest fill the
@@ -53,6 +53,7 @@ const projects: Project[] = [
     id: 2,
     title: 'Brand Box',
     slug: 'brand-box',
+    status: 'draft',
     category: 'Commercial',
     tagline: 'Packaging ideas into motion',
     description: 'High-energy brand films and identity pieces.',
@@ -63,12 +64,12 @@ const projects: Project[] = [
     id: 3,
     title: 'Web Stream Tales',
     slug: 'web-stream-tales',
+    status: 'live',
     category: 'Web',
     tagline: 'Stories built for the stream',
     description: 'Long-form content for modern platforms.',
     year: '2025',
     layout: 'mosaic',
-    ready: true,
     // Files under public/showcase/web-stream-tales/.
     media: [
       {
@@ -86,11 +87,11 @@ const projects: Project[] = [
     id: 4,
     title: 'Reel Vibe Uncut',
     slug: 'reel-vibe-uncut',
+    status: 'live',
     category: '',
     tagline: '',
     description: 'A cinematic exploration of the lives shaped by their cameras.',
     year: '',
-    ready: true,
     videos: [
       'trailer for fiction.mp4',
       'KALI .mp4',
@@ -104,6 +105,7 @@ const projects: Project[] = [
     id: 5,
     title: 'Corporate Canvas',
     slug: 'corporate-canvas',
+    status: 'draft',
     category: 'Corporate',
     tagline: 'Elegant corporate storytelling',
     description: 'Polished films for corporate audiences.',
@@ -113,6 +115,7 @@ const projects: Project[] = [
     id: 6,
     title: 'Event Echoes',
     slug: 'event-echoes',
+    status: 'draft',
     category: 'Live',
     tagline: 'Capturing live moments',
     description: 'Event coverage with cinematic flair.',
@@ -122,6 +125,7 @@ const projects: Project[] = [
     id: 7,
     title: 'The Sonic Frame',
     slug: 'the-sonic-frame',
+    status: 'draft',
     category: 'Music',
     tagline: 'Where sound meets vision',
     description: 'Music-driven visual experiences.',
@@ -131,6 +135,7 @@ const projects: Project[] = [
     id: 8,
     title: 'The Next Chapter',
     slug: 'the-next-chapter',
+    status: 'draft',
     category: 'Documentary',
     tagline: 'Turning pages into frames',
     description: 'Personal stories told with cinematic depth.',
@@ -140,6 +145,7 @@ const projects: Project[] = [
     id: 9,
     title: 'Core Realm Vision',
     slug: 'core-realm-vision',
+    status: 'draft',
     category: 'Art',
     tagline: 'Imagery with intention',
     description: 'Art films exploring conceptual realms.',
@@ -149,6 +155,7 @@ const projects: Project[] = [
     id: 10,
     title: 'The Essence We Build',
     slug: 'the-essence-we-build',
+    status: 'draft',
     category: 'Brand',
     tagline: 'Building essence through visuals',
     description: 'Brand films that define identity.',
@@ -158,6 +165,7 @@ const projects: Project[] = [
     id: 11,
     title: 'The Path Walked',
     slug: 'the-path-walked',
+    status: 'draft',
     category: 'Documentary',
     tagline: 'The path walked',
     description: 'The path walked',
@@ -167,6 +175,7 @@ const projects: Project[] = [
     id: 12,
     title: 'Connect With Us',
     slug: 'connect-with-us',
+    status: 'draft',
     category: 'Documentary',
     tagline: 'Connect with us',
     description: 'Connect with us',
@@ -176,12 +185,6 @@ const projects: Project[] = [
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((project) => project.slug === slug);
-}
-
-/** Where a link to this project should go: its page once `ready`, else /maintenance. */
-export function getProjectHref(slug: string | undefined): string {
-  const project = slug ? getProjectBySlug(slug) : undefined;
-  return project?.ready ? `/project/${project.slug}` : '/maintenance';
 }
 
 export default projects;

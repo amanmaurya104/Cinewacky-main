@@ -4,6 +4,7 @@ import SiteHeader from '@/components/layout/SiteHeader';
 import ProjectVideoStack from '@/components/project/ProjectVideoStack';
 import ProjectMosaic from '@/components/project/ProjectMosaic';
 import projects, { getProjectBySlug } from '@/data/projects';
+import { isLive, MAINTENANCE_PATH } from '@/lib/publishing';
 import '@/styles/showcase.css';
 import '@/styles/project.css';
 import '@/styles/project-mosaic.css';
@@ -12,9 +13,9 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-// Only finished projects are prebuilt; the rest redirect to /maintenance below.
+// Only live projects are prebuilt; drafts redirect to /maintenance below.
 export function generateStaticParams() {
-  return projects.filter((project) => project.ready).map(({ slug }) => ({ slug }));
+  return projects.filter((project) => isLive(project)).map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -35,7 +36,7 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = getProjectBySlug(slug);
   if (!project) return notFound();
-  if (!project.ready) redirect('/maintenance');
+  if (!isLive(project)) redirect(MAINTENANCE_PATH);
 
   if (project.layout === 'mosaic') {
     return (

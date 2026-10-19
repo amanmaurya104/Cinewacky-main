@@ -1,17 +1,37 @@
-import documentaries, { getAllDocumentaryParams } from '@/data/documentaries';
+import documentaries, {
+  getAllDocumentaryParams,
+  getDocumentaryForProject,
+} from '@/data/documentaries';
 import { getProjectBySlug } from '@/data/projects';
 import stories from '@/data/stories';
-import { showcaseVideoSrc } from '@/lib/projectVideos';
+import { showcaseVideoSrc } from '@/lib/mediaPaths';
+import { isLive, MAINTENANCE_PATH } from '@/lib/publishing';
 import type { Story } from '@/types/story';
 
-// On Reel Vibe Uncut only the finished pages open; the rest park on
-// /maintenance until they have one. Add a slug here to publish its page.
-const LIVE_REEL_PAGES = new Set(['kali', 'dark-rising', 'mistimukh', 'moonlight-dream']);
+// Stories and documentaries are both "pieces" of a project, served at
+// /project/<project>/<piece>. These three helpers apply the publishing rule
+// from lib/publishing.ts to them. They load the full content, so import them
+// from server code only.
 
-/** Whether a story or documentary page under a project is published. */
+/** Whether the story or documentary at /project/<project>/<piece> is open. */
 export function isPiecePublished(projectSlug: string, pieceSlug: string): boolean {
-  if (projectSlug === 'reel-vibe-uncut') return LIVE_REEL_PAGES.has(pieceSlug);
-  return true;
+  const piece =
+    getStoryBySlug(projectSlug, pieceSlug) ?? getDocumentaryForProject(projectSlug, pieceSlug);
+  return isLive(getProjectBySlug(projectSlug)) && isLive(piece);
+}
+
+/** Where a link to a story or documentary should go. */
+export function getPieceHref(projectSlug: string, pieceSlug: string): string {
+  return isPiecePublished(projectSlug, pieceSlug)
+    ? `/project/${projectSlug}/${pieceSlug}`
+    : MAINTENANCE_PATH;
+}
+
+/** Every live story or documentary page, as { project slug, piece slug }. */
+export function getPublishedPieceParams(): { slug: string; storySlug: string }[] {
+  return [...getAllStoryParams(), ...getAllDocumentaryParams()].filter(({ slug, storySlug }) =>
+    isPiecePublished(slug, storySlug),
+  );
 }
 
 export function getStoriesForProject(projectSlug: string): Story[] {
@@ -47,14 +67,6 @@ export function getAllStoryParams(): { slug: string; storySlug: string }[] {
     slug: story.projectSlug,
     storySlug: story.slug,
   }));
-}
-
-/** Every live story or documentary page, as { project slug, piece slug }. */
-export function getPublishedPieceParams(): { slug: string; storySlug: string }[] {
-  return [...getAllStoryParams(), ...getAllDocumentaryParams()].filter(
-    ({ slug, storySlug }) =>
-      getProjectBySlug(slug)?.ready && isPiecePublished(slug, storySlug)
-  );
 }
 
 export function getStorySlugForVideo(

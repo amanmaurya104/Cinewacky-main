@@ -1,3 +1,5 @@
+import type { PublishStatus } from '@/types/publishing';
+
 export interface DocumentaryCredit {
   role: string;
   name: string;
@@ -160,6 +162,8 @@ export interface DocumentaryLedgerRow {
 export interface Documentary {
   id: string;
   slug: string;
+  /** Live only while its project is live too. */
+  status: PublishStatus;
   title: string;
   /**
    * 'archive' swaps the default dark template for the album layout;
