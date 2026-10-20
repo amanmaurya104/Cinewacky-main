@@ -87,8 +87,8 @@ function collect(value, where, seen = new WeakSet()) {
 
 // ── Content, evaluated ────────────────────────────────────────────────────
 const { default: projects } = await import('../data/projects.ts');
-const { default: stories } = await import('../data/stories.ts');
-const { default: documentaries } = await import('../data/documentaries.ts');
+const { default: stories } = await import('../data/stories/index.ts');
+const { default: documentaries } = await import('../data/documentaries/index.ts');
 const { showcaseScrollItems, getShowcaseThumbSrc } = await import('../data/showcaseScroll.ts');
 const { getProjectShowcaseVideos, getProjectMediaTiles } = await import('../lib/projectVideos.ts');
 

@@ -22,7 +22,7 @@ const run = promisify(execFile);
 const SHOWCASE = 'public/showcase/reel-vibe-uncut';
 const LIFE_BEYOND_LENS = 'public/showcase/life-beyond-lens';
 
-// Mirrors the heroVideo entries in data/stories.ts.
+// Mirrors the heroVideo entries in data/stories/.
 // `start` skips any fade-from-black so the loop and poster open on real image.
 const SOURCES = [
   { file: `${SHOWCASE}/MOONLIGHT DREAM.mp4`, start: 3 },
@@ -116,6 +116,6 @@ for (const { file, start } of SOURCES) {
 }
 
 console.log(
-  '\nDone. Point `heroVideo` and `poster` in data/stories.ts at the -loop.mp4\n' +
+  '\nDone. Point `heroVideo` and `poster` in data/stories/ at the -loop.mp4\n' +
     'and -poster.jpg files; keep `trailer` on the full-length source.',
 );

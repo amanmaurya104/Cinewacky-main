@@ -47,7 +47,7 @@ public/               Served assets
 Every project, story, documentary and menu item has a `status` of `'live'` or `'draft'`. Draft pages link to `/maintenance`, redirect there if visited directly, and are left out of the sitemap.
 
 - **Project:** set `status: 'live'` on it in `data/projects.ts`.
-- **Story or documentary:** set `status: 'live'` on it in `data/stories.ts` or `data/documentaries.ts`. It is only live while its project is live too.
+- **Story or documentary:** set `status: 'live'` in its file in `data/stories/` or `data/documentaries/`. It is only live while its project is live too.
 - **Experience / Achievements / Contact:** set `status: 'live'` in `data/navigation.ts`.
 
 The rule lives in `lib/publishing.ts`, with the story and documentary checks in `lib/stories.ts`. The menu, homepage, project pages and sitemap all follow it.

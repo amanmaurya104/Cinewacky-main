@@ -11,7 +11,7 @@ import TuningDocumentary from './tuning/TuningDocumentary';
 
 type ThemePage = ComponentType<{ documentary: Documentary }>;
 
-// One entry per `theme` in data/documentaries.ts, plus `standard` for
+// One entry per `theme` in data/documentaries/, plus `standard` for
 // documentaries without one. A theme's stylesheet and fonts are not imported
 // here but through PieceStyles, so a page links only its own theme's.
 const THEMES: Record<NonNullable<Documentary['theme']> | 'standard', ThemePage> = {

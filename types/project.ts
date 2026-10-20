@@ -13,7 +13,7 @@ export interface ProjectMediaItem {
    * screen there instead of sitting in a short landscape row.
    */
   portraitFile?: string;
-  /** Slug in data/documentaries.ts; clicking the tile opens that page. */
+  /** Slug of a documentary in data/documentaries/; clicking the tile opens that page. */
   documentary?: string;
 }
 
