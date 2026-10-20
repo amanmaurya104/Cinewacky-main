@@ -23,27 +23,27 @@ const projects: Project[] = [
     // right stack. Order within each column follows this list.
     media: [
       {
-        file: 'OPENING 2.jpg',
+        file: 'craft-council-of-india.jpg',
         title: 'CRAFT COUNCIL OF INDIA',
         feature: true,
         documentary: 'craft-council-of-india',
       },
       {
-        file: 'OPENING 1.mp4',
+        file: 'bird-of-dusk.mp4',
         title: 'BIRD OF DUSK',
         // caption: 'Cinewacky / India',
         feature: true,
         documentary: 'bird-of-dusk',
       },
-      { file: 'OPENING 3.jpg', title: 'INTO THE CHINA TOWN', documentary: 'test-of-china' },
+      { file: 'test-of-china.jpg', title: 'INTO THE CHINA TOWN', documentary: 'test-of-china' },
       {
-        file: 'NIVEDITA.jpg',
+        file: 'margaret-to-nivedita.jpg',
         title: 'MARGARET TO NIVEDITA',
         documentary: 'margaret-to-nivedita',
       },
-      // { file: 'DOCU TRAILER .mp4', title: 'OUR DOCUMENTARY TRAILER', documentary: DOC },
+      // { file: 'life-beyond-lens-trailer.mp4', title: 'OUR DOCUMENTARY TRAILER', documentary: DOC },
       {
-        file: 'OPENING 5.jpg',
+        file: 'king-of-the-road.jpg',
         title: 'KING OF THE ROAD: Wim Wenders',
         documentary: 'king-of-the-road',
       },
@@ -73,10 +73,10 @@ const projects: Project[] = [
     // Files under public/showcase/web-stream-tales/.
     media: [
       {
-        file: 'TUNING 2 YOU.jpg',
+        file: 'tuning-2-you.jpg',
         // A Baul singer with his dotara: the same musician as the landscape
         // cover, cut from gallery still 513825826 (Bengal, beneath a banyan).
-        portraitFile: 'TUNING 2 YOU-portrait.jpg',
+        portraitFile: 'tuning-2-you-portrait.jpg',
         title: 'TUNING 2 YOU: Lost Musicians of India',
         feature: true,
         documentary: 'tuning-2-you',
@@ -93,12 +93,12 @@ const projects: Project[] = [
     description: 'A cinematic exploration of the lives shaped by their cameras.',
     year: '',
     videos: [
-      'trailer for fiction.mp4',
-      'KALI .mp4',
-      'MOONLIGHT DREAM.mp4',
-      'DARK RISING.mp4',
-      'MISTIMUKH.mp4',
-      'THE CAT.mp4',
+      'trailer-for-fiction.mp4',
+      'kali.mp4',
+      'moonlight-dream.mp4',
+      'dark-rising.mp4',
+      'mistimukh.mp4',
+      'the-cat.mp4',
     ],
   },
   {

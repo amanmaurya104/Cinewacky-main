@@ -14,8 +14,8 @@
 //   trailer.mp4              the trailer, audio kept, faststart
 //   trailer-poster.jpg
 //
-// It also writes public/showcase/life-beyond-lens/NIVEDITA.jpg, the tile the
-// project mosaic opens the page from.
+// It also writes public/showcase/life-beyond-lens/margaret-to-nivedita.jpg,
+// the tile the project mosaic opens the page from.
 //
 // The source still filenames carry a narrow no-break space (U+202F) from the
 // macOS screenshot naming, which is why the trailer is resolved by prefix match
@@ -34,7 +34,7 @@ import { promisify } from 'node:util';
 
 const run = promisify(execFile);
 
-const SOURCE = 'public/projects/life-beyond-lens/margarate-to-nivedita';
+const SOURCE = 'public/projects/life-beyond-lens/margaret-to-nivedita';
 const OUT = 'public/documentaries/margaret-to-nivedita';
 const PLATES = path.join(OUT, 'plates');
 const MOTION = path.join(OUT, 'motion');
@@ -228,7 +228,7 @@ console.log(
 // The project page opens this film from a still rather than a loop, so the
 // mosaic does not stream a fourth clip. The aerial is the establishing shot of
 // the town she was born in, which is the one frame that says where the film is.
-const tile = path.join(SHOWCASE, 'NIVEDITA.jpg');
+const tile = path.join(SHOWCASE, 'margaret-to-nivedita.jpg');
 
 await run('ffmpeg', [
   '-y', '-i', path.join(SOURCE, stills[0]),
@@ -237,4 +237,4 @@ await run('ffmpeg', [
   tile,
 ]);
 
-console.log(`NIVEDITA.jpg  ${mb(await size(tile))}  <-  ${stills[0]}`);
+console.log(`margaret-to-nivedita.jpg  ${mb(await size(tile))}  <-  ${stills[0]}`);

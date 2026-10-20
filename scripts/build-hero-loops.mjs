@@ -25,17 +25,17 @@ const LIFE_BEYOND_LENS = 'public/showcase/life-beyond-lens';
 // Mirrors the heroVideo entries in data/stories/.
 // `start` skips any fade-from-black so the loop and poster open on real image.
 const SOURCES = [
-  { file: `${SHOWCASE}/MOONLIGHT DREAM.mp4`, start: 3 },
-  { file: `${SHOWCASE}/DARK RISING.mp4`, start: 3 },
-  { file: `${SHOWCASE}/MISTIMUKH.mp4`, start: 3 },
-  { file: `${SHOWCASE}/trailer for fiction.mp4`, start: 3 },
-  { file: `${SHOWCASE}/THE CAT.mp4`, start: 3 },
+  { file: `${SHOWCASE}/moonlight-dream.mp4`, start: 3 },
+  { file: `${SHOWCASE}/dark-rising.mp4`, start: 3 },
+  { file: `${SHOWCASE}/mistimukh.mp4`, start: 3 },
+  { file: `${SHOWCASE}/trailer-for-fiction.mp4`, start: 3 },
+  { file: `${SHOWCASE}/the-cat.mp4`, start: 3 },
   // Also a banner on the project page, which plays loops rather than films.
-  { file: `${SHOWCASE}/KALI .mp4`, start: 3 },
-  { file: 'public/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer.mp4', start: 3 },
+  { file: `${SHOWCASE}/kali.mp4`, start: 3 },
+  { file: 'public/projects/reel-vibe-uncut/kali/trailer.mp4', start: 3 },
   // Tiles on the life-beyond-lens mosaic, which plays loops rather than films.
-  { file: `${LIFE_BEYOND_LENS}/DOCU TRAILER .mp4`, start: 3 },
-  { file: `${LIFE_BEYOND_LENS}/OPENING 1.mp4`, start: 1 },
+  { file: `${LIFE_BEYOND_LENS}/life-beyond-lens-trailer.mp4`, start: 3 },
+  { file: `${LIFE_BEYOND_LENS}/bird-of-dusk.mp4`, start: 1 },
 ];
 
 const DURATION = 12;

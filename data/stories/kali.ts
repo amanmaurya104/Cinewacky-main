@@ -1,41 +1,14 @@
 import type { Story } from '@/types/story';
-import { PROJECT, kaliCrew } from './shared';
+import { PROJECT, filmStills, kaliCrew } from './shared';
 
-const kaliImageFiles = [
-  'kali_-_neo-noir,_magic-realist_short_film (1440p)(1).mp4.00_00_16_16.Still001.jpg',
-  'kali_-_neo-noir,_magic-realist_short_film (1440p)(1).mp4.00_11_50_00.Still003.jpg',
-  'kali_-_neo-noir,_magic-realist_short_film (1440p)(1).mp4.00_12_04_09.Still002.jpg',
-  'kali_-_neo-noir,_magic-realist_short_film (1440p)(1).mp4.00_12_11_16.Still004.jpg',
-  'kali_-_neo-noir,_magic-realist_short_film (1440p)(1).mp4.00_12_26_16.Still005.jpg',
-  'kali_-_neo-noir,_magic-realist_short_film (1440p)(1).mp4.00_19_29_10.Still006.jpg',
-  'kali_-_neo-noir,_magic-realist_short_film (1440p)(1).mp4.00_22_35_09.Still008.jpg',
-  'kali_-_neo-noir,_magic-realist_short_film (1440p)(1).mp4.00_22_45_00.Still007.jpg',
-  'kali_-_neo-noir,_magic-realist_short_film (1440p)(1).mp4.00_23_55_00.Still009.jpg',
-  'Sequence 05.00_00_06_07.Still002.jpg',
-  'Sequence 05.00_00_13_06.Still004.jpg',
-  'Sequence 05.00_00_14_06.Still003.jpg',
-  'Sequence 05.00_00_23_05.Still001.jpg',
-  'Sequence 05.00_00_53_00.Still005.jpg',
-  'Sequence 05.00_01_03_15.Still006.jpg',
-  'Sequence 05.00_01_10_22.Still007.jpg',
-  'Sequence 05.00_01_29_13.Still008.jpg',
-  'Sequence 05.00_01_51_11.Still009.jpg',
-  'Sequence 05.00_02_07_20.Still010.jpg',
-  'Sequence 05.00_02_32_23.Still011.jpg',
-] as const;
+const kaliImages = filmStills('kali', 20);
 
-function kaliImage(filename: string): string {
-  return `/projects/reel-vibe-uncut/kali/${encodeURIComponent(filename)}`;
-}
+const KALI_TRAILER = '/projects/reel-vibe-uncut/kali/trailer.mp4';
 
-const kaliImages = kaliImageFiles.map(kaliImage);
-
-const KALI_TRAILER = '/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer.mp4';
-
-const KALI_LOOP = '/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer-loop.mp4';
+const KALI_LOOP = '/projects/reel-vibe-uncut/kali/trailer-loop.mp4';
 
 const KALI_POSTER =
-  '/projects/reel-vibe-uncut/kali_trailer/kali_official_trailer-poster.jpg';
+  '/projects/reel-vibe-uncut/kali/trailer-poster.jpg';
 
 const kaliCast = [
   { actor: 'Disha Bhattacharjee', character: 'Deepa / Kali', portrait: kaliImages[0] },
@@ -69,7 +42,7 @@ const kali: Story = {
   slug: 'kali',
   status: 'live',
   projectSlug: PROJECT,
-  projectVideoFilename: 'KALI .mp4',
+  projectVideoFilename: 'kali.mp4',
   title: 'Kali',
   tagline: '',
   heroVideo: KALI_LOOP,

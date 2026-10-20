@@ -22,10 +22,10 @@ const SHOWCASE = 'public/showcase/reel-vibe-uncut';
 const OUT_ROOT = 'public/projects/reel-vibe-uncut';
 
 const FILMS = [
-  { file: `${SHOWCASE}/DARK RISING.mp4`, slug: 'dark-rising' },
-  { file: `${SHOWCASE}/MISTIMUKH.mp4`, slug: 'mistimukh' },
-  { file: `${SHOWCASE}/trailer for fiction.mp4`, slug: 'trailer-for-fiction' },
-  { file: `${SHOWCASE}/THE CAT.mp4`, slug: 'the-cat' },
+  { file: `${SHOWCASE}/dark-rising.mp4`, slug: 'dark-rising' },
+  { file: `${SHOWCASE}/mistimukh.mp4`, slug: 'mistimukh' },
+  { file: `${SHOWCASE}/trailer-for-fiction.mp4`, slug: 'trailer-for-fiction' },
+  { file: `${SHOWCASE}/the-cat.mp4`, slug: 'the-cat' },
 ];
 
 const COUNT = 8;

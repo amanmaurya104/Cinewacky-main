@@ -28,7 +28,7 @@ const tuning2You: Documentary = {
     epigraph: 'A Cultural Odyssey into India’s Forgotten Harmonies',
     format: ['6 × 30′', '2018–19', 'Factual broadcast'],
     heroPlate: {
-      src: wst('512867468_24087265994264227_8746614560225145935_n.jpg'),
+      src: wst('photo-10.jpg'),
       caption: 'Sarod and dotara, in conversation',
       width: 2048,
       height: 1365,
@@ -59,13 +59,13 @@ const tuning2You: Documentary = {
     ],
     liner: [
       {
-        src: wst('512755154_24086705470986946_5678611784172296258_n.jpg'),
+        src: wst('photo-07.jpg'),
         caption: 'Bauls beneath a banyan',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('510972309_24096998159957677_8137216255912188693_n.jpg'),
+        src: wst('photo-02.jpg'),
         caption: 'Qawwali',
         width: 2048,
         height: 1365,
@@ -80,7 +80,7 @@ const tuning2You: Documentary = {
       ],
     },
     overviewPlate: {
-      src: wst('512739382_24097828566541303_5762251846368366331_n.jpg'),
+      src: wst('photo-06.jpg'),
       width: 2048,
       height: 1365,
     },
@@ -91,7 +91,7 @@ const tuning2You: Documentary = {
         locale: 'Kolkata and the Baul villages',
         text: 'Our journey begins in the vibrant heart of Bengal, the City of Joy—Kolkata. Guided by the soulful Sarod maestro Soumik, we delve into the rich tapestry of his musical heritage. As Soumik assembles his ensemble, their path winds away from the bustling city into the serene villages, where the haunting melodies of the Bauls, the wandering minstrels of Bengal, echo through time. Together, they uncover stories and songs that bridge generations, weaving a soulful symphony of tradition and discovery.',
         plate: {
-          src: wst('513825826_24086705494320277_6852792077301221404_n.jpg'),
+          src: wst('photo-19.jpg'),
           caption: 'Bauls of Bengal',
           width: 2048,
           height: 1365,
@@ -103,7 +103,7 @@ const tuning2You: Documentary = {
         locale: 'Ajmer, and the road out of it',
         text: 'In the mystical city of Ajmer, Soumik encounters a spirited Qawwali group who invite him to perform within the hallowed walls of the majestic Ajmer Sharif Dargah. From there, the journey takes an unexpected turn—crashing a vibrant wedding, creating magic with tribal drummers, and even dodging the local police. Along the way, he discovers a remarkable group of women singers, rooted in their village yet brimming with dreams of taking their voices to the cities. Each encounter unveils the raw beauty and untamed rhythm of Rajasthan, a land where tradition and ambition collide in harmony.',
         plate: {
-          src: wst('514246656_24101484456175714_6533574895992095296_n.jpg'),
+          src: wst('photo-41.jpg'),
           caption: 'Rajasthan',
           width: 2048,
           height: 1365,
@@ -140,7 +140,7 @@ const tuning2You: Documentary = {
     ],
     mosaicLine: 'An intricate mosaic of sound and culture.',
     mosaicPlate: {
-      src: wst('514477860_24096229443367882_8882196704568792492_n.jpg'),
+      src: wst('photo-50.jpg'),
       caption: 'From the air',
       width: 2048,
       height: 1536,
@@ -164,37 +164,37 @@ const tuning2You: Documentary = {
     ],
     backstage: [
       {
-        src: wst('513965102_24103294202661406_5015955399114216585_n.jpg'),
+        src: wst('photo-26.jpg'),
         caption: 'Setting up a slider in the sand',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('514265330_24092289137095246_3284634648517952223_n.jpg'),
+        src: wst('photo-42.jpg'),
         caption: 'The drone',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('514045718_24092841463706680_6520166789323609907_n.jpg'),
+        src: wst('photo-32.jpg'),
         caption: 'Two cameras on one performer',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('513862950_24091740813816745_6037863316017968150_n.jpg'),
+        src: wst('photo-22.jpg'),
         caption: 'Sound, walking with an elder',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('514433228_24103294329328060_7873860576963792544_n.jpg'),
+        src: wst('photo-49.jpg'),
         caption: 'At the long lens',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('513741727_24103294132661413_332620993569617816_n.jpg'),
+        src: wst('photo-17.jpg'),
         caption: 'Toward the camel carts',
         width: 2048,
         height: 1367,
@@ -211,37 +211,37 @@ const tuning2You: Documentary = {
     },
     sleeves: [
       {
-        src: wst('513043232_24091535953837231_6548493385554902938_n.jpg'),
+        src: wst('photo-12.jpg'),
         caption: 'Lost in the song',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('513931331_24091536140503879_7877880093751674013_n.jpg'),
+        src: wst('photo-23.jpg'),
         caption: 'Tuning up',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('514025887_24096258063365020_6786814911898174056_n.jpg'),
+        src: wst('photo-30.jpg'),
         caption: 'The elder on the parapet',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('514062659_24091886177135542_468118493357339937_n.jpg'),
+        src: wst('photo-35.jpg'),
         caption: 'Harmonium, drum and voice',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('503707458_24101484389509054_7430855447918476280_n.jpg'),
+        src: wst('photo-01.jpg'),
         caption: 'Two frame drums',
         width: 2048,
         height: 1365,
       },
       {
-        src: wst('513987645_24092133020444191_7928884426224922548_n.jpg'),
+        src: wst('photo-28.jpg'),
         caption: 'Talking after dark',
         width: 2048,
         height: 1365,
@@ -312,7 +312,7 @@ const tuning2You: Documentary = {
         channel: 'Soumik Datta',
         href: 'https://www.facebook.com/share/v/1CSMbzNHYj/',
         source: 'https://www.facebook.com/soumikmusic/videos/10157543995428214/',
-        poster: wst('514057620_24093397526984407_294059156592160373_n.jpg'),
+        poster: wst('photo-34.jpg'),
       },
     ],
     streaming:
@@ -330,59 +330,59 @@ const tuning2You: Documentary = {
     // Every delivered still, in filename order. The slots above point into
     // this same set; the gallery keeps all of it when they are repointed.
     gallery: [
-    { src: wst('503707458_24101484389509054_7430855447918476280_n.jpg'), caption: 'A drummer in white holding two frame drums outside a whitewashed building', width: 2048, height: 1365 }, // 01
-    { src: wst('510972309_24096998159957677_8137216255912188693_n.jpg'), caption: 'Qawwali singers at their harmoniums before a packed crowd', width: 2048, height: 1365 }, // 02
-    { src: wst('511192721_24093022537021906_2077046379890483675_n.jpg'), caption: 'A village gathers in front of the crew’s car', width: 2048, height: 1365 }, // 03
-    { src: wst('511275158_24093237500333743_6329326842019027442_n.jpg'), caption: 'Families seated on the floor, watching a performance', width: 1920, height: 1080 }, // 04
-    { src: wst('511974350_24103091689348324_5385452044540265592_n.jpg'), caption: 'The crew at dinner after a day’s shoot', width: 1365, height: 2048 }, // 05
-    { src: wst('512739382_24097828566541303_5762251846368366331_n.jpg'), caption: 'A crowd seated in a lamp-lit, gilded hall', width: 2048, height: 1365 }, // 06
-    { src: wst('512755154_24086705470986946_5678611784172296258_n.jpg'), caption: 'Bauls playing beneath a banyan tree, one of them dancing', width: 2048, height: 1365 }, // 07
-    { src: wst('512779779_24091725327151627_2304515949414077100_n.jpg'), caption: 'An elder smoking in the half-dark', width: 2048, height: 1365 }, // 08
-    { src: wst('512818458_24091544590503034_3938100485303827520_n.jpg'), caption: 'The crew talking it through in a field', width: 2048, height: 1367 }, // 09
-    { src: wst('512867468_24087265994264227_8746614560225145935_n.jpg'), caption: 'A sarod and a dotara in conversation on a striped mat', width: 2048, height: 1365 }, // 10
-    { src: wst('512939277_24091740787150081_954435599741874472_n.jpg'), caption: 'The crew stopping for tea in a village lane', width: 2048, height: 1365 }, // 11
-    { src: wst('513043232_24091535953837231_6548493385554902938_n.jpg'), caption: 'A Baul in saffron, lost in the song', width: 2048, height: 1365 }, // 12
-    { src: wst('513048912_24091556927168467_1037575326243687533_n.jpg'), caption: 'Four of the crew among the trees', width: 2048, height: 1367 }, // 13
-    { src: wst('513487065_24103279589329534_1192719135061063618_n.jpg'), caption: 'The crew framing a shot inside a stone archway', width: 2048, height: 1365 }, // 14
-    { src: wst('513516287_24097828866541273_8654623174927490457_n.jpg'), caption: 'Heaps of red roses at a shrine-side stall', width: 2048, height: 1365 }, // 15
-    { src: wst('513604279_24093397563651070_8499790249263916501_n.jpg'), caption: 'Women carrying loads across a field at dusk', width: 2048, height: 1152 }, // 16
-    { src: wst('513741727_24103294132661413_332620993569617816_n.jpg'), caption: 'A camera operator walking toward the camel carts', width: 2048, height: 1367 }, // 17
-    { src: wst('513793311_24093397536984406_6564487305386221828_n.jpg'), caption: 'Cards, drives and cameras: the evening data wrangle', width: 2048, height: 1152 }, // 18
-    { src: wst('513825826_24086705494320277_6852792077301221404_n.jpg'), caption: 'A Baul singer with his dotara beneath a banyan', width: 2048, height: 1365 }, // 19
-    { src: wst('513853942_24092466837077476_2525888907478215571_n.jpg'), caption: 'A night-time selfie with the musicians', width: 2048, height: 1365 }, // 20
-    { src: wst('513859221_24093022533688573_1529796532520714944_n.jpg'), caption: 'Three children in a doorway under hand-painted Bengali lettering', width: 2048, height: 1365 }, // 21
-    { src: wst('513862950_24091740813816745_6037863316017968150_n.jpg'), caption: 'The sound recordist walking with an elder, boom raised', width: 2048, height: 1365 }, // 22
-    { src: wst('513931331_24091536140503879_7877880093751674013_n.jpg'), caption: 'A musician tuning a carved, many-pegged string instrument', width: 2048, height: 1365 }, // 23
-    { src: wst('513940479_24093237850333708_658628135790346623_n.jpg'), caption: 'Hands on a harmonium, in black and white', width: 2048, height: 1149 }, // 24
-    { src: wst('513947759_24102684579389035_5946719883153950804_n.jpg'), caption: 'A girl carrying a young goat', width: 2048, height: 1365 }, // 25
-    { src: wst('513965102_24103294202661406_5015955399114216585_n.jpg'), caption: 'Setting up a slider in the sand', width: 2048, height: 1365 }, // 26
-    { src: wst('513984189_24086546431002850_5957324844444950221_n.jpg'), caption: 'On the road, inside the car', width: 2048, height: 1365 }, // 27
-    { src: wst('513987645_24092133020444191_7928884426224922548_n.jpg'), caption: 'Two musicians talking at night, one in a patchwork robe', width: 2048, height: 1365 }, // 28
-    { src: wst('514004151_24096998146624345_5037925604570406962_n.jpg'), caption: 'Walking through a shrine-side bazaar', width: 2048, height: 1365 }, // 29
-    { src: wst('514025887_24096258063365020_6786814911898174056_n.jpg'), caption: 'An elder in a saffron turban on a stone parapet', width: 2048, height: 1365 }, // 30
-    { src: wst('514039865_24103463699311123_8941179565032845673_n.jpg'), caption: 'Cameras on the table between set-ups', width: 2048, height: 1367 }, // 31
-    { src: wst('514045718_24092841463706680_6520166789323609907_n.jpg'), caption: 'Filming a woman in red on a mud-walled ledge', width: 2048, height: 1365 }, // 32
-    { src: wst('514049748_24093022633688563_4322657594360232498_n.jpg'), caption: 'Villagers outside a shopfront with Bengali signs', width: 2048, height: 1365 }, // 33
-    { src: wst('514057620_24093397526984407_294059156592160373_n.jpg'), caption: 'Two Bauls with their instruments in a grove', width: 2048, height: 1152 }, // 34
-    { src: wst('514062659_24091886177135542_468118493357339937_n.jpg'), caption: 'An elder at the harmonium, with drum and voice beside him', width: 2048, height: 1365 }, // 35
-    { src: wst('514090533_24096998156624344_4856269641855326515_n.jpg'), caption: 'A night market, seen from the crew’s side', width: 2048, height: 1365 }, // 36
-    { src: wst('514104029_24092822793708547_580189700150923030_n.jpg'), caption: 'Filming beneath a great old tree', width: 2048, height: 1365 }, // 37
-    { src: wst('514107350_24092617900395703_3960754312424617721_n.jpg'), caption: 'Crew and hosts along a veranda', width: 2048, height: 1365 }, // 38
-    { src: wst('514131703_24102684392722387_8390379102120538902_n.jpg'), caption: 'A family in the doorway of a stone house', width: 2048, height: 1365 }, // 39
-    { src: wst('514233283_24103463725977787_8167377379496647338_n.jpg'), caption: 'Touch-ups beside the car', width: 2048, height: 1365 }, // 40
-    { src: wst('514246656_24101484456175714_6533574895992095296_n.jpg'), caption: 'Women in bright veils seated together', width: 2048, height: 1365 }, // 41
-    { src: wst('514265330_24092289137095246_3284634648517952223_n.jpg'), caption: 'The drone, in flight', width: 2048, height: 1365 }, // 42
-    { src: wst('514273983_24101484509509042_2089372832263251975_n.jpg'), caption: 'Women carrying pots on their heads', width: 2048, height: 1365 }, // 43
-    { src: wst('514286379_24092289177095242_1036926582721974462_n.jpg'), caption: 'A young boy looking up', width: 2048, height: 1365 }, // 44
-    { src: wst('514335863_24092133047110855_7547883587669167924_n.jpg'), caption: 'Filming a singer in a saffron turban', width: 2048, height: 1365 }, // 45
-    { src: wst('514349311_24091163787207781_3136326762177338330_n.jpg'), caption: 'The drone pilot among villagers and Bauls', width: 2048, height: 1152 }, // 46
-    { src: wst('514364904_24092288970428596_8440777169898763370_n.jpg'), caption: 'Showing the drone footage to an elder', width: 2048, height: 1365 }, // 47
-    { src: wst('514411256_24101484329509060_1381316870255924615_n.jpg'), caption: 'A crew member writing up notes', width: 2048, height: 1367 }, // 48
-    { src: wst('514433228_24103294329328060_7873860576963792544_n.jpg'), caption: 'A cinematographer at a long lens', width: 2048, height: 1365 }, // 49
-    { src: wst('514477860_24096229443367882_8882196704568792492_n.jpg'), caption: 'From the air: a village lined up along a hillside path', width: 2048, height: 1536 }, // 50
-    { src: wst('514482709_24092832507040909_7949583558335197712_n.jpg'), caption: 'Reviewing footage by laptop light, at night', width: 2048, height: 1365 }, // 51
-    { src: wst('514486581_24103236776000482_3983742037570997995_n.jpg'), caption: 'Looking up at a painted palace ceiling', width: 2048, height: 1367 }, // 52
-    { src: wst('514746187_24102684499389043_8582095702089691232_n.jpg'), caption: 'A domed rooftop pavilion against the sky', width: 2048, height: 1365 }, // 53
+    { src: wst('photo-01.jpg'), caption: 'A drummer in white holding two frame drums outside a whitewashed building', width: 2048, height: 1365 }, // 01
+    { src: wst('photo-02.jpg'), caption: 'Qawwali singers at their harmoniums before a packed crowd', width: 2048, height: 1365 }, // 02
+    { src: wst('photo-03.jpg'), caption: 'A village gathers in front of the crew’s car', width: 2048, height: 1365 }, // 03
+    { src: wst('photo-04.jpg'), caption: 'Families seated on the floor, watching a performance', width: 1920, height: 1080 }, // 04
+    { src: wst('photo-05.jpg'), caption: 'The crew at dinner after a day’s shoot', width: 1365, height: 2048 }, // 05
+    { src: wst('photo-06.jpg'), caption: 'A crowd seated in a lamp-lit, gilded hall', width: 2048, height: 1365 }, // 06
+    { src: wst('photo-07.jpg'), caption: 'Bauls playing beneath a banyan tree, one of them dancing', width: 2048, height: 1365 }, // 07
+    { src: wst('photo-08.jpg'), caption: 'An elder smoking in the half-dark', width: 2048, height: 1365 }, // 08
+    { src: wst('photo-09.jpg'), caption: 'The crew talking it through in a field', width: 2048, height: 1367 }, // 09
+    { src: wst('photo-10.jpg'), caption: 'A sarod and a dotara in conversation on a striped mat', width: 2048, height: 1365 }, // 10
+    { src: wst('photo-11.jpg'), caption: 'The crew stopping for tea in a village lane', width: 2048, height: 1365 }, // 11
+    { src: wst('photo-12.jpg'), caption: 'A Baul in saffron, lost in the song', width: 2048, height: 1365 }, // 12
+    { src: wst('photo-13.jpg'), caption: 'Four of the crew among the trees', width: 2048, height: 1367 }, // 13
+    { src: wst('photo-14.jpg'), caption: 'The crew framing a shot inside a stone archway', width: 2048, height: 1365 }, // 14
+    { src: wst('photo-15.jpg'), caption: 'Heaps of red roses at a shrine-side stall', width: 2048, height: 1365 }, // 15
+    { src: wst('photo-16.jpg'), caption: 'Women carrying loads across a field at dusk', width: 2048, height: 1152 }, // 16
+    { src: wst('photo-17.jpg'), caption: 'A camera operator walking toward the camel carts', width: 2048, height: 1367 }, // 17
+    { src: wst('photo-18.jpg'), caption: 'Cards, drives and cameras: the evening data wrangle', width: 2048, height: 1152 }, // 18
+    { src: wst('photo-19.jpg'), caption: 'A Baul singer with his dotara beneath a banyan', width: 2048, height: 1365 }, // 19
+    { src: wst('photo-20.jpg'), caption: 'A night-time selfie with the musicians', width: 2048, height: 1365 }, // 20
+    { src: wst('photo-21.jpg'), caption: 'Three children in a doorway under hand-painted Bengali lettering', width: 2048, height: 1365 }, // 21
+    { src: wst('photo-22.jpg'), caption: 'The sound recordist walking with an elder, boom raised', width: 2048, height: 1365 }, // 22
+    { src: wst('photo-23.jpg'), caption: 'A musician tuning a carved, many-pegged string instrument', width: 2048, height: 1365 }, // 23
+    { src: wst('photo-24.jpg'), caption: 'Hands on a harmonium, in black and white', width: 2048, height: 1149 }, // 24
+    { src: wst('photo-25.jpg'), caption: 'A girl carrying a young goat', width: 2048, height: 1365 }, // 25
+    { src: wst('photo-26.jpg'), caption: 'Setting up a slider in the sand', width: 2048, height: 1365 }, // 26
+    { src: wst('photo-27.jpg'), caption: 'On the road, inside the car', width: 2048, height: 1365 }, // 27
+    { src: wst('photo-28.jpg'), caption: 'Two musicians talking at night, one in a patchwork robe', width: 2048, height: 1365 }, // 28
+    { src: wst('photo-29.jpg'), caption: 'Walking through a shrine-side bazaar', width: 2048, height: 1365 }, // 29
+    { src: wst('photo-30.jpg'), caption: 'An elder in a saffron turban on a stone parapet', width: 2048, height: 1365 }, // 30
+    { src: wst('photo-31.jpg'), caption: 'Cameras on the table between set-ups', width: 2048, height: 1367 }, // 31
+    { src: wst('photo-32.jpg'), caption: 'Filming a woman in red on a mud-walled ledge', width: 2048, height: 1365 }, // 32
+    { src: wst('photo-33.jpg'), caption: 'Villagers outside a shopfront with Bengali signs', width: 2048, height: 1365 }, // 33
+    { src: wst('photo-34.jpg'), caption: 'Two Bauls with their instruments in a grove', width: 2048, height: 1152 }, // 34
+    { src: wst('photo-35.jpg'), caption: 'An elder at the harmonium, with drum and voice beside him', width: 2048, height: 1365 }, // 35
+    { src: wst('photo-36.jpg'), caption: 'A night market, seen from the crew’s side', width: 2048, height: 1365 }, // 36
+    { src: wst('photo-37.jpg'), caption: 'Filming beneath a great old tree', width: 2048, height: 1365 }, // 37
+    { src: wst('photo-38.jpg'), caption: 'Crew and hosts along a veranda', width: 2048, height: 1365 }, // 38
+    { src: wst('photo-39.jpg'), caption: 'A family in the doorway of a stone house', width: 2048, height: 1365 }, // 39
+    { src: wst('photo-40.jpg'), caption: 'Touch-ups beside the car', width: 2048, height: 1365 }, // 40
+    { src: wst('photo-41.jpg'), caption: 'Women in bright veils seated together', width: 2048, height: 1365 }, // 41
+    { src: wst('photo-42.jpg'), caption: 'The drone, in flight', width: 2048, height: 1365 }, // 42
+    { src: wst('photo-43.jpg'), caption: 'Women carrying pots on their heads', width: 2048, height: 1365 }, // 43
+    { src: wst('photo-44.jpg'), caption: 'A young boy looking up', width: 2048, height: 1365 }, // 44
+    { src: wst('photo-45.jpg'), caption: 'Filming a singer in a saffron turban', width: 2048, height: 1365 }, // 45
+    { src: wst('photo-46.jpg'), caption: 'The drone pilot among villagers and Bauls', width: 2048, height: 1152 }, // 46
+    { src: wst('photo-47.jpg'), caption: 'Showing the drone footage to an elder', width: 2048, height: 1365 }, // 47
+    { src: wst('photo-48.jpg'), caption: 'A crew member writing up notes', width: 2048, height: 1367 }, // 48
+    { src: wst('photo-49.jpg'), caption: 'A cinematographer at a long lens', width: 2048, height: 1365 }, // 49
+    { src: wst('photo-50.jpg'), caption: 'From the air: a village lined up along a hillside path', width: 2048, height: 1536 }, // 50
+    { src: wst('photo-51.jpg'), caption: 'Reviewing footage by laptop light, at night', width: 2048, height: 1365 }, // 51
+    { src: wst('photo-52.jpg'), caption: 'Looking up at a painted palace ceiling', width: 2048, height: 1367 }, // 52
+    { src: wst('photo-53.jpg'), caption: 'A domed rooftop pavilion against the sky', width: 2048, height: 1365 }, // 53
     ],
 
     visionaries: [

@@ -31,10 +31,10 @@ const darkRising: Documentary = {
     'Kibera, Nairobi, Kenya',
   ],
 
-  heroLoop: showcaseVideoSrc('reel-vibe-uncut', 'DARK RISING-loop.mp4'),
-  heroPoster: showcaseVideoSrc('reel-vibe-uncut', 'DARK RISING-poster.jpg'),
+  heroLoop: showcaseVideoSrc('reel-vibe-uncut', 'dark-rising-loop.mp4'),
+  heroPoster: showcaseVideoSrc('reel-vibe-uncut', 'dark-rising-poster.jpg'),
   // 62MB; the player only fetches it once someone presses play.
-  video: showcaseVideoSrc('reel-vibe-uncut', 'DARK RISING.mp4'),
+  video: showcaseVideoSrc('reel-vibe-uncut', 'dark-rising.mp4'),
   videoPoster: drFrame(10),
   videoLabel: 'First-look teaser',
 

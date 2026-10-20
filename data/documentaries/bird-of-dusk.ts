@@ -7,12 +7,10 @@ const bodPlates = Array.from(
   (_, i) => `/documentaries/bird-of-dusk/plates/plate-${String(i + 1).padStart(2, '0')}.jpg`,
 );
 
-// The delivered trailer, still under its original project path. 63MB, so the
-// player only fetches it once someone presses play. The -faststart copy is the
-// same stream with its index moved to the front, so playback can begin before
-// the whole file arrives.
-const BOD_TRAILER =
-  '/projects/life-beyond-lens/bird-of-duck/2k%20BOD%20TRAILER-faststart.mp4';
+// The delivered trailer, remuxed with its index at the front so playback can
+// begin before the whole file arrives. 63MB, so the player only fetches it
+// once someone presses play.
+const BOD_TRAILER = '/projects/life-beyond-lens/bird-of-dusk/trailer.mp4';
 
 const birdOfDusk: Documentary = {
   id: 'bird-of-dusk',

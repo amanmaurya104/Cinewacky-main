@@ -1,30 +1,7 @@
 import type { Story } from '@/types/story';
-import { PROJECT, video, heroLoop, heroPoster } from './shared';
+import { PROJECT, filmStills, video, heroLoop, heroPoster } from './shared';
 
-const moonlightImageFiles = [
-  'Sequence 03.00_23_03_06.Still018.jpg',
-  'Sequence 03.00_23_08_05.Still019.jpg',
-  'Sequence 03.00_23_19_07.Still020.jpg',
-  'Sequence 03.00_23_26_13.Still021.jpg',
-  'Sequence 03.00_23_44_14.Still022.jpg',
-  'Sequence 03.00_24_59_09.Still023.jpg',
-  'Sequence 03.00_25_16_17.Still017.jpg',
-  'Sequence 03.00_25_19_13.Still024.jpg',
-  'Sequence 03.00_31_56_07.Still025.jpg',
-  'Sequence 03.00_32_42_03.Still026.jpg',
-  'Sequence 03.00_35_58_14.Still027.jpg',
-  'Sequence 03.00_36_00_01.Still028.jpg',
-  'Sequence 03.00_36_15_07.Still029.jpg',
-  'Sequence 03.00_36_34_03.Still030.jpg',
-  'Sequence 03.00_36_40_15.Still031.jpg',
-  'Sequence 03.00_40_32_18.Still032.jpg',
-] as const;
-
-function moonlightImage(filename: string): string {
-  return `/projects/reel-vibe-uncut/moonlight/${encodeURIComponent(filename)}`;
-}
-
-const moonlightImages = moonlightImageFiles.map(moonlightImage);
+const moonlightImages = filmStills('moonlight', 16);
 
 const moonlightDream: Story = {
   slug: 'moonlight-dream',
@@ -34,9 +11,9 @@ const moonlightDream: Story = {
   galleryLayout: 'arc',
   title: 'Moonlight Dreams',
   tagline: 'Fiction is the art of giving form to imagination and soul to emotion.',
-  heroVideo: heroLoop('MOONLIGHT DREAM.mp4'),
-  poster: heroPoster('MOONLIGHT DREAM.mp4'),
-  thumbnail: heroPoster('MOONLIGHT DREAM.mp4'),
+  heroVideo: heroLoop('moonlight-dream.mp4'),
+  poster: heroPoster('moonlight-dream.mp4'),
+  thumbnail: heroPoster('moonlight-dream.mp4'),
   synopsis:
     'It creates worlds beyond reality, yet speaks intimately to the human heart. Within every frame lives a universe of dreams, desires, and untold truths. Stories become echoes of emotions that transcend time and boundaries. We craft narratives that are not simply seen, but deeply experienced. For often, the unreal reveals the most profound realities of life.',
   visualNarrative: [
@@ -96,7 +73,7 @@ const moonlightDream: Story = {
   ],
   producerNote:
     'Moonlight Dream was conceived as a visual poem — less plot, more atmosphere. Every choice serves the feeling of half-sleep.',
-  trailer: video('MOONLIGHT DREAM.mp4'),
+  trailer: video('moonlight-dream.mp4'),
 };
 
 export default moonlightDream;

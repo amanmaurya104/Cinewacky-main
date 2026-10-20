@@ -29,7 +29,7 @@ const kingOfTheRoad: Documentary = {
     kicker: 'Wim Wenders',
     subtitle: 'The India Journey & Kolkata Chapter',
     counts: ['18 films', '5 cities', 'A first visit to India'],
-    heroPlate: { src: asset('OPENING 5.jpg'), caption: 'From the documentary' },
+    heroPlate: { src: asset('king-of-the-road.jpg'), caption: 'From the documentary' },
 
     lede: 'Cinema is a way of travelling without leaving the frame — and for Wim Wenders, the road has always been one of cinema’s most powerful spaces.',
     overture: [
@@ -132,13 +132,13 @@ const kingOfTheRoad: Documentary = {
 
     artwork: [
       {
-        src: korAsset('Wim-Wenders-Poster-1.jpg.jpeg'),
+        src: korAsset('tour-poster.jpg'),
         width: 768,
         height: 1024,
         caption: 'The India Tour — official poster',
       },
       {
-        src: korAsset('ww_final-compressed_seite_03-700x423.jpg.jpeg'),
+        src: korAsset('campaign-artwork.jpg'),
         width: 700,
         height: 423,
         caption: 'The India Tour — campaign artwork',

@@ -12,7 +12,7 @@ import { readdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
-const DIR = 'public/projects/left_right';
+const DIR = 'public/projects/side-loops';
 // Widest slice the column can ever reveal is ~600 source px; 900 leaves margin.
 const CROP_WIDTH = 900;
 const TARGET_HEIGHT = 540;
@@ -27,8 +27,8 @@ for (const file of files) {
   const out = src.replace(/\.gif$/, '.webp');
   const meta = await sharp(src, { animated: true }).metadata();
 
-  // `_left` frames are anchored left in CSS, `_right` frames are anchored right.
-  const left = file.includes('_right') ? meta.width - CROP_WIDTH : 0;
+  // `left-NN` frames are anchored left in CSS, `right-NN` frames are anchored right.
+  const left = file.startsWith('right-') ? meta.width - CROP_WIDTH : 0;
 
   const buffer = await sharp(src, { animated: true })
     .extract({ left, top: 0, width: CROP_WIDTH, height: meta.pageHeight })

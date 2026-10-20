@@ -4,14 +4,14 @@ import { showcaseVideoSrc } from '@/lib/mediaPaths';
 
 export const PROJECT = 'reel-vibe-uncut';
 
-// Stills sampled from each film by scripts/extract-stills.mjs. These stories
-// previously pointed at `poster`/`heroImage`/`gallery`, which are placeholder
-// text files rather than images — the optimizer rejects them and the browser
-// renders a broken image. Replace with curated frames when they are ready.
-export function filmStills(slug: string, count = 8): string[] {
+// A film's numbered stills: /projects/reel-vibe-uncut/<folder>/still-NN.jpg.
+// Kali's and Moonlight Dreams' are curated frames. The others were sampled
+// from each film by scripts/extract-stills.mjs, standing in until curated
+// frames are ready.
+export function filmStills(folder: string, count = 8): string[] {
   return Array.from(
     { length: count },
-    (_, i) => `/projects/reel-vibe-uncut/${slug}/still-${String(i + 1).padStart(2, '0')}.jpg`,
+    (_, i) => `/projects/reel-vibe-uncut/${folder}/still-${String(i + 1).padStart(2, '0')}.jpg`,
   );
 }
 

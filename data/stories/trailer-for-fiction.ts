@@ -9,9 +9,9 @@ const trailerForFiction: Story = {
   projectSlug: PROJECT,
   title: 'Trailer For Fiction',
   tagline: 'Stories that never were — until now.',
-  heroVideo: heroLoop('trailer for fiction.mp4'),
-  poster: heroPoster('trailer for fiction.mp4'),
-  thumbnail: heroPoster('trailer for fiction.mp4'),
+  heroVideo: heroLoop('trailer-for-fiction.mp4'),
+  poster: heroPoster('trailer-for-fiction.mp4'),
+  thumbnail: heroPoster('trailer-for-fiction.mp4'),
   synopsis:
     'A meta-cinematic trailer that blurs the line between imagination and reality — fiction as a living, breathing force.',
   visualNarrative: [
@@ -28,7 +28,7 @@ const trailerForFiction: Story = {
   cast: [],
   gallery: trailerForFictionStills,
   achievements: [],
-  trailer: video('trailer for fiction.mp4'),
+  trailer: video('trailer-for-fiction.mp4'),
 };
 
 export default trailerForFiction;

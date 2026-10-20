@@ -9,9 +9,9 @@ const mistimukh: Story = {
   projectSlug: PROJECT,
   title: 'Mistimukh',
   tagline: 'Faces behind the veil.',
-  heroVideo: heroLoop('MISTIMUKH.mp4'),
-  poster: heroPoster('MISTIMUKH.mp4'),
-  thumbnail: heroPoster('MISTIMUKH.mp4'),
+  heroVideo: heroLoop('mistimukh.mp4'),
+  poster: heroPoster('mistimukh.mp4'),
+  thumbnail: heroPoster('mistimukh.mp4'),
   synopsis:
     'An intimate study of expression and concealment — identity rendered in glances, gestures, and the space between words.',
   visualNarrative: [
@@ -29,7 +29,7 @@ const mistimukh: Story = {
   gallery: mistimukhStills,
   achievements: [{ year: '2023', title: 'Portrait Study', description: 'Independent Short Form' }],
   producerNote: 'Mistimukh asks the audience to sit with ambiguity — beauty without easy answers.',
-  trailer: video('MISTIMUKH.mp4'),
+  trailer: video('mistimukh.mp4'),
 };
 
 export default mistimukh;

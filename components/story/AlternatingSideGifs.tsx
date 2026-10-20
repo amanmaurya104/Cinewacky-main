@@ -6,20 +6,20 @@ import { useEffect, useState } from 'react';
 // (30MB of GIF -> 2.4MB). These are pure decoration, so they load at low
 // priority and only start cycling once the page itself has settled.
 const leftImages = [
-  '/projects/left_right/1_left.webp',
-  '/projects/left_right/4_left.webp',
-  '/projects/left_right/5_left.webp',
-  '/projects/left_right/8_left.webp',
-  '/projects/left_right/11_left.webp',
+  '/projects/side-loops/left-01.webp',
+  '/projects/side-loops/left-04.webp',
+  '/projects/side-loops/left-05.webp',
+  '/projects/side-loops/left-08.webp',
+  '/projects/side-loops/left-11.webp',
 ];
 
 const rightImages = [
-  '/projects/left_right/2_right.webp',
-  '/projects/left_right/3_right.webp',
-  '/projects/left_right/6_right.webp',
-  '/projects/left_right/7_right.webp',
-  '/projects/left_right/10_right.webp',
-  '/projects/left_right/12_right.webp',
+  '/projects/side-loops/right-02.webp',
+  '/projects/side-loops/right-03.webp',
+  '/projects/side-loops/right-06.webp',
+  '/projects/side-loops/right-07.webp',
+  '/projects/side-loops/right-10.webp',
+  '/projects/side-loops/right-12.webp',
 ];
 
 export default function AlternatingSideGifs() {

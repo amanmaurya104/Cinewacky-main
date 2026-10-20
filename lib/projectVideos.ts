@@ -9,9 +9,11 @@ export type ProjectVideoItem = {
   poster?: string;
 };
 
+/** The banner title: the file name without its extension, hyphens as spaces. */
 export function videoTitleFromFilename(filename: string): string {
   return filename
     .replace(/\.[^.]+$/, '')
+    .replace(/-/g, ' ')
     .trim()
     .toUpperCase();
 }

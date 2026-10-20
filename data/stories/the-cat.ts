@@ -9,9 +9,9 @@ const theCat: Story = {
   projectSlug: PROJECT,
   title: 'The Cat',
   tagline: 'Nine lives. One frame.',
-  heroVideo: heroLoop('THE CAT.mp4'),
-  poster: heroPoster('THE CAT.mp4'),
-  thumbnail: heroPoster('THE CAT.mp4'),
+  heroVideo: heroLoop('the-cat.mp4'),
+  poster: heroPoster('the-cat.mp4'),
+  thumbnail: heroPoster('the-cat.mp4'),
   synopsis:
     'A surreal vignette where feline grace meets human longing — playful, strange, and unexpectedly tender.',
   visualNarrative: [
@@ -28,7 +28,7 @@ const theCat: Story = {
   cast: [{ actor: 'The Cat', character: 'Self', portrait: theCatStills[2] }],
   gallery: theCatStills,
   achievements: [],
-  trailer: video('THE CAT.mp4'),
+  trailer: video('the-cat.mp4'),
 };
 
 export default theCat;
