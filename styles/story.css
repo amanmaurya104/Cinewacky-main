@@ -283,7 +283,10 @@
   top: 18%;
   width: min(72vw, 820px);
   height: min(72vw, 820px);
-  transform: translateX(-50%);
+  /* Centred with `translate`, not `transform`: framer-motion animates the
+     glow's scale through an inline `transform`, which would replace a
+     translateX(-50%) here and leave the glow 50% of its width off-centre. */
+  translate: -50% 0;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 22%, transparent 62%);
   filter: blur(14px);
@@ -1333,7 +1336,7 @@
   top: clamp(1rem, 5vh, 3.5rem);
   width: min(46vw, 320px);
   height: min(46vw, 320px);
-  transform: none;
+  translate: none;
   filter: blur(1.5px);
   background: radial-gradient(circle at 50% 50%,
       rgba(240, 247, 255, 0.95) 0%,
