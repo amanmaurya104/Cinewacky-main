@@ -53,12 +53,14 @@ const projects: Project[] = [
     id: 2,
     title: 'Brand Box',
     slug: 'brand-box',
-    status: 'draft',
-    category: 'Commercial',
-    tagline: 'Packaging ideas into motion',
-    description: 'High-energy brand films and identity pieces.',
+    status: 'live',
+    category: 'Advertisement',
+    tagline: 'Your brand deserves the spotlight',
+    description:
+      'Advertisement trailers for garments, hotels, ITC and everyday products — campaigns crafted to capture attention and make a brand unforgettable.',
     year: '2023',
-    client: 'BrandCo',
+    // The page's content and stills are in data/brandBox.ts.
+    layout: 'advert',
   },
   {
     id: 3,

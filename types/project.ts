@@ -29,8 +29,11 @@ export interface Project {
   client?: string;
   /** Filenames under public/showcase/{slug}/ */
   videos?: string[];
-  /** 'stack' (default) is the full-width banner list; 'mosaic' is the sidebar grid. */
-  layout?: 'stack' | 'mosaic';
+  /**
+   * 'stack' (default) is the full-width banner list; 'mosaic' is the sidebar
+   * grid; 'advert' is the Brand Box campaign page (content in data/brandBox.ts).
+   */
+  layout?: 'stack' | 'mosaic' | 'advert';
   /** Mosaic tiles, in order. Videos and images may be mixed. */
   media?: ProjectMediaItem[];
   /** `live` opens the project page, and lets its stories and documentaries go live. */
